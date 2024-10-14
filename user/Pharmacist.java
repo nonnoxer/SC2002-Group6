@@ -5,7 +5,13 @@ import java.util.List;
 public class Pharmacist extends User {
     private int pharmacistID;
     public Inventory inventory;
-
+    
+    // Default constructor with no parameters passing in
+    public Pharmacist() {
+        this.pharmacistID = 0; // Assign default ID
+        this.inventory = new Inventory(); // Create a default Inventory object
+    }
+    
     // Constructor to initialize the pharmacistID and inventory
     public Pharmacist(int pharmacistID, Inventory inventory) {
         this.pharmacistID = pharmacistID;
@@ -16,22 +22,25 @@ public class Pharmacist extends User {
         return pharmacistID;
     }
 
-    // Haven't finished yet implementing the methods
-    
     public void viewPrescription() {
         System.out.println("Viewing prescriptions...");
+        // yet to be implemented
     }
 
     public void updatePrescriptionStatus() {
         System.out.println("Updating prescription status...");
+      // yet to be implemented
     }
 
     public void monitorInventory() {
         System.out.println("Monitoring inventory...");
+     // yet to be implemented
     }
 
     public void requestReplenishment() {
         System.out.println("Requesting replenishment...");
+     // yet to be implemented
     }
 
 }
+
