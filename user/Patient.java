@@ -16,4 +16,9 @@ public class Patient extends User implements CsvCompatible {
     public String toString() {
         return String.format("%s,%s,%s,%s,%s,%s", id, name, birthDate, gender, bloodType, contactInfo);
     }
+
+    public void viewMedicalRecord() {
+        System.out.println("Viewing Medical Record...");
+        
+    }
 }
