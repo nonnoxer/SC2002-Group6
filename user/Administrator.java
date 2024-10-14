@@ -1,5 +1,5 @@
 package user;
 
-public class Administrator extends User {
+public class Administrator extends Staff {
     
 }
