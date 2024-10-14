@@ -71,7 +71,7 @@ public class ReadFile {
                 String line_full = String.join(",", line);
                 throw new IOException("Invalid line " + line_full + ": expected 6 elements.");
             }
-            String id = line[0], name = line[1], birthDate = line[2], gender = line[3], bloodType = line[4], contactInfo = line[6];
+            String id = line[0], name = line[1], birthDate = line[2], gender = line[3], bloodType = line[4], contactInfo = line[5];
 
             patients[i] = new Patient(id, name, birthDate, gender, bloodType, contactInfo);
         }

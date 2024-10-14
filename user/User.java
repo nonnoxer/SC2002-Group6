@@ -3,11 +3,9 @@ package user;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class User {
-    private String id;
+public abstract class User {
+    protected String id, name, role;
     private String password;
-    protected String name;
-    private String role;
 
     // Constructor to return id, password, name etc
     public User(String id, String password, String name, String role) {
@@ -35,4 +33,5 @@ public class User {
         this.password = password;
     }
 
+    public abstract String toString();
 }

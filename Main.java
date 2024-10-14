@@ -1,6 +1,7 @@
 import java.io.IOException;
 
 import data.ReadFile;
+import data.WriteFile;
 import medicine.Medicine;
 import user.Patient;
 import user.Staff;
@@ -15,6 +16,10 @@ class Main {
 
             Patient[] patients = ReadFile.readPatientListFile("Patient_List.csv");
             Medicine[] inventory = ReadFile.readMedicineListFile("Medicine_List.csv");
+
+            WriteFile.writeFile(staffs, "Staff_out.csv");
+            WriteFile.writeFile(patients, "Patient_out.csv");
+            WriteFile.writeFile(inventory, "Medicine_out.csv");
         } catch (IOException e) {
             System.out.println(e);
         }

@@ -1,26 +1,32 @@
-package JavaProject;
+package user;
 
 import java.util.List;
 
-public class Pharmacist extends User {
-    private int pharmacistID;
-    public Inventory inventory;
+import medicine.Inventory;
+
+public class Pharmacist extends Staff {
+    // private int pharmacistID;
+    // public Inventory inventory;
     
     // Default constructor with no parameters passing in
-    public Pharmacist() {
-        this.pharmacistID = 0; // Assign default ID
-        this.inventory = new Inventory(); // Create a default Inventory object
+    // public Pharmacist() {
+    //     this.pharmacistID = 0; // Assign default ID
+    //     this.inventory = new Inventory(); // Create a default Inventory object
+    // }
+
+    public Pharmacist(String id, String name, String role, String gender, int age) {
+        super(id, name, role, gender, age);
     }
     
     // Constructor to initialize the pharmacistID and inventory
-    public Pharmacist(int pharmacistID, Inventory inventory) {
-        this.pharmacistID = pharmacistID;
-        this.inventory = inventory;
-    }
+    // public Pharmacist(int pharmacistID, Inventory inventory) {
+    //     this.pharmacistID = pharmacistID;
+    //     this.inventory = inventory;
+    // }
 
-    public int getPharmacistID() {
-        return pharmacistID;
-    }
+    // public int getPharmacistID() {
+    //     return pharmacistID;
+    // }
 
     public void viewAppOutcome() {
         System.out.println("Viewing appointment outcome record...");
