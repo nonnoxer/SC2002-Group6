@@ -6,7 +6,7 @@ import java.io.IOException;
 public class User {
     private String id;
     private String password;
-    private String name;
+    protected String name;
     private String role;
 
     // Constructor to return id, password, name etc
