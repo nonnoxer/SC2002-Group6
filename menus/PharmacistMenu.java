@@ -26,7 +26,7 @@ public class PharmacistMenu {
 	            switch(option) {
 	            	case "1":
 	            		// Call the method to view the prescription
-	            		p.viewPrescription();
+	            		p.viewAppOutcome();
 	            		break;
 	            	
 	            	case "2":
