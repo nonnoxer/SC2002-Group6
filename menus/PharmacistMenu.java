@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class PharmacistMenu {
 
-	public static void showMenu() {
+	public static void showPharmacistMenu() {
 		Scanner scanner = new Scanner(System.in);
 		boolean exit = false;
 		
