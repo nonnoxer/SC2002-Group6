@@ -7,7 +7,7 @@ import menus.Menu;
 
 
 public class PatientMenu implements Menu{
-    private Scanner sc = new Scanner(System.in);
+    private final Scanner sc = new Scanner(System.in);
 
     //overiding, implemented from menu class
     @Override
