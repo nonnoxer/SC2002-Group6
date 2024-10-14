@@ -3,7 +3,6 @@ package menus;
 
 import java.util.Scanner;
 import user.Patient;
-import menus.Menu;
 
 
 public class PatientMenu implements Menu{
