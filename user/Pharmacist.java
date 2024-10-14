@@ -22,8 +22,8 @@ public class Pharmacist extends User {
         return pharmacistID;
     }
 
-    public void viewPrescription() {
-        System.out.println("Viewing prescriptions...");
+    public void viewAppOutcome() {
+        System.out.println("Viewing appointment outcome record...");
         // yet to be implemented
     }
 
