@@ -10,7 +10,7 @@ public class PatientMenu implements Menu{
 
     //overiding, implemented from menu class
     @Override
-    public void show(){
+    public void showMenu(){
         int choice = -1;
 
         System.out.print("test patientmenu");

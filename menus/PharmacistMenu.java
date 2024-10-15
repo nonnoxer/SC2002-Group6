@@ -1,10 +1,12 @@
-package JavaProject;
+package menus;
 
 import java.util.Scanner;
+import user.Pharmacist;
 
-public class PharmacistMenu {
+public class PharmacistMenu implements Menu{
 
-	public static void showPharmacistMenu() {
+	@Override
+	public void showMenu() {
 		Scanner scanner = new Scanner(System.in);
 		boolean exit = false;
 		
