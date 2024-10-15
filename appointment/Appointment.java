@@ -1,5 +1,4 @@
-package appointment;
-
-public class Appointment {
+package user;
+public class User {
     
 }
