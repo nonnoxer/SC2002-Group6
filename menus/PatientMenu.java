@@ -5,7 +5,7 @@ import java.util.Scanner;
 import user.Patient;
 
 
-public class PatientMenu implements Menu{
+public class PatientMenu extends Menu{
     private final Scanner sc = new Scanner(System.in);
 
     //overiding, implemented from menu class

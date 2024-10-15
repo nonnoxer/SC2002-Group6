@@ -1,5 +1,5 @@
 package menus;
 
-public interface Menu {
+public abstract class Menu {
     public abstract void showMenu();
 }

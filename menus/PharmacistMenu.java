@@ -3,7 +3,7 @@ package menus;
 import java.util.Scanner;
 import user.Pharmacist;
 
-public class PharmacistMenu implements Menu{
+public class PharmacistMenu extends Menu{
 
 	@Override
 	public void showMenu() {
