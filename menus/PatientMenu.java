@@ -3,21 +3,22 @@ package menus;
 
 import java.util.Scanner;
 import user.Patient;
+import user.User;
+import record.MedicalRecord;
 
 
 public class PatientMenu extends Menu{
-    private final Scanner sc = new Scanner(System.in);
+    private Scanner sc = new Scanner(System.in);
 
     //overiding, implemented from menu class
     @Override
-    public void showMenu(){
+    public void showMenu(User patient){
         int choice = -1;
 
         System.out.print("test patientmenu");
-        //Patient patient = new Patient()
-
+        boolean quit = false;
         
-        while (choice != 0) { 
+        while (!quit) { 
             System.out.println("===== Patient Menu =====");
             System.out.println("1. View Medical Record");
             System.out.println("2. Update Personal Information");
@@ -28,16 +29,23 @@ public class PatientMenu extends Menu{
             System.out.println("7. View Scheduled Appointments");
             System.out.println("8. View Past Appointment Outcome Records");
             System.out.println("9. Logout");
+            System.out.println("0. quit");
             System.out.print("Enter your choice: ");
-        }
-        choice = sc.nextInt();
 
+            choice = Integer.parseInt(sc.nextLine()); 
+            
+            if(choice == 0){
+                quit = true;
+            }
+            System.out.print("temporary");
+            handleSelection(choice);
+        }
     }
 
     private void handleSelection(int choice){
         switch (choice) {
             case 1://Vieww medical record
-                //patient.viewMedicalRecord
+                //MedicalRecord()
                 break;
             case 2:
                 

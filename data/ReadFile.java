@@ -1,8 +1,11 @@
 package data;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 import medicine.Medicine;
@@ -22,7 +25,8 @@ public class ReadFile {
         return lines_separated;
     }
     
-    public static Staff[] readStaffListFile(String path) throws IOException {
+    public static Staff[] readStaffListFile() throws IOException {              //removed the path string input
+        String path = "Staff_List.csv";                                         //and put it here instead for all the functions so its easier to use ~amu
         String[][] values = ReadFile.readCSV(path);
 
         Staff[] staffs = new Staff[values.length];
@@ -61,7 +65,8 @@ public class ReadFile {
         return staffs;
     }
     
-    public static Patient[] readPatientListFile(String path) throws IOException {
+    public static Patient[] readPatientListFile() throws IOException {
+        String path = "Patient_List.csv";  
         String[][] values = ReadFile.readCSV(path);
 
         Patient[] patients = new Patient[values.length];
@@ -79,7 +84,8 @@ public class ReadFile {
         return patients;
     }
 
-    public static Medicine[] readMedicineListFile(String path) throws IOException {
+    public static Medicine[] readMedicineListFile() throws IOException {
+        String path = "Medicine_List.csv";  
         String[][] values = ReadFile.readCSV(path);
 
         Medicine[] inventory = new Medicine[values.length];
@@ -108,3 +114,4 @@ public class ReadFile {
         return inventory;
     }
 }
+
