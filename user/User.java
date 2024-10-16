@@ -1,8 +1,5 @@
 package user;
 
-import java.io.FileWriter;
-import java.io.IOException;
-
 public abstract class User {
     protected String id, name, role;
     private String password;

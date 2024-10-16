@@ -1,9 +1,14 @@
 package user;
 
+import java.util.ArrayList;
+
+import appointment.Appointment;
+import appointment.AppointmentSlot;
 import data.CsvCompatible;
 
 public class Patient extends User implements CsvCompatible {
     private String gender, birthDate, bloodType, contactInfo;
+    private ArrayList<Appointment> appointments;
 
     public Patient(String id, String name, String birthDate, String gender, String bloodType, String contactInfo) {
         super(id, "placeholder", name, "Patient");
@@ -11,6 +16,8 @@ public class Patient extends User implements CsvCompatible {
         this.birthDate = birthDate;
         this.bloodType = bloodType;
         this.contactInfo = contactInfo;
+
+        this.appointments = new ArrayList<Appointment>();
     }
 
     public String toString() {
@@ -24,6 +31,23 @@ public class Patient extends User implements CsvCompatible {
         System.out.println();
         System.out.println();
         
+    }
+
+    public void viewAvailableSlots() {
+
+    }
+
+    public void scheduleAppointment(String doctorId, AppointmentSlot slot) {
+        appointments.add(new Appointment(this.id, doctorId, slot));
+    }
+
+    public void rescheduleAppointment(int index, AppointmentSlot slot) {
+        appointments.get(index).patientReschedule(slot);
+    }
+
+    public void cancelAppointment(int index) {
+        appointments.get(index).patientCancel();
+        appointments.remove(index);
     }
 
         // Getters
