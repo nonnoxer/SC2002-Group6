@@ -25,8 +25,7 @@ public class ReadFile {
         return lines_separated;
     }
     
-    public static Staff[] readStaffListFile() throws IOException {              //removed the path string input
-        String path = "Staff_List.csv";                                         //and put it here instead for all the functions so its easier to use ~amu
+    public static Staff[] readStaffListFile(String path) throws IOException {
         String[][] values = ReadFile.readCSV(path);
 
         Staff[] staffs = new Staff[values.length];
@@ -65,8 +64,7 @@ public class ReadFile {
         return staffs;
     }
     
-    public static Patient[] readPatientListFile() throws IOException {
-        String path = "Patient_List.csv";  
+    public static Patient[] readPatientListFile(String path) throws IOException {
         String[][] values = ReadFile.readCSV(path);
 
         Patient[] patients = new Patient[values.length];
@@ -84,8 +82,7 @@ public class ReadFile {
         return patients;
     }
 
-    public static Medicine[] readMedicineListFile() throws IOException {
-        String path = "Medicine_List.csv";  
+    public static Medicine[] readMedicineListFile(String path) throws IOException {
         String[][] values = ReadFile.readCSV(path);
 
         Medicine[] inventory = new Medicine[values.length];
