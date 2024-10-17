@@ -64,7 +64,6 @@ public class LoginMenu {
         } catch (IOException e) {
         System.err.println("Error reading csv: " + e.getMessage());
         }
-        scanner.close();
 
         menu.showMenu(tempUser);        //polymorphing to showmenu
     }

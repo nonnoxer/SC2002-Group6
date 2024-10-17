@@ -65,6 +65,6 @@ public class PharmacistMenu extends Menu {
                     System.out.println("The option is chosen incorrectly, please try again!");
             }
         }
-        scanner.close();
+        //scanner.close();
     }
 }
