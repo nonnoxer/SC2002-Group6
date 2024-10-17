@@ -1,6 +1,5 @@
 import java.io.IOException;
 
-import data.LogIn;
 import data.LogInController;
 import data.ReadFile;
 import data.WriteFile;

@@ -3,6 +3,7 @@ package menus;
 
 import java.util.Scanner;
 import user.Patient;
+import user.Pharmacist;
 import user.User;
 import record.MedicalRecord;
 
@@ -12,13 +13,24 @@ public class PatientMenu extends Menu{
 
     //overiding, implemented from menu class
     @Override
-    public void showMenu(User patient){
+    public void showMenu(User user){
+
+        Patient patient = null;
+        if (user instanceof Patient){               //explicit down casting so that the pharmacist methods don't have compilation error
+            patient = (Patient) user;               //as they don't exist in superclass User
+        }else{
+            System.out.println("This user is not a patient, check the method call");
+        }
+
+
+
+
         int choice = -1;
 
         System.out.print("test patientmenu");
         boolean quit = false;
         
-        while (!quit) { 
+        while (choice != 0) {
             System.out.println("===== Patient Menu =====");
             System.out.println("1. View Medical Record");
             System.out.println("2. Update Personal Information");
@@ -32,12 +44,13 @@ public class PatientMenu extends Menu{
             System.out.println("0. quit");
             System.out.print("Enter your choice: ");
 
-            choice = Integer.parseInt(sc.nextLine()); 
-            
-            if(choice == 0){
-                quit = true;
-            }
-            System.out.print("temporary");
+//            choice = Integer.parseInt(sc.nextLine());
+//
+//            if(choice == 0){
+//                quit = true;
+//            }
+            choice = sc.nextInt();
+            System.out.print("tsdfasdfasdfasdfasdf");
             handleSelection(choice);
         }
     }

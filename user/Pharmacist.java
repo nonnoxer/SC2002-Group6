@@ -1,5 +1,7 @@
 package user;
 
+import menus.PharmacistMenu;
+
 import java.util.List;
 
 import medicine.Inventory;

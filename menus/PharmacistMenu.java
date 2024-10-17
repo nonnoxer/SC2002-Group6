@@ -1,12 +1,24 @@
 package menus;
 
 import java.util.Scanner;
+
+import user.Patient;
 import user.Pharmacist;
+import user.User;
 
 public class PharmacistMenu extends Menu {
 
     @Override
-    public void showMenu(Pharmacist p) {
+    public void showMenu(User user) {
+
+        Pharmacist p = null;
+        if (user instanceof Pharmacist){        //explicit down casting so that the pharmacist methods don't have compilation error
+            p = (Pharmacist) user;              //as they don't exist in superclass User
+        }else{
+            System.out.println("This user is not a pharmacist, check the method call");
+        }
+
+
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
 
@@ -30,7 +42,7 @@ public class PharmacistMenu extends Menu {
 
                 case "2":
                     // Call the method to update the prescription status
-                    p.updatePrescriptionStatus();
+                    //p.updatePrescriptionStatus();
                     break;
 
                 case "3":

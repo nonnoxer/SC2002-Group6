@@ -27,7 +27,7 @@ public class LogInController {
                 String[] data = line.split(",");
                 if (data[1].equals(username)) {
                     patientReader.close();
-                    return "patient";
+                    return "Patient";
                 }
             }
             patientReader.close();
