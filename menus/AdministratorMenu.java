@@ -1,9 +1,6 @@
 package menus;
 
 import user.Administrator;
-import java.util.Scanner;
-
-import user.Doctor;
 import user.User;
 
 public class AdministratorMenu extends Menu{
