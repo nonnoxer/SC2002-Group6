@@ -20,7 +20,7 @@ public class Patient extends User implements CsvCompatible {
         this.appointments = new ArrayList<Appointment>();
     }
 
-    public String toString() {
+    public String toCsv() {
         return String.format("%s,%s,%s,%s,%s,%s", id, name, birthDate, gender, bloodType, contactInfo);
     }
 

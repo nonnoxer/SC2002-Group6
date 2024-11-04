@@ -1,5 +1,5 @@
 package data;
 
 public interface CsvCompatible {
-    public abstract String toString();
+    public abstract String toCsv();
 }

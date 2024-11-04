@@ -8,7 +8,7 @@ public class WriteFile {
         try {
             FileWriter fstream = new FileWriter(path, false);
             for (CsvCompatible item : items) {
-                fstream.write(item.toString() + "\n");
+                fstream.write(item.toCsv() + "\n");
             }
             fstream.close();
         } catch (IOException e) {

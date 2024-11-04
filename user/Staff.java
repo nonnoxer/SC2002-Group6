@@ -16,7 +16,7 @@ public class Staff extends User implements CsvCompatible {
         return this.name;
     }
 
-    public String toString() {
+    public String toCsv() {
         return String.format("%s,%s,%s,%s,%d", id, name, role, gender, age);
     }
 }

@@ -36,7 +36,7 @@ public class Medicine implements CsvCompatible {
         this.lowStockLevelAlert = lowStockLevelAlert;
     }
     
-    public String toString() {
+    public String toCsv() {
         return String.format("%s,%d,%d", name, stock, lowStockLevelAlert);
     }
 }

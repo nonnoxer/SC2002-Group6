@@ -1,11 +1,8 @@
 package data;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 import medicine.Medicine;
@@ -14,6 +11,7 @@ import user.Doctor;
 import user.Patient;
 import user.Pharmacist;
 import user.Staff;
+import user.UserAccount;
 
 public class ReadFile {
     private static String[][] readCSV(String path) throws IOException {
@@ -23,6 +21,27 @@ public class ReadFile {
             lines_separated[i] = lines.get(i).split(",");
         }
         return lines_separated;
+    }
+
+    public static UserAccount[] readAccountListFile(String path) throws IOException {
+        String[][] values = ReadFile.readCSV(path);
+
+        UserAccount[] accounts = new UserAccount[values.length];
+        for (int i = 0; i < values.length; i++) {
+            String[] line = values[i];
+            if (line.length != 4) {
+                String line_full = String.join(",", line);
+                throw new IOException("Invalid line " + line_full + ": expected 4 elements.");
+            }
+            String id = line[0], username = line[1], password = line[2], role = line[3];
+
+            if (!(role.equals("Doctor") || role.equals("Pharmacist") || role.equals("Administrator") || role.equals("Patient"))) {
+                throw new IOException("Invalid line: expected " + line[3] + " to be one of 'Patient', 'Doctor', 'Pharmacist', 'Administrator'.");
+            }
+
+            accounts[i] = new UserAccount(id, username, password, role);
+        }
+        return accounts;
     }
     
     public static Staff[] readStaffListFile(String path) throws IOException {

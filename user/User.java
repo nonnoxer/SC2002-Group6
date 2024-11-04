@@ -30,5 +30,5 @@ public abstract class User {
         this.password = password;
     }
 
-    public abstract String toString();
+    public abstract String toCsv();
 }

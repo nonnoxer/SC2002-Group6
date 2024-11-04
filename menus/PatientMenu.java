@@ -2,29 +2,22 @@
 package menus;
 
 import java.util.Scanner;
+
 import user.Patient;
-import user.Pharmacist;
-import user.User;
-import record.MedicalRecord;
 
 
 public class PatientMenu extends Menu{
-    private Scanner sc = new Scanner(System.in);
+    private Scanner sc;
+    private Patient patient;
+
+    public PatientMenu(Scanner sc, Patient patient) {
+        this.sc = sc;
+        this.patient = patient;
+    }
 
     //overiding, implemented from menu class
     @Override
-    public void showMenu(User user){
-
-        Patient patient = null;
-        if (user instanceof Patient){               //explicit down casting so that the pharmacist methods don't have compilation error
-            patient = (Patient) user;               //as they don't exist in superclass User
-        }else{
-            System.out.println("This user is not a patient, check the method call");
-        }
-
-
-
-
+    public void showMenu(){
         int choice = -1;
 
         System.out.print("test patientmenu");

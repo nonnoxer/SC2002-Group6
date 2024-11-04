@@ -1,6 +1,5 @@
 package user;
 
-import menus.PharmacistMenu;
 
 import java.util.List;
 
@@ -49,12 +48,5 @@ public class Pharmacist extends Staff {
         System.out.println("Requesting replenishment...");
      // yet to be implemented
     }
-
-    // Method to show the pharmacist's menu
-    public void showMenu() {
-        PharmacistMenu menu = new PharmacistMenu();
-        menu.showMenu(this);  // Pass the pharmacist to the menu
-    }
-
 }
 
