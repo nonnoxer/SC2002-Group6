@@ -1,36 +1,24 @@
 package menus;
 
 import java.util.Scanner;
-import data.ReadFile;
 import data.UserDatabase;
-
-import java.io.IOException;
 
 import user.Administrator;
 import user.Doctor;
 import user.Patient;
 import user.Pharmacist;
-import user.Staff;
 import user.UserAccount;
 
 public class LoginMenu {
-    static final Scanner scanner = new Scanner(System.in);
-    private static UserDatabase db;
-    private static Patient[] patients;
-    private static Staff[] staffs;
-    private static Menu menu = null;
-    
-    public static void showLoginMenu() {
-        try {
-            patients = ReadFile.readPatientListFile("Patient_List.csv");
-            staffs = ReadFile.readStaffListFile("Staff_List.csv");
-            db = new UserDatabase("Account_List.csv", patients, staffs);
-        } catch (IOException e) {
-            System.out.println("Error reading or writing CSVs. Please check your local files.");
-            e.printStackTrace();
-            return;
-        }
+    private Scanner sc;
+    private UserDatabase db;
 
+    public LoginMenu(Scanner sc, UserDatabase db) {
+        this.sc = sc;
+        this.db = db;
+    }
+
+    public Menu login() {
         UserAccount account = null;
         System.out.println("Welcome to the Hospital Management System (HMS)");
 
@@ -45,7 +33,7 @@ public class LoginMenu {
                 String password = promptForInput("Enter password: ");
                 if (!account.checkPassword(password)) {
                     System.out.println("Wrong credentials");
-                    return;
+                    return null;
                 }
             }
         }
@@ -53,41 +41,42 @@ public class LoginMenu {
         String id = account.getId(), role = account.getRole();
         System.out.println("Login successful! User type: " + role);
 
+        Menu menu;
+
         switch (role) {
             case "Patient":
-                Patient patient = db.findPatientId(patients, id);
-                menu = new PatientMenu(scanner, patient);
+                Patient patient = db.findPatientId(id);
+                menu = new PatientMenu(sc, patient);
                 break;
             // Legal to downcast as staffs is contains Doctor, Pharmacist and Administrator
             case "Doctor":
-                Doctor doctor = (Doctor) db.findStaffId(staffs, id);
-                menu = new DoctorMenu(scanner, doctor);
+                Doctor doctor = (Doctor) db.findStaffId(id);
+                menu = new DoctorMenu(sc, doctor);
                 break;
             case "Pharmacist":
-                Pharmacist pharmacist = (Pharmacist) db.findStaffId(staffs, id);
-                menu = new PharmacistMenu(scanner, pharmacist);
+                Pharmacist pharmacist = (Pharmacist) db.findStaffId(id);
+                menu = new PharmacistMenu(sc, pharmacist);
                 break;
             case "Administrator":
-                Administrator administrator = (Administrator) db.findStaffId(staffs, id);
-                menu = new AdministratorMenu(scanner, administrator);
+                Administrator administrator = (Administrator) db.findStaffId(id);
+                menu = new AdministratorMenu(sc, administrator);
                 break;
             default:
                 throw new AssertionError();
         }
 
-        menu.showMenu();
+        return menu;
     }
 
-    private static void setPassword(UserAccount account) {
+    private void setPassword(UserAccount account) {
         String password = promptForInput("Enter a new password: ");
         account.setPassword(password);
     }
 
-    private static String promptForInput(String message) {
+    private String promptForInput(String message) {
         System.out.print(message);
-        return scanner.nextLine();
+        return sc.nextLine();
     }
-
 }
 
     

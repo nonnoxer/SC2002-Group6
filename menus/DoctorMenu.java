@@ -34,7 +34,7 @@ public class DoctorMenu extends Menu {
             System.out.println("8. Logout");
             System.out.print("Enter your choice: ");
 
-            choice = LoginMenu.scanner.nextInt();
+            choice = sc.nextInt();
             handleSelection(choice);
         }
     }

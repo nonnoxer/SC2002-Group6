@@ -1,11 +1,12 @@
 package menus;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
-import user.Doctor;
-import user.Patient;
+import medicine.Inventory;
+import medicine.ReplenishmentRequest;
+import record.AppointmentOutcomeRecord;
 import user.Pharmacist;
-import user.User;
 
 public class PharmacistMenu extends Menu {
     private Scanner sc;
@@ -18,7 +19,6 @@ public class PharmacistMenu extends Menu {
 
     @Override
     public void showMenu() {
-        Scanner scanner = new Scanner(System.in);
         boolean exit = false;
 
         while (!exit) {
@@ -31,30 +31,28 @@ public class PharmacistMenu extends Menu {
             System.out.println("=====================================");
             System.out.println("Please choose an option:");
 
-            String option = scanner.nextLine();
+            int choice = sc.nextInt();
 
-            switch (option) {
-                case "1":
+            switch (choice) {
+                case 1:
                     // Call the method to view the prescription
-                    pharmacist.viewAppOutcome();
+                    viewAppointmentOutcome();
                     break;
 
-                case "2":
+                case 2:
                     // Call the method to update the prescription status
-                    //p.updatePrescriptionStatus();
+                    updatePrescriptionStatus();
                     break;
 
-                case "3":
-                    // Call the method to view the medical inventory
-                    pharmacist.monitorInventory();
+                case 3:
+                    viewInventory();
                     break;
 
-                case "4":
-                    // Call the method to submit a replenishment request;
-                    pharmacist.requestReplenishment();
+                case 4:
+                    submitRequest();
                     break;
 
-                case "5":
+                case 5:
                     // Call to logout
                     System.out.println("Logging out...");
                     exit = true;
@@ -65,5 +63,33 @@ public class PharmacistMenu extends Menu {
             }
         }
         //scanner.close();
+    }
+
+    private void viewAppointmentOutcome() {
+        ArrayList<AppointmentOutcomeRecord> records = pharmacist.getRecords();
+        System.out.println("Viewing appointment outcome record...");
+        for (AppointmentOutcomeRecord record : records) {
+            System.out.println(record.getPrescription());
+        }
+    }
+
+    private void updatePrescriptionStatus() {
+        System.out.println("Updating prescription status...");
+        // AppointmentOutcomeRecord record = new AppointmentOutcomeRecord();
+        // pharmacist.updatePrescriptionStatus(record);
+    }
+
+    private void viewInventory() {
+        Inventory inventory = pharmacist.getInventory();
+        System.out.println("Monitoring inventory...");
+    }
+
+    private void submitRequest() {
+        System.out.print("Enter medicine name: ");
+        String name = sc.next();
+        System.out.print("Enter stock request: ");
+        int stock = sc.nextInt();
+        ReplenishmentRequest request = new ReplenishmentRequest(name, stock);
+        pharmacist.requestReplenishment(request);
     }
 }

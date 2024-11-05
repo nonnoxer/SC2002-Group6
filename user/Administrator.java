@@ -1,16 +1,12 @@
 package user;
 
-import data.ReadFile;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import medicine.Inventory;
 import medicine.Medicine;
 
 public class Administrator extends Staff {
-
-    //List to store staff members (Doctors & Pharmacists)
-    private List<Staff> staffList;
+    private ArrayList<Staff> staffs;
 
     //Inventory object for managing medication
     private Inventory inventory;
@@ -18,42 +14,39 @@ public class Administrator extends Staff {
     //Constructor to initialize Administrator with an empty staff list and inventory
     public Administrator(String id, String name, String role, String gender, int age) throws IOException {
         super(id, name, role, gender, age);
-        this.staffList = new ArrayList<>();
-        this.inventory = new Inventory("Medicine_List.csv");
+        this.staffs = null;
+        this.inventory = null;
     }
 
     //Initialize the staff list from a CSV file
-    public void initializeStaffList() throws IOException {
-        this.staffList = new ArrayList<>();
-        Staff[] loadedStaff = ReadFile.readStaffListFile("Staff_List.csv");
-        for(Staff staff : loadedStaff) {
-            staffList.add(staff);
-        }
+    public void init(ArrayList<Staff> staffs, Inventory inventory) {
+        this.staffs = staffs;
+        this.inventory = inventory;
     }
 
     //Manage Staff methods
     public void addStaff(Staff staff) {
-        staffList.add(staff);
+        staffs.add(staff);
         System.out.println("Staff member added successfully.");
         //Work in progress
     }
 
     public void removeStaff(Staff staff) {
-        staffList.remove(staff);
+        staffs.remove(staff);
         System.out.println("Staff member removed successfully.");
         //Work in progress
     }
 
     public void updateStaff(Staff oldStaff, Staff newStaff) {
-        int index = staffList.indexOf(oldStaff);
+        int index = staffs.indexOf(oldStaff);
         if (index >= 0) {
-            staffList.set(index, newStaff);
+            staffs.set(index, newStaff);
             System.out.println("Staff information updated.");
         }
     }
 
     public void displayStaffList() {
-        for (Staff staff : staffList) {
+        for (Staff staff : staffs) {
             System.out.println(staff);
         }
     }
@@ -65,7 +58,7 @@ public class Administrator extends Staff {
 
     //View the entire inventory
     public void viewInventory() {
-        Medicine[] inventoryList = inventory.GetInventory();
+        ArrayList<Medicine> inventoryList = inventory.getInventory();
         for(Medicine medicine: inventoryList) {
             System.out.println("Medicine: " + medicine.getName() + ", Stock: " + medicine.getStock() + ", Low Stock Alert Level: " + medicine.getLowStockLevelAlert());
         }

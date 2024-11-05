@@ -2,9 +2,10 @@ package data;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class WriteFile {
-    public static void writeFile(CsvCompatible[] items, String path) {
+    public static void writeFile(ArrayList<? extends CsvCompatible> items, String path) {
         try {
             FileWriter fstream = new FileWriter(path, false);
             for (CsvCompatible item : items) {

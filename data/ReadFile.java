@@ -3,6 +3,7 @@ package data;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 import medicine.Medicine;
@@ -23,10 +24,10 @@ public class ReadFile {
         return lines_separated;
     }
 
-    public static UserAccount[] readAccountListFile(String path) throws IOException {
+    public static ArrayList<UserAccount> readAccountListFile(String path) throws IOException {
         String[][] values = ReadFile.readCSV(path);
 
-        UserAccount[] accounts = new UserAccount[values.length];
+        ArrayList<UserAccount> accounts = new ArrayList<UserAccount>();
         for (int i = 0; i < values.length; i++) {
             String[] line = values[i];
             if (line.length != 4) {
@@ -39,15 +40,15 @@ public class ReadFile {
                 throw new IOException("Invalid line: expected " + line[3] + " to be one of 'Patient', 'Doctor', 'Pharmacist', 'Administrator'.");
             }
 
-            accounts[i] = new UserAccount(id, username, password, role);
+            accounts.add(new UserAccount(id, username, password, role));
         }
         return accounts;
     }
     
-    public static Staff[] readStaffListFile(String path) throws IOException {
+    public static ArrayList<Staff> readStaffListFile(String path) throws IOException {
         String[][] values = ReadFile.readCSV(path);
 
-        Staff[] staffs = new Staff[values.length];
+        ArrayList<Staff> staffs = new ArrayList<Staff>();
         for (int i = 0; i < values.length; i++) {
             String[] line = values[i];
             if (line.length != 5) {
@@ -77,16 +78,16 @@ public class ReadFile {
                     throw new IOException("Invalid line: expected " + line[2] + " to be one of 'Doctor', 'Pharmacist', 'Administrator'.");
             }
 
-            staffs[i] = staff;
+            staffs.add(staff);
         }
 
         return staffs;
     }
     
-    public static Patient[] readPatientListFile(String path) throws IOException {
+    public static ArrayList<Patient> readPatientListFile(String path) throws IOException {
         String[][] values = ReadFile.readCSV(path);
 
-        Patient[] patients = new Patient[values.length];
+        ArrayList<Patient> patients = new ArrayList<Patient>();
         for (int i = 0; i < values.length; i++) {
             String[] line = values[i];
             if (line.length != 6) {
@@ -95,16 +96,16 @@ public class ReadFile {
             }
             String id = line[0], name = line[1], birthDate = line[2], gender = line[3], bloodType = line[4], contactInfo = line[5];
 
-            patients[i] = new Patient(id, name, birthDate, gender, bloodType, contactInfo);
+            patients.add(new Patient(id, name, birthDate, gender, bloodType, contactInfo));
         }
 
         return patients;
     }
 
-    public static Medicine[] readMedicineListFile(String path) throws IOException {
+    public static ArrayList<Medicine> readMedicineListFile(String path) throws IOException {
         String[][] values = ReadFile.readCSV(path);
 
-        Medicine[] inventory = new Medicine[values.length];
+        ArrayList<Medicine> inventory = new ArrayList<Medicine>();
         for (int i = 0; i < values.length; i++) {
             String[] line = values[i];
             if (line.length != 3) {
@@ -124,7 +125,7 @@ public class ReadFile {
                 throw new IOException("Invalid line: expected " + line[2] + " to be an integer.");
             }
 
-            inventory[i] = new Medicine(name, initialStock, lowStockLevelAlert);
+            inventory.add(new Medicine(name, initialStock, lowStockLevelAlert));
         }
 
         return inventory;

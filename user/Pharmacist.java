@@ -1,13 +1,15 @@
 package user;
 
 
-import java.util.List;
+import java.util.ArrayList;
 
 import medicine.Inventory;
+import medicine.ReplenishmentRequest;
+import record.AppointmentOutcomeRecord;
 
 public class Pharmacist extends Staff {
-    // private int pharmacistID;
-    // public Inventory inventory;
+    private ArrayList<AppointmentOutcomeRecord> records;
+    private Inventory inventory;
     
     // Default constructor with no parameters passing in
     // public Pharmacist() {
@@ -17,6 +19,12 @@ public class Pharmacist extends Staff {
 
     public Pharmacist(String id, String name, String role, String gender, int age) {
         super(id, name, role, gender, age);
+
+        inventory = null;
+    }
+
+    public void init(Inventory inventory) {
+        this.inventory = inventory;
     }
     
     // Constructor to initialize the pharmacistID and inventory
@@ -29,23 +37,20 @@ public class Pharmacist extends Staff {
     //     return pharmacistID;
     // }
 
-    public void viewAppOutcome() {
-        System.out.println("Viewing appointment outcome record...");
+    public ArrayList<AppointmentOutcomeRecord> getRecords() {
+        return this.records;
         // yet to be implemented
     }
 
-    public void updatePrescriptionStatus() {
-        System.out.println("Updating prescription status...");
+    public void updatePrescriptionStatus(AppointmentOutcomeRecord record) {
       // yet to be implemented
     }
 
-    public void monitorInventory() {
-        System.out.println("Monitoring inventory...");
-     // yet to be implemented
+    public Inventory getInventory() {
+        return this.inventory;
     }
 
-    public void requestReplenishment() {
-        System.out.println("Requesting replenishment...");
+    public void requestReplenishment(ReplenishmentRequest request) {
      // yet to be implemented
     }
 }
