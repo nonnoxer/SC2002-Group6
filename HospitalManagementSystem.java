@@ -1,6 +1,11 @@
 import java.io.IOException;
 import java.util.ArrayList;
 
+import appointment.AppointmentSlot;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import data.ReadFile;
 import data.UserDatabase;
 import medicine.Inventory;
@@ -45,7 +50,12 @@ public class HospitalManagementSystem {
             switch (staff.getRole()) {
                 case "Doctor": {
                     Doctor temp = (Doctor) staff;
+                    // Create doctor API
                     doctorApis.add(new DoctorApi(temp));
+
+                    // Set appointment slots
+                    ArrayList<AppointmentSlot> slots = generateSlots(5);
+                    temp.setAppointmentSlots(slots);
                     break;
                 }
                 // Set global inventory for each pharmacist
@@ -69,6 +79,23 @@ public class HospitalManagementSystem {
         for (Patient patient : patients) {
             patient.setDoctors(doctorApis);
         }
+    }
+
+    // Generate appointment slots at 30 minute intervals from 8.00 am to 1.00 pm, and from 2.00 pm to 4.30 pm
+    private ArrayList<AppointmentSlot> generateSlots(int numDays) {
+        ArrayList<AppointmentSlot> slots = new ArrayList<AppointmentSlot>();
+        LocalDate startDay = LocalDate.now();
+        for (int i = 0; i < numDays; i++) {
+            LocalDate curDay = startDay.plusDays(i);
+            for (int j = 0; j < 17; j++) {
+                int hour = j / 2 + 8;
+                int minute = j % 2 * 30;
+                if (hour == 13) continue;
+                LocalDateTime time = curDay.atTime(hour, minute);
+                slots.add(new AppointmentSlot(time));
+            }
+        }
+        return slots;
     }
 
     public void start() {

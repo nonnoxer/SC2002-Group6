@@ -1,15 +1,17 @@
 package appointment;
 
+import java.time.LocalDateTime;
+
 public class AppointmentSlot {
-    private String date;
+    private LocalDateTime date;
     private boolean availability;
 
-    public AppointmentSlot(String date) {
+    public AppointmentSlot(LocalDateTime date) {
         this.date = date;
         this.availability = true;
     }
 
-    public String getDate() {
+    public LocalDateTime getDate() {
         return this.date;
     }
 

@@ -19,6 +19,10 @@ public class Doctor extends Staff {
         this.slots = new ArrayList<AppointmentSlot>();
     }
 
+    public void setAppointmentSlots(ArrayList<AppointmentSlot> slots) {
+        this.slots = slots;
+    }
+
     public ArrayList<String> getPatientNames() {
         ArrayList<String> patientNames = new ArrayList<String>();
         for (Patient patient : patients) {

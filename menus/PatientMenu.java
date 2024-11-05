@@ -3,12 +3,12 @@ package menus;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.time.LocalDateTime;
 
 import appointment.Appointment;
 import appointment.AppointmentSlot;
 import record.AppointmentOutcomeRecord;
 import record.MedicalRecord;
-import user.Doctor;
 import user.DoctorApi;
 import user.Patient;
 
@@ -139,7 +139,7 @@ public class PatientMenu extends Menu{
         int numSlots = 0;
         for (AppointmentSlot slot : slots) {
             if (slot.getAvailability()) {
-                System.out.printf("%", slot.getDate());
+                System.out.printf("%s\n", slot.getDate().toString());
                 numSlots++;
             }
         }
@@ -150,7 +150,7 @@ public class PatientMenu extends Menu{
 
     private void scheduleAppointment() {
         DoctorApi doctor = getDoctor();
-        AppointmentSlot slot = new AppointmentSlot("");
+        AppointmentSlot slot = new AppointmentSlot(LocalDateTime.now());
 
         this.patient.scheduleAppointment(doctor.getId(), slot);
     }
@@ -163,7 +163,8 @@ public class PatientMenu extends Menu{
             System.out.printf("%d. %s\n", i, appointments.get(i).getSlot().getDate());
         }
 
-        AppointmentSlot newSlot = new AppointmentSlot("");
+        // TODO: change
+        AppointmentSlot newSlot = new AppointmentSlot(LocalDateTime.now());
 
         this.patient.rescheduleAppointment(i, newSlot);
     }
