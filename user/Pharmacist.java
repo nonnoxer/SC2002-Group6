@@ -37,7 +37,7 @@ public class Pharmacist extends Staff {
     //     return pharmacistID;
     // }
 
-    public ArrayList<AppointmentOutcomeRecord> getRecords() {
+    public ArrayList<AppointmentOutcomeRecord> getRecords() { // Create a container to store all the medical record, and then in the container put getRecords() function 
         return this.records;
         // yet to be implemented
     }
