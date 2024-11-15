@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import appointment.Appointment;
 import appointment.AppointmentSlot;
+import record.MedicalRecord;
 
 import java.util.ArrayList;
 
@@ -91,6 +92,18 @@ public class DoctorMenu extends Menu {
     
         System.out.printf("Viewing records of %s:\n", selectedPatient.getName());
         // Get records
+        MedicalRecord record = selectedPatient.getMedicalRecord();
+        System.out.printf("ID: %s\n", record.getId());
+        System.out.printf("Name: %s\n", record.getName());
+        System.out.printf("Birth Date: %s\n", record.getBirthDate());
+        System.out.printf("Gender: %s\n", record.getGender());
+        System.out.printf("Contact Information: %s\n", record.getContactInfo());
+        System.out.printf("Blood Type: %s\n", record.getBloodType());
+        System.out.printf("Appointment Record: ");
+        record.getPastAppointments().forEach(appointment -> {
+            appointment.printAppointmentOutcomeRecord(); 
+            System.out.println();
+        });
     }
 
     private void updatePatientRecords() {

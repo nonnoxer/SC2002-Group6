@@ -45,7 +45,31 @@ public class MedicalRecord {
         return pastAppointments;
     }
 
+    // public void setId(String id){
+    //     this.id = id;
+    // }
+    
+    // public void setName(String name){
+    //     this.name = name;
+    // }
+    
+    // public void setBirthDate(String birthDate) {
+    //     this.birthDate = birthDate;
+    // }
+    
+    // public void setGender(String gender){
+    //     this.gender = gender;
+    // }
+
     public void setContactInfo(String contactInfo) {
         this.contactInfo = contactInfo;
+    }
+
+    // public void setBloodType(String bloodType){
+    //     this.bloodType = bloodType;
+    // }
+
+    public void addPastAppointments(AppointmentOutcomeRecord newAppointment){
+        this.pastAppointments.add(newAppointment);
     }
 }
