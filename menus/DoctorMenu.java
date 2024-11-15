@@ -73,19 +73,26 @@ public class DoctorMenu extends Menu {
     }
 
     private Patient selectPatient() {
-        System.out.println("Select a patient:");
         ArrayList<String> patientNames = doctor.getPatientNames();
-        for (int i = 0; i < patientNames.size(); i++) {
-            System.out.printf("%d. %s\n", i, patientNames.get(i));
-        }
-        int choice = sc.nextInt();
-        if (choice < 0 || choice >= patientNames.size()) {
-            System.out.println("Invalid choice.");
+        if (patientNames.size() == 0){
+            System.out.println("No patients!");
             return null;
         }
+        else{
+            System.out.println(patientNames);
+            System.out.println("Select a patient:");
+            for (int i = 0; i < patientNames.size(); i++) {
+                System.out.printf("%d. %s\n", i, patientNames.get(i));
+            }
+            int choice = sc.nextInt();
+            if (choice < 0 || choice >= patientNames.size()) {
+                System.out.println("Invalid choice.");
+                return null;
+            }
 
-        Patient selectedPatient = doctor.getPatientIndex(choice);
-        return selectedPatient;
+            Patient selectedPatient = doctor.getPatientIndex(choice);
+            return selectedPatient;
+        }
     }
 
     private void viewPatientRecords() {
