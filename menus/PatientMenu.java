@@ -1,11 +1,22 @@
 //auth: amu
 package menus;
 
+    import java.io.IOException;
+    import java.util.ArrayList;
+    import java.util.Scanner;
+    import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+    import appointment.Appointment;
+    import appointment.AppointmentSlot;
+    import data.ReadFile;
+    import data.WriteFile;
+    import record.AppointmentOutcomeRecord;
+    import record.MedicalRecord;
+    import user.*;
 import appointment.Appointment;
 import appointment.AppointmentSlot;
 import appointment.Schedule;
@@ -48,38 +59,42 @@ public class PatientMenu extends Menu{
         }
     }
 
-    private void handleSelection(int choice){
-        switch (choice) {
-            case 1:
-                viewMedicalRecord();
-                break;
-            case 2:
-                updatePersonalInfo();
-                break;
-            case 3:
-                viewAvailableSlots();
-                break;
-            case 4:
-                scheduleAppointment();
-                break;
-            case 5:
-                rescheduleAppointment();
-                break;
-            case 6:
-                cancelAppointment();
-                break;
-            case 7:
-                viewScheduledAppointments();
-                break;
-            case 8:
-                viewPastAppointments();
-                break;
-            case 9:
-                break;
-            default:
-                System.out.println("The option is chosen incorrectly, please try again!");
+        private void handleSelection(int choice){
+            switch (choice) {
+                case 1:
+                    viewMedicalRecord();
+                    break;
+                case 2:
+                    updatePersonalInfo();
+                    break;
+                case 3:
+                    viewAvailableSlots();
+                    break;
+                case 4:
+                    scheduleAppointment();
+                    break;
+                case 5:
+                    rescheduleAppointment();
+                    break;
+                case 6:
+                    try {
+                        cancelAppointment();
+                    } catch (IOException e) {
+                        System.out.println("An error occurred: " + e.getMessage());
+                    }
+                    break;
+                case 7:
+                    viewScheduledAppointments();
+                    break;
+                case 8:
+                    viewPastAppointments();
+                    break;
+                case 9:
+                    break;
+                default:
+                    System.out.println("The option is chosen incorrectly, please try again!");
+            }
         }
-    }
 
     private void viewMedicalRecord() {
         MedicalRecord record = this.patient.getMedicalRecord();
@@ -126,31 +141,28 @@ public class PatientMenu extends Menu{
                         System.out.print("Enter your new email address: ");
                         String newEmail = sc.nextLine();
 
-                        if (newEmail.matches("^[A-Za-z0-9+_.-]+@(.+)$")) { //gpt
-                            record.setContactInfo(newEmail);
-                            //WriteFile.writeFile(patient.toCsv());
-                            //to save the record after setting?
+                            if (newEmail.matches("^[A-Za-z0-9+_.-]+@(.+)$")) { //gpt
+                                record.setContactInfo(newEmail);
+                                //to save the record after setting contact
 
                             System.out.println("Email address updated successfully.");
 
-                        } else {
-                            System.out.println("Invalid email format. Please try again.");
-                        }
-                        break;
-
-                    case 0:
-                        System.out.println("Returning to main menu...");
-                        break;
-
-                    default:
-                        System.out.println("Invalid choice. Please try again.");
+                            } else {
+                                System.out.println("Invalid email format. Please try again.");
+                            }
+                            break;
+                        case 0:
+                            System.out.println("Returning to main menu...");
+                            break;
+                        default:
+                            System.out.println("Invalid choice. Please try again.");
+                    }
+                } catch (Exception e) {
+                    System.out.println("Invalid input. Please enter a number.");
+                    sc.nextLine();
                 }
-            } catch (Exception e) {
-                System.out.println("Invalid input. Please enter a number.");
-                sc.nextLine();
             }
         }
-    }
 
     private DoctorApi getDoctor() {
         ArrayList<DoctorApi> doctorApis = this.patient.getDoctors();
@@ -222,16 +234,63 @@ public class PatientMenu extends Menu{
         this.patient.rescheduleAppointment(i, newSlot);
     }
 
-    private void cancelAppointment() {
+        private void cancelAppointment() throws IOException {
+            ArrayList<Appointment> appointments = this.patient.getAppointments();
 
+            if (appointments.isEmpty()) {
+                System.out.println("You have no scheduled appointments to cancel.");
+                return;
+            }
+
+            System.out.println("\n===== Cancel Appointment =====");
+            for (int i = 0; i < appointments.size(); i++) {
+                System.out.printf("%d. %s with Dr. %s\n",
+                        i + 1,
+                        appointments.get(i).getSlot().getDate(),
+                        findDoctorNameById(appointments.get(i).getDoctorId(),"Staff_List.csv")
+                );
+            }
+
+            System.out.print("Enter the number of the appointment you want to cancel (or 0 to return to the menu): ");
+            try {
+                int choice = sc.nextInt();
+                sc.nextLine(); // Consume the newline character
+
+                // Handle user input
+                if (choice == 0) {
+                    System.out.println("Returning to main menu...");
+                    return;
+                } else if (choice < 1 || choice > appointments.size()) {
+                    System.out.println("Invalid choice. Please try again.");
+                    return;
+                }
+
+                Appointment selectedAppointment = appointments.get(choice - 1);
+                selectedAppointment.patientCancel();
+                System.out.println("Appointment canceled successfully.");
+            }catch (Exception e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+                sc.nextLine(); // Clear invalid input
+            }
+        }
+
+
+        private void viewScheduledAppointments() {
+
+        }
+
+        private void viewPastAppointments() {
+
+        }
+
+        public static String findDoctorNameById(String doctorId, String staffFilePath) throws IOException { // this is quite a fucked function but im too stupid to figure it out
+            ArrayList<Staff> staffList = ReadFile.readStaffListFile(staffFilePath);
+            for (User user : staffList) {
+                if (user instanceof Doctor && user.getID().equals(doctorId)) {
+                    return user.getName();
+                }
+            }
+            return "somethings wrong it should never reach here, the doctor id does not exist in the staff file";
+        }
     }
-
-    private void viewScheduledAppointments() {
-
-    }
-
-    private void viewPastAppointments() {
-
-    }
-}
 
