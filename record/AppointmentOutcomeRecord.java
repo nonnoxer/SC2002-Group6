@@ -10,11 +10,11 @@ public class AppointmentOutcomeRecord {
     private AppointmentSlot slot;
     private Medicine[] prescription;
 
-    public AppointmentOutcomeRecord(AppointmentSlot slot, String serviceType, String consultationNotes) {
+    public AppointmentOutcomeRecord(AppointmentSlot slot, String serviceType, String consultationNotes, Medicine[] prescription) {
         this.slot = slot;
         this.serviceType = serviceType;
         this.prescriptionStatus = "Pending";
-        this.prescription = null;
+        this.prescription = prescription;
         this.consultationNotes = consultationNotes;
     }
 
@@ -37,6 +37,7 @@ public class AppointmentOutcomeRecord {
     public Medicine[] getPrescription() {
         return this.prescription;
     }
+
 
     public void printAppointmentOutcomeRecord() {
         System.out.printf("Slot: %s\n", this.slot);

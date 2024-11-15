@@ -5,12 +5,14 @@ import java.util.ArrayList;
 
 import appointment.Appointment;
 import appointment.Schedule;
+import medicine.Inventory;
 import record.AppointmentOutcomeRecord;
 
 public class Doctor extends Staff {
     private ArrayList<Patient> patients;
     private ArrayList<Appointment> appointments;
     private Schedule schedule;
+    private Inventory inventory;
 
     public Doctor(String id, String name, String role, String gender, int age) {
         super(id, name, role, gender, age);
@@ -18,6 +20,10 @@ public class Doctor extends Staff {
         this.patients = new ArrayList<Patient>();
         this.appointments = new ArrayList<Appointment>();
         this.schedule = null;
+    }
+
+    public void init(Inventory inventory) {
+        this.inventory = inventory;
     }
 
     public void setSchedule(LocalDate startDate, LocalDate endDate) {
@@ -47,6 +53,10 @@ public class Doctor extends Staff {
             if (appointment.getAppointmentStatus() == "Confirmed") upcoming.add(appointment);
         }
         return upcoming;
+    }
+    
+    public Inventory getInventory() {
+        return this.inventory;
     }
 
     public void setAvailability() {

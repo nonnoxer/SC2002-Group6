@@ -43,6 +43,7 @@ public class HospitalManagementSystem {
             switch (staff.getRole()) {
                 case "Doctor": {
                     Doctor temp = (Doctor) staff;
+                    temp.init(inventory);
                     // Create doctor API
                     doctorApis.add(new DoctorApi(temp));
 

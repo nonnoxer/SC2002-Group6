@@ -39,4 +39,8 @@ public class Medicine implements CsvCompatible {
     public String toCsv() {
         return String.format("%s,%d,%d", name, stock, lowStockLevelAlert);
     }
+
+    public String toString(){
+        return "Medicine{name='" + name + "', stock='" + stock + "', lowStockLevelAlert='" + lowStockLevelAlert + "'}";
+    }
 }
