@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import data.ReadFile;
 import data.UserDatabase;
 import medicine.Inventory;
-import medicine.Medicine;
 import menus.UserInterface;
 import user.Administrator;
 import user.Doctor;
@@ -21,7 +20,6 @@ import user.Staff;
 public class HospitalManagementSystem {
     private ArrayList<Staff> staffs;
     private ArrayList<Patient> patients;
-    private ArrayList<Medicine> medicines;
     private Inventory inventory;
     private UserDatabase db;
     private UserInterface ui;
@@ -30,13 +28,11 @@ public class HospitalManagementSystem {
         try {
             staffs = ReadFile.readStaffListFile(staffListPath);
             patients = ReadFile.readPatientListFile(patientListPath);
-            medicines = ReadFile.readMedicineListFile(medicineListPath);
             db = new UserDatabase(accountListPath, patients, staffs);
+            inventory = new Inventory(medicineListPath);
         } catch (IOException e) {
             System.out.println(e);
         }
-
-        inventory = new Inventory(medicines);
 
         initUsers();
 
