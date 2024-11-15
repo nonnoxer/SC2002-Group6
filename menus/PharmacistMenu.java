@@ -32,6 +32,7 @@ public class PharmacistMenu extends Menu {
             System.out.println("Please choose an option:");
 
             int choice = sc.nextInt();
+            sc.nextLine();
 
             switch (choice) {
                 case 1:

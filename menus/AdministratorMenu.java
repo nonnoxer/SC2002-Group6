@@ -27,6 +27,7 @@ public class AdministratorMenu extends Menu{
             System.out.print("Enter your choice: ");
 
             choice = sc.nextInt();
+            sc.nextLine();
             handleSelection(choice);
         }
     }
