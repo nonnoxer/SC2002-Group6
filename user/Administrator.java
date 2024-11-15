@@ -1,5 +1,6 @@
 package user;
 
+import data.WriteFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import medicine.Inventory;
@@ -24,30 +25,74 @@ public class Administrator extends Staff {
         this.inventory = inventory;
     }
 
+    public void displayStaffList() {
+        for (Staff staff : staffs) {
+            String staffID = staff.getID();
+            System.out.println("Staff ID: " + staffID);
+            String staffName = staff.getName();
+            System.out.println("Staff Name: " + staffName);
+            String staffRole = staff.getRole();
+            System.out.println("Staff Role: " + staffRole);
+            String staffGender = staff.getGender();
+            System.out.println("Staff Gender: " + staffGender);
+            int staffAge = staff.getAge();
+            System.out.println("Staff Age: " + staffAge);
+            System.out.println();
+        }
+    }
+
     //Manage Staff methods
     public void addStaff(Staff staff) {
         staffs.add(staff);
         System.out.println("Staff member added successfully.");
-        //Work in progress
+        //Write to file
+        try {
+            writeStaffListToFile();
+        } catch (Exception e) {
+            //Rollback if writing fails
+            staffs.remove(staff);
+        }
     }
 
     public void removeStaff(Staff staff) {
-        staffs.remove(staff);
-        System.out.println("Staff member removed successfully.");
-        //Work in progress
+        if(staffs.remove(staff)) {
+            System.out.println("Staff member removed successfully.");
+            //Write to file
+            try {
+                writeStaffListToFile();
+            } catch (Exception e) {
+                System.out.println("Error updating file: " + e.getMessage());
+                //Rollback if writing fails
+                staffs.add(staff);
+            }
+        } else {
+            System.out.println("Staff member not found.");
+        }
     }
 
     public void updateStaff(Staff oldStaff, Staff newStaff) {
         int index = staffs.indexOf(oldStaff);
         if (index >= 0) {
             staffs.set(index, newStaff);
-            System.out.println("Staff information updated.");
+            System.out.println("Staff information updated successfully.");
+            //Write to file
+            try {
+                writeStaffListToFile();
+            } catch (Exception e) {
+                //Rollback if writing fails
+                staffs.set(index, oldStaff);
+            }
+        } else {
+            System.out.println("Staff member not found.");
         }
     }
 
-    public void displayStaffList() {
-        for (Staff staff : staffs) {
-            System.out.println(staff);
+    private void writeStaffListToFile() {
+        try {
+            WriteFile.writeFile(new ArrayList<>(staffs), "Staff_List.csv");
+            System.out.println("Staff list updated successfully.");
+        } catch (Exception e) {
+            System.out.println("Error updating file: " + e.getMessage());
         }
     }
 
@@ -74,8 +119,8 @@ public class Administrator extends Staff {
         }
     }
 
-    //Update stock num and low stock alert num for an existing medicine
-    public void updateInventoryStockWithAlert (String medicineName, int stockNum, int lowStockAlert) {
+    //Update stock num and low stock alert num for an existing medicine (Method overload)
+    public void updateInventoryStock (String medicineName, int stockNum, int lowStockAlert) {
         int updated = inventory.setInventory(medicineName, stockNum, lowStockAlert);
         if (updated == 1) {
             System.out.println("Inventory and low stock alert updated for " + medicineName);
@@ -97,5 +142,9 @@ public class Administrator extends Staff {
         } else {
             System.out.println("Medicine not found in the inventory.");
         }
+    }
+
+    public ArrayList<Staff> getStaffList() {
+        return this.staffs;
     }
 }
