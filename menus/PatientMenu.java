@@ -28,10 +28,10 @@ import user.Patient;
 
 
 public class PatientMenu extends Menu{
-    private Scanner sc;
+    private SafeScanner sc;
     private Patient patient;
 
-    public PatientMenu(Scanner sc, Patient patient) {
+    public PatientMenu(SafeScanner sc, Patient patient) {
         this.sc = sc;
         this.patient = patient;
     }
@@ -52,9 +52,8 @@ public class PatientMenu extends Menu{
             System.out.println("7. View Scheduled Appointments");
             System.out.println("8. View Past Appointment Outcome Records");
             System.out.println("9. Logout");
-            System.out.print("Enter your choice: ");
 
-            choice = sc.nextInt();
+            choice = sc.promptInt("Enter your choice: ", 1, 9);
             handleSelection(choice);
         }
     }
@@ -119,7 +118,6 @@ public class PatientMenu extends Menu{
 
         System.out.println("\nContinue... [enter]");
         sc.nextLine();
-        sc.nextLine();
     }
 
     private void updatePersonalInfo() {
@@ -132,37 +130,34 @@ public class PatientMenu extends Menu{
             System.out.println("0. Return to main menu");
             System.out.print("Enter your choice: ");
 
-            try {
-                choice = sc.nextInt();
-                sc.nextLine();
+            choice = sc.promptInt("Enter your choice: ", 0, 1);
 
-                switch (choice) {
-                    case 1:
-                        System.out.print("Enter your new email address: ");
-                        String newEmail = sc.nextLine();
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter your new email address: ");
+                    String newEmail = sc.nextLine();
 
-                            if (newEmail.matches("^[A-Za-z0-9+_.-]+@(.+)$")) { //gpt
-                                record.setContactInfo(newEmail);
-                                //to save the record after setting contact
+                    if (newEmail.matches("^[A-Za-z0-9+_.-]+@(.+)$")) { //gpt
+                        record.setContactInfo(newEmail);
+                        //WriteFile.writeFile(patient.toCsv());
+                        //to save the record after setting?
 
-                            System.out.println("Email address updated successfully.");
+                        System.out.println("Email address updated successfully.");
 
-                            } else {
-                                System.out.println("Invalid email format. Please try again.");
-                            }
-                            break;
-                        case 0:
-                            System.out.println("Returning to main menu...");
-                            break;
-                        default:
-                            System.out.println("Invalid choice. Please try again.");
+                    } else {
+                        System.out.println("Invalid email format. Please try again.");
                     }
-                } catch (Exception e) {
-                    System.out.println("Invalid input. Please enter a number.");
-                    sc.nextLine();
-                }
+                    break;
+
+                case 0:
+                    System.out.println("Returning to main menu...");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice. Please try again.");
             }
         }
+    }
 
     private DoctorApi getDoctor() {
         ArrayList<DoctorApi> doctorApis = this.patient.getDoctors();
@@ -175,8 +170,7 @@ public class PatientMenu extends Menu{
             return null;
         }
 
-        System.out.print("Choose a doctor: ");
-        int choice = sc.nextInt();
+        int choice = sc.promptInt("Choose a doctor: ", 0, doctorApis.size()-1);
         if (choice < 0 || choice >= doctorApis.size()) {
             System.out.println("Invalid choice.");
             return null;
@@ -189,15 +183,12 @@ public class PatientMenu extends Menu{
         DoctorApi doctor = getDoctor();
         Schedule schedule = doctor.getPersonalSchedule();
 
-        System.out.print("Enter year: ");
-        int year = sc.nextInt();
-        System.out.print("Enter month (1-12): ");
-        int month = sc.nextInt();
+        int year = sc.promptInt("Enter year: ", 1900, 2037);
+        int month = sc.promptInt("Enter month (1-12): ", 1, 12);
 
         schedule.printMonth(LocalDate.of(year, month, 1), true);
 
-        System.out.print("Enter day: ");
-        int day = sc.nextInt();
+        int day = sc.promptInt("Enter day: ", 1, 31);
 
         ArrayList<AppointmentSlot> slots = schedule.getSlots(LocalDate.of(year, month, day));
         if (slots == null || slots.size() == 0) {
@@ -251,29 +242,21 @@ public class PatientMenu extends Menu{
                 );
             }
 
-            System.out.print("Enter the number of the appointment you want to cancel (or 0 to return to the menu): ");
-            try {
-                int choice = sc.nextInt();
-                sc.nextLine(); // Consume the newline character
+            int choice = sc.promptInt("Enter the number of the appointment you want to cancel (or 0 to return to the menu): ", 0, appointments.size());
 
-                // Handle user input
-                if (choice == 0) {
-                    System.out.println("Returning to main menu...");
-                    return;
-                } else if (choice < 1 || choice > appointments.size()) {
-                    System.out.println("Invalid choice. Please try again.");
-                    return;
-                }
-
-                Appointment selectedAppointment = appointments.get(choice - 1);
-                selectedAppointment.patientCancel();
-                System.out.println("Appointment canceled successfully.");
-            }catch (Exception e) {
-                System.out.println("Invalid input. Please enter a valid number.");
-                sc.nextLine(); // Clear invalid input
+            // Handle user input
+            if (choice == 0) {
+                System.out.println("Returning to main menu...");
+                return;
+            } else if (choice < 1 || choice > appointments.size()) {
+                System.out.println("Invalid choice. Please try again.");
+                return;
             }
-        }
 
+            Appointment selectedAppointment = appointments.get(choice - 1);
+            selectedAppointment.patientCancel();
+            System.out.println("Appointment canceled successfully.");
+        }
 
         private void viewScheduledAppointments() {
 

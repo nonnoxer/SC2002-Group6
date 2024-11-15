@@ -9,10 +9,10 @@ import record.AppointmentOutcomeRecord;
 import user.Pharmacist;
 
 public class PharmacistMenu extends Menu {
-    private Scanner sc;
+    private SafeScanner sc;
     private Pharmacist pharmacist;
 
-    public PharmacistMenu(Scanner sc, Pharmacist pharmacist) {
+    public PharmacistMenu(SafeScanner sc, Pharmacist pharmacist) {
         this.sc = sc;
         this.pharmacist = pharmacist;
     }
@@ -29,10 +29,8 @@ public class PharmacistMenu extends Menu {
             System.out.println("4. Submit Replenishment Request");
             System.out.println("5. Logout");
             System.out.println("=====================================");
-            System.out.println("Please choose an option:");
 
-            int choice = sc.nextInt();
-            sc.nextLine();
+            int choice = sc.promptInt("PLease choose an option: ", 1, 5);
 
             switch (choice) {
                 case 1:
@@ -63,7 +61,6 @@ public class PharmacistMenu extends Menu {
                     System.out.println("The option is chosen incorrectly, please try again!");
             }
         }
-        //scanner.close();
     }
 
     private void viewAppointmentOutcome() {
@@ -86,10 +83,8 @@ public class PharmacistMenu extends Menu {
     }
 
     private void submitRequest() {
-        System.out.print("Enter medicine name: ");
-        String name = sc.next();
-        System.out.print("Enter stock request: ");
-        int stock = sc.nextInt();
+        String name = sc.promptLine("Enter medicine name: ");
+        int stock = sc.promptInt("Enter stock request: ", 0, 2147483647);
         ReplenishmentRequest request = new ReplenishmentRequest(name, stock);
         pharmacist.requestReplenishment(request);
     }

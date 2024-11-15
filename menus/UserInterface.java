@@ -7,7 +7,7 @@ import data.UserDatabase;
 public class UserInterface {
     private LoginMenu loginMenu;
     private Menu menu;
-    static final Scanner scanner = new Scanner(System.in);
+    static final SafeScanner scanner = new SafeScanner(new Scanner(System.in));
 
     public UserInterface(UserDatabase db) {
         this.loginMenu = new LoginMenu(scanner, db);

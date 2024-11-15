@@ -17,10 +17,10 @@ import java.util.ArrayList;
 import user.Patient;
 
 public class DoctorMenu extends Menu {
-    private Scanner sc;
+    private SafeScanner sc;
     private Doctor doctor;
 
-    public DoctorMenu(Scanner sc, Doctor doctor) {
+    public DoctorMenu(SafeScanner sc, Doctor doctor) {
         this.sc = sc;
         this.doctor = doctor;
     }
@@ -38,10 +38,8 @@ public class DoctorMenu extends Menu {
             System.out.println("6. View Upcoming Appointments");
             System.out.println("7. Record Appointment Outcome");
             System.out.println("8. Logout");
-            System.out.print("Enter your choice: ");
 
-            choice = sc.nextInt();
-            sc.nextLine();
+            choice = sc.promptInt("Enter your choice: ", 1, 8);
             handleSelection(choice);
         }
     }
@@ -88,11 +86,7 @@ public class DoctorMenu extends Menu {
             for (int i = 0; i < patientNames.size(); i++) {
                 System.out.printf("%d. %s\n", i, patientNames.get(i));
             }
-            int choice = sc.nextInt();
-            if (choice < 0 || choice >= patientNames.size()) {
-                System.out.println("Invalid choice.");
-                return null;
-            }
+            int choice = sc.promptInt("", 0, patientNames.size()-1);
 
             Patient selectedPatient = doctor.getPatientIndex(choice);
             return selectedPatient;
@@ -142,10 +136,8 @@ public class DoctorMenu extends Menu {
         }
         // filling up the form
         slot = appointments.get(index).getSlot();
-        System.out.printf("Enter service type: \n");
-        serviceType = sc.nextLine();
-        System.out.printf("Enter consultation notes: \n");
-        consultationNotes = sc.nextLine();
+        serviceType = sc.promptLine("Enter service type: ");
+        consultationNotes = sc.promptLine("Enter consultation notes: ");
         // medicine for patient
         inventory = this.doctor.getInventory();
         medicines = inventory.getInventory();
@@ -157,34 +149,27 @@ public class DoctorMenu extends Menu {
             }
             // if press size+1 for first time means no medicine neeeded
             System.out.printf("%d: Done with selection!\n", medicines.size()+1);
-            choice = sc.nextInt();
-            sc.nextLine();
-            if(choice<1 || choice>medicines.size()+1){
-                System.out.println("Error, key again");
-            }
-            else if (choice != medicines.size()+1){
+            choice = sc.promptInt("", 1, medicines.size());
+            if (choice != medicines.size()+1){
                 selectedMedicines.add(medicines.get(choice-1));
             }
             else{
                 break;
             }
         }
-        outcomeRecord = new AppointmentOutcomeRecord(slot, serviceType, consultationNotes, selectedMedicines.toArray(new Medicine[0]));
+        outcomeRecord = new AppointmentOutcomeRecord(slot, serviceType, consultationNotes, selectedMedicines);
         appointments.get(index).complete(outcomeRecord);
     }
 
     private void viewSchedule() {
         Schedule schedule = this.doctor.getPersonalSchedule();
 
-        System.out.print("Enter year: ");
-        int year = sc.nextInt();
-        System.out.print("Enter month (1-12): ");
-        int month = sc.nextInt();
+        int year = sc.promptInt("Enter year: ", 1900, 2037);
+        int month = sc.promptInt("Enter month (1-12): ", 1, 12);
 
         schedule.printMonth(LocalDate.of(year, month, 1), false);
 
-        System.out.print("Enter day: ");
-        int day = sc.nextInt();
+        int day = sc.promptInt("Enter day: ", 1, 31);
 
         ArrayList<AppointmentSlot> slots = schedule.getSlots(LocalDate.of(year, month, day));
         if (slots == null || slots.size() == 0) {
@@ -222,7 +207,7 @@ public class DoctorMenu extends Menu {
             Appointment appointment = appointments.get(i);
             System.out.printf("%d. %s", i, appointment.getSlot().getDate());
         }
-        int choice = sc.nextInt();
+        int choice = sc.promptInt("", 0, appointments.size()-1);
 
     }
 }

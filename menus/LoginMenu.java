@@ -10,10 +10,10 @@ import user.Pharmacist;
 import user.UserAccount;
 
 public class LoginMenu {
-    private Scanner sc;
+    private SafeScanner sc;
     private UserDatabase db;
 
-    public LoginMenu(Scanner sc, UserDatabase db) {
+    public LoginMenu(SafeScanner sc, UserDatabase db) {
         this.sc = sc;
         this.db = db;
     }

@@ -5,10 +5,10 @@ import user.Administrator;
 import user.Staff;
 
 public class AdministratorMenu extends Menu{
-    private Scanner sc;
+    private SafeScanner sc;
     private Administrator administrator;
 
-    public AdministratorMenu(Scanner sc, Administrator administrator) {
+    public AdministratorMenu(SafeScanner sc, Administrator administrator) {
         this.sc = sc;
         this.administrator = administrator;
     }
@@ -24,10 +24,8 @@ public class AdministratorMenu extends Menu{
             System.out.println("3. View and Manage Medication Inventory");
             System.out.println("4. Approve Replenishment Requests");
             System.out.println("5. Logout");
-            System.out.print("Enter your choice: ");
 
-            choice = sc.nextInt();
-            sc.nextLine();
+            choice = sc.promptInt("Enter your choice: ", 1, 5);
             handleSelection(choice);
         }
     }
@@ -62,10 +60,7 @@ public class AdministratorMenu extends Menu{
             System.out.println("3. Update Staff");
             System.out.println("4. Remove Staff");
             System.out.println("5. Back to Main Menu");
-            System.out.print("Enter your choice: ");
-            int choice = sc.nextInt();
-            //Consume newline
-            sc.nextLine();
+            int choice = sc.promptInt("Enter your choice: ", 1, 5);
 
             switch(choice) {
                 //View Staff List
@@ -76,18 +71,11 @@ public class AdministratorMenu extends Menu{
                     break;
                 //Add a new staff member
                 case 2:
-                    System.out.print("Enter Staff ID: ");
-                    String id = sc.nextLine();
-                    System.out.print("Enter Staff Name:");
-                    String name = sc.nextLine();
-                    System.out.print("Enter Staff Role:");
-                    String role = sc.nextLine();
-                    System.out.print("Enter Staff Gender:");
-                    String gender = sc.nextLine();
-                    System.out.print("Enter Staff age:");
-                    int age = sc.nextInt();
-                    //Consume newline
-                    sc.nextLine();
+                    String id = sc.promptLine("Enter Staff ID: ");
+                    String name = sc.promptLine("Enter Staff Name: ");
+                    String role = sc.promptLine("Enter Staff Role: ");
+                    String gender = sc.promptLine("Enter Staff Gender:");
+                    int age = sc.promptInt("Enter staff age: ", 0, 200);
                     administrator.addStaff(new Staff(id, name, role, gender, age));
                     break;
                 //Update a staff member
@@ -96,14 +84,10 @@ public class AdministratorMenu extends Menu{
                     String oldId = sc.nextLine();
                     Staff oldStaff = findStaffById(oldId);
                     if (oldStaff != null) {
-                        System.out.print("Enter New Staff Name: ");
-                        String newName = sc.nextLine();
-                        System.out.print("Enter New Staff Role: ");
-                        String newRole = sc.nextLine();
-                        System.out.print("Enter New Staff Gender: ");
-                        String newGender = sc.nextLine();
-                        System.out.print("Enter New Staff Age: ");
-                        int newAge = sc.nextInt();
+                        String newName = sc.promptLine("Enter Staff Name: ");
+                        String newRole = sc.promptLine("Enter Staff Role: ");
+                        String newGender = sc.promptLine("Enter Staff Gender:");
+                        int newAge = sc.promptInt("Enter staff age: ", 0, 200);
                         sc.nextLine(); // Consume newline
                         Staff newStaff = new Staff(oldId, newName, newRole, newGender, newAge);
                         administrator.updateStaff(oldStaff, newStaff);
@@ -112,8 +96,7 @@ public class AdministratorMenu extends Menu{
                     }
                     break;
                 case 4: // Remove a staff member
-                    System.out.print("Enter Staff ID to remove: ");
-                    String removeId = sc.nextLine();
+                    String removeId = sc.promptLine("Enter Staff ID to remove: ");
                     Staff staffToRemove = findStaffById(removeId); // Helper method
                     if (staffToRemove != null) {
                         administrator.removeStaff(staffToRemove);
