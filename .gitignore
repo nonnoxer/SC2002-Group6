@@ -1,3 +1,8 @@
+*.csv
+!Medicine_List.csv
+!Patient_List.csv
+!Staff_List.csv
+
 # Compiled class file
 *.class
 

@@ -5,8 +5,10 @@ import java.util.Scanner;
 
 import appointment.Appointment;
 import appointment.AppointmentSlot;
+import appointment.Schedule;
 import record.MedicalRecord;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import user.Patient;
@@ -115,7 +117,24 @@ public class DoctorMenu extends Menu {
     }
 
     private void viewSchedule() {
-        ArrayList<AppointmentSlot> slots = this.doctor.getPersonalSchedule();
+        Schedule schedule = this.doctor.getPersonalSchedule();
+
+        System.out.print("Enter year: ");
+        int year = sc.nextInt();
+        System.out.print("Enter month (1-12): ");
+        int month = sc.nextInt();
+
+        schedule.printMonth(LocalDate.of(year, month, 1), false);
+
+        System.out.print("Enter day: ");
+        int day = sc.nextInt();
+
+        ArrayList<AppointmentSlot> slots = schedule.getSlots(LocalDate.of(year, month, day));
+        if (slots == null || slots.size() == 0) {
+            System.out.println("No slots found.");
+            return;
+        }
+
         for (int i = 0; i < slots.size(); i++) {
             AppointmentSlot slot = slots.get(i);
             String available = slot.getAvailability() ? "Available" : "Not Available";

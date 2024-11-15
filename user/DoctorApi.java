@@ -1,8 +1,6 @@
 package user;
 
-import java.util.ArrayList;
-
-import appointment.AppointmentSlot;
+import appointment.Schedule;
 
 public class DoctorApi {
     private Doctor doctor;
@@ -19,7 +17,7 @@ public class DoctorApi {
         return this.doctor.getName();
     }
 
-    public ArrayList<AppointmentSlot> getPersonalSchedule() {
+    public Schedule getPersonalSchedule() {
         return this.doctor.getPersonalSchedule();
     }
 }

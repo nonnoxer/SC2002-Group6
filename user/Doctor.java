@@ -1,26 +1,27 @@
 package user;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import appointment.Appointment;
-import appointment.AppointmentSlot;
+import appointment.Schedule;
 import record.AppointmentOutcomeRecord;
 
 public class Doctor extends Staff {
     private ArrayList<Patient> patients;
     private ArrayList<Appointment> appointments;
-    private ArrayList<AppointmentSlot> slots;
+    private Schedule schedule;
 
     public Doctor(String id, String name, String role, String gender, int age) {
         super(id, name, role, gender, age);
 
         this.patients = new ArrayList<Patient>();
         this.appointments = new ArrayList<Appointment>();
-        this.slots = new ArrayList<AppointmentSlot>();
+        this.schedule = null;
     }
 
-    public void setAppointmentSlots(ArrayList<AppointmentSlot> slots) {
-        this.slots = slots;
+    public void setSchedule(LocalDate startDate, LocalDate endDate) {
+        this.schedule = new Schedule(startDate, endDate);
     }
 
     public ArrayList<String> getPatientNames() {
@@ -35,8 +36,8 @@ public class Doctor extends Staff {
         return this.patients.get(index);
     }
 
-    public ArrayList<AppointmentSlot> getPersonalSchedule() {
-        return this.slots;
+    public Schedule getPersonalSchedule() {
+        return this.schedule;
     }
 
     public ArrayList<Appointment> getUpcomingAppointments() {
