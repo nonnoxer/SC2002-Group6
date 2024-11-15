@@ -1,6 +1,8 @@
 import java.io.IOException;
 import java.util.ArrayList;
 
+import appointment.Appointment;
+
 import java.time.LocalDate;
 
 import data.ReadFile;
@@ -21,12 +23,13 @@ public class HospitalManagementSystem {
     private UserDatabase db;
     private UserInterface ui;
 
-    public HospitalManagementSystem(String staffListPath, String patientListPath, String medicineListPath, String accountListPath) {
+    public HospitalManagementSystem(String staffListPath, String patientListPath, String medicineListPath, String accountListPath, String appointmentListPath) {
         try {
             staffs = ReadFile.readStaffListFile(staffListPath);
             patients = ReadFile.readPatientListFile(patientListPath);
             db = new UserDatabase(accountListPath, patients, staffs);
             inventory = new Inventory(medicineListPath);
+            ArrayList<Appointment> appointments = ReadFile.readAppointmentListFile(appointmentListPath);
         } catch (IOException e) {
             System.out.println(e);
         }

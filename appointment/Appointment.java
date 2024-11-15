@@ -1,8 +1,12 @@
 package appointment;
 
+import java.util.stream.Collectors;
+
+import data.CsvCompatible;
+import medicine.Medicine;
 import record.AppointmentOutcomeRecord;
 
-public class Appointment {
+public class Appointment implements CsvCompatible {
     private String patientId, doctorId, appointmentStatus;
     private AppointmentSlot slot;
     private AppointmentOutcomeRecord record;
@@ -11,6 +15,14 @@ public class Appointment {
         this.patientId = patientId;
         this.doctorId = doctorId;
         this.appointmentStatus = "Pending";
+        this.slot = slot;
+        this.record = null;
+    }
+
+    public Appointment(String patientId, String doctorId, String appointmentStatus, AppointmentSlot slot) {
+        this.patientId = patientId;
+        this.doctorId = doctorId;
+        this.appointmentStatus = appointmentStatus;
         this.slot = slot;
         this.record = null;
     }
@@ -53,5 +65,20 @@ public class Appointment {
 
     public AppointmentOutcomeRecord getRecord() {
         return this.record;
+    }
+
+    public String toCsv() {
+        if (this.record == null) return String.format(
+            "%s,%s,%s,%b,%s,%s,%s,%s,%s",
+            patientId, doctorId, appointmentStatus,
+            slot.getAvailability(), slot.getDate(),
+            record.getServiceType(), record.getConsultationNotes(), record.getPrescriptionStatus(),
+            record.getPrescription().stream().map(Medicine::getName).collect(Collectors.joining("::"))
+        );
+        else return String.format(
+            "%s,%s,%s,%b,%s,,,,",
+            patientId, doctorId, appointmentStatus,
+            slot.getAvailability(), slot.getDate()
+        );
     }
 }
