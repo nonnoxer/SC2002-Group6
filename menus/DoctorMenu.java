@@ -6,7 +6,10 @@ import java.util.Scanner;
 import appointment.Appointment;
 import appointment.AppointmentSlot;
 import appointment.Schedule;
+import record.AppointmentOutcomeRecord;
 import record.MedicalRecord;
+import medicine.Inventory;
+import medicine.Medicine;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -38,6 +41,7 @@ public class DoctorMenu extends Menu {
             System.out.print("Enter your choice: ");
 
             choice = sc.nextInt();
+            sc.nextLine();
             handleSelection(choice);
         }
     }
@@ -121,6 +125,52 @@ public class DoctorMenu extends Menu {
 
         System.out.printf("Updating records of %s:\n", selectedPatient.getName());
         // Update records
+        AppointmentOutcomeRecord outcomeRecord;
+        AppointmentSlot slot;
+        Inventory inventory;
+        String serviceType, consultationNotes;
+        ArrayList<Appointment> appointments;
+        ArrayList<Medicine> medicines;
+        ArrayList<Medicine> selectedMedicines = new ArrayList<Medicine>();
+        // Finding patient appointment
+        appointments = selectedPatient.getAppointments();
+        int index;
+        for (index=0; index<appointments.size(); index++){
+            if (appointments.get(index).getDoctorId().equals(this.doctor.getID())){
+                break;
+            }
+        }
+        // filling up the form
+        slot = appointments.get(index).getSlot();
+        System.out.printf("Enter service type: \n");
+        serviceType = sc.nextLine();
+        System.out.printf("Enter consultation notes: \n");
+        consultationNotes = sc.nextLine();
+        // medicine for patient
+        inventory = this.doctor.getInventory();
+        medicines = inventory.getInventory();
+        int choice = -1;
+        while(choice != medicines.size()+1){
+            System.out.println("Medicine List:");
+            for(int i=0; i<medicines.size(); i++){
+                System.out.printf("%d: %s (stock: %d)\n", i+1, medicines.get(i).getName(), medicines.get(i).getStock());
+            }
+            // if press size+1 for first time means no medicine neeeded
+            System.out.printf("%d: Done with selection!\n", medicines.size()+1);
+            choice = sc.nextInt();
+            sc.nextLine();
+            if(choice<1 || choice>medicines.size()+1){
+                System.out.println("Error, key again");
+            }
+            else if (choice != medicines.size()+1){
+                selectedMedicines.add(medicines.get(choice-1));
+            }
+            else{
+                break;
+            }
+        }
+        outcomeRecord = new AppointmentOutcomeRecord(slot, serviceType, consultationNotes, selectedMedicines.toArray(new Medicine[0]));
+        appointments.get(index).complete(outcomeRecord);
     }
 
     private void viewSchedule() {
