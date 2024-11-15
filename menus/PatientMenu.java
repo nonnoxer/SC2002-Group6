@@ -1,22 +1,22 @@
 //auth: amu
 package menus;
 
-    import java.io.IOException;
-    import java.util.ArrayList;
-    import java.util.Scanner;
-    import java.time.LocalDateTime;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-    import appointment.Appointment;
-    import appointment.AppointmentSlot;
-    import data.ReadFile;
-    import data.WriteFile;
-    import record.AppointmentOutcomeRecord;
-    import record.MedicalRecord;
-    import user.*;
+import appointment.Appointment;
+import appointment.AppointmentSlot;
+import data.ReadFile;
+import data.WriteFile;
+import record.AppointmentOutcomeRecord;
+import record.MedicalRecord;
+import user.*;
 import appointment.Appointment;
 import appointment.AppointmentSlot;
 import appointment.Schedule;
