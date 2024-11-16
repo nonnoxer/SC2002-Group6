@@ -1,8 +1,6 @@
 package menus;
 
 import java.util.ArrayList;
-import java.util.Scanner;
-
 import medicine.Inventory;
 import medicine.ReplenishmentRequest;
 import record.AppointmentOutcomeRecord;
@@ -30,16 +28,14 @@ public class PharmacistMenu extends Menu {
             System.out.println("5. Logout");
             System.out.println("=====================================");
 
-            int choice = sc.promptInt("PLease choose an option: ", 1, 5);
+            int choice = sc.promptInt("Please choose an option: ", 1, 5);
 
             switch (choice) {
                 case 1:
-                    // Call the method to view the prescription
                     viewAppointmentOutcome();
                     break;
 
                 case 2:
-                    // Call the method to update the prescription status
                     updatePrescriptionStatus();
                     break;
 
@@ -52,7 +48,6 @@ public class PharmacistMenu extends Menu {
                     break;
 
                 case 5:
-                    // Call to logout
                     System.out.println("Logging out...");
                     exit = true;
                     break;
@@ -63,29 +58,78 @@ public class PharmacistMenu extends Menu {
         }
     }
 
+    // View all Appointment Outcome Records
     private void viewAppointmentOutcome() {
         ArrayList<AppointmentOutcomeRecord> records = pharmacist.getRecords();
-        System.out.println("Viewing appointment outcome record...");
+        if (records.isEmpty()) {
+            System.out.println("No appointment outcome records available.");
+            return;
+        }
+        System.out.println("Appointment Outcome Records:");
         for (AppointmentOutcomeRecord record : records) {
-            System.out.println(record.getPrescription());
+            record.printAppointmentOutcomeRecord();
+            System.out.println();
         }
     }
 
+    // Update the prescription status of a specific Appointment Outcome Record
     private void updatePrescriptionStatus() {
-        System.out.println("Updating prescription status...");
-        // AppointmentOutcomeRecord record = new AppointmentOutcomeRecord();
-        // pharmacist.updatePrescriptionStatus(record);
+        ArrayList<AppointmentOutcomeRecord> records = pharmacist.getRecords();
+        if (records.isEmpty()) {
+            System.out.println("No appointment outcome records available.");
+            return;
+        }
+
+        System.out.println("Select a record to update:");
+        for (int i = 0; i < records.size(); i++) {
+            System.out.printf("%d. Appointment Slot: %s, Current Status: %s\n", i + 1, 
+                    records.get(i).getSlot().getDate(), records.get(i).getPrescriptionStatus());
+        }
+
+        int choice = sc.promptInt("Enter record number: ", 1, records.size()) - 1;
+        AppointmentOutcomeRecord selectedRecord = records.get(choice);
+
+        String newStatus = sc.promptLine("Enter new prescription status (e.g., 'Approved', 'Rejected'): ");
+        pharmacist.updatePrescriptionStatus(selectedRecord, newStatus);
+        System.out.println("Prescription status updated successfully.");
     }
 
+    // View the inventory details
     private void viewInventory() {
         Inventory inventory = pharmacist.getInventory();
-        System.out.println("Monitoring inventory...");
+        if (inventory == null) {
+            System.out.println("Inventory not initialized.");
+            return;
+        }
+
+        ArrayList<medicine.Medicine> medicines = inventory.getInventory();
+        if (medicines.isEmpty()) {
+            System.out.println("The inventory is currently empty.");
+            return;
+        }
+
+        System.out.println("Medication Inventory:");
+        for (medicine.Medicine medicine : medicines) {
+            System.out.printf("Medicine: %s, Stock: %d, Low Stock Alert: %d\n",
+                    medicine.getName(), medicine.getStock(), medicine.getLowStockLevelAlert());
+        }
     }
 
+    // Submit a replenishment request for medicine
     private void submitRequest() {
+        Inventory inventory = pharmacist.getInventory();
+        if (inventory == null) {
+            System.out.println("Inventory not initialized.");
+            return;
+        }
+
         String name = sc.promptLine("Enter medicine name: ");
-        int stock = sc.promptInt("Enter stock request: ", 0, 2147483647);
+        int stock = sc.promptInt("Enter stock request amount: ", 1, Integer.MAX_VALUE);
+
         ReplenishmentRequest request = new ReplenishmentRequest(name, stock);
         pharmacist.requestReplenishment(request);
+
+        inventory.handleReplenishmentRequest(request);
+        System.out.printf("Replenishment request for '%s' has been submitted.\n", name);
     }
 }
