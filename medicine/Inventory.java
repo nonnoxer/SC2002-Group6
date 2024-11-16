@@ -45,6 +45,11 @@ public class Inventory{
         medicines.add(new Medicine(name, initialStock, lowStockLevelAlert));
         WriteFile.writeFile(medicines, this.medicineListPath);
     }
+
+    public void handleReplenishmentRequest(ReplenishmentRequest request) {
+    addInventory(request.getName(), request.getStock(), 0);
+    System.out.println("Replenishment request for " + request.getName() + " has been fulfilled.");
+}
     
     public int removeInventory(String name){
         for (int i = 0; i < medicines.size(); i++) {
