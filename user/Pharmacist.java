@@ -1,8 +1,6 @@
 package user;
 
-
 import java.util.ArrayList;
-
 import medicine.Inventory;
 import medicine.ReplenishmentRequest;
 import record.AppointmentOutcomeRecord;
@@ -10,48 +8,67 @@ import record.AppointmentOutcomeRecord;
 public class Pharmacist extends Staff {
     private ArrayList<AppointmentOutcomeRecord> records;
     private Inventory inventory;
-    
-    // Default constructor with no parameters passing in
-    // public Pharmacist() {
-    //     this.pharmacistID = 0; // Assign default ID
-    //     this.inventory = new Inventory(); // Create a default Inventory object
-    // }
 
+    // Constructor
     public Pharmacist(String id, String name, String role, String gender, int age) {
         super(id, name, role, gender, age);
-
-        inventory = null;
+        this.records = new ArrayList<>();
+        this.inventory = null;
     }
 
+    // Initialize the inventory object for the Pharmacist
     public void init(Inventory inventory) {
         this.inventory = inventory;
     }
-    
-    // Constructor to initialize the pharmacistID and inventory
-    // public Pharmacist(int pharmacistID, Inventory inventory) {
-    //     this.pharmacistID = pharmacistID;
-    //     this.inventory = inventory;
-    // }
 
-    // public int getPharmacistID() {
-    //     return pharmacistID;
-    // }
-
-    public ArrayList<AppointmentOutcomeRecord> getRecords() { // Create a container to store all the medical record, and then in the container put getRecords() function 
+    // Getter for appointment outcome records
+    public ArrayList<AppointmentOutcomeRecord> getRecords() {
         return this.records;
-        // yet to be implemented
     }
 
-    public void updatePrescriptionStatus(AppointmentOutcomeRecord record) {
-      // yet to be implemented
+    // Add a new AppointmentOutcomeRecord to the Pharmacist's records
+    public void addRecord(AppointmentOutcomeRecord record) {
+        this.records.add(record);
+        System.out.println("Record added successfully.");
     }
 
+    // Update the prescription status in an appointment outcome record
+    public void updatePrescriptionStatus(AppointmentOutcomeRecord record, String status) {
+        if (this.records.contains(record)) {
+            record.updatePrescriptionStatus(status);
+            System.out.println("Prescription status updated to: " + status);
+        } else {
+            System.out.println("Record not found.");
+        }
+    }
+
+    // Get the inventory associated with the Pharmacist
     public Inventory getInventory() {
         return this.inventory;
     }
 
+    // Submit a replenishment request for medicine
     public void requestReplenishment(ReplenishmentRequest request) {
-     // yet to be implemented
+        if (this.inventory != null) {
+            // Assuming the inventory has a method to handle replenishment requests
+            System.out.println("Submitting replenishment request for medicine: " + request.getName());
+            request.approveRequest(true); // Mark request as approved
+        } else {
+            System.out.println("Inventory is not initialized.");
+        }
+    }
+
+    // View the inventory
+    public void viewInventory() {
+        if (this.inventory != null) {
+            ArrayList<medicine.Medicine> inventoryList = inventory.getInventory();
+            for (medicine.Medicine medicine : inventoryList) {
+                System.out.println("Medicine: " + medicine.getName() +
+                                   ", Stock: " + medicine.getStock() +
+                                   ", Low Stock Alert Level: " + medicine.getLowStockLevelAlert());
+            }
+        } else {
+            System.out.println("Inventory is not initialized.");
+        }
     }
 }
-
