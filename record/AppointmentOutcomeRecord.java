@@ -46,6 +46,10 @@ public class AppointmentOutcomeRecord {
         return this.prescription;
     }
 
+    public void updatePrescriptionStatus(String status) {
+    this.prescriptionStatus = status;
+}
+
 
     public void printAppointmentOutcomeRecord() {
         System.out.printf("Slot: %s\n", this.slot);
