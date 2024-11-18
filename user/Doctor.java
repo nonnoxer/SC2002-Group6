@@ -46,6 +46,10 @@ public class Doctor extends Staff {
         return this.schedule;
     }
 
+    public ArrayList<Appointment> getAppointments() {
+        return this.appointments;
+    }
+
     public ArrayList<Appointment> getUpcomingAppointments() {
         ArrayList<Appointment> upcoming = new ArrayList<Appointment>();
         for (int i = 0; i < appointments.size(); i++) {

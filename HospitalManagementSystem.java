@@ -2,8 +2,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import appointment.Appointment;
+import appointment.AppointmentDatabase;
+import appointment.AppointmentSlot;
+import appointment.Schedule;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import data.ReadFile;
 import data.UserDatabase;
@@ -21,6 +25,7 @@ public class HospitalManagementSystem {
     private ArrayList<Patient> patients;
     private Inventory inventory;
     private UserDatabase db;
+    private AppointmentDatabase appointmentDb;
     private UserInterface ui;
 
     public HospitalManagementSystem(String staffListPath, String patientListPath, String medicineListPath, String accountListPath, String appointmentListPath) {
@@ -29,12 +34,13 @@ public class HospitalManagementSystem {
             patients = ReadFile.readPatientListFile(patientListPath);
             db = new UserDatabase(accountListPath, patients, staffs);
             inventory = new Inventory(medicineListPath);
-            ArrayList<Appointment> appointments = ReadFile.readAppointmentListFile(appointmentListPath);
+            appointmentDb = new AppointmentDatabase(appointmentListPath);
         } catch (IOException e) {
             System.out.println(e);
         }
 
         initUsers();
+        initAppointmentSlots();
 
         ui = new UserInterface(db);
     }
@@ -51,7 +57,7 @@ public class HospitalManagementSystem {
                     doctorApis.add(new DoctorApi(temp));
 
                     // Set appointment slots
-                    temp.setSchedule(LocalDate.parse("2024-11-15"), LocalDate.parse("2025-02-15"));
+                    temp.setSchedule(LocalDate.parse("2024-01-01"), LocalDate.parse("2025-12-31"));
                     break;
                 }
                 // Set global inventory for each pharmacist
@@ -74,6 +80,38 @@ public class HospitalManagementSystem {
         // Set available doctors for each patient
         for (Patient patient : patients) {
             patient.setDoctors(doctorApis);
+        }
+    }
+
+    private void initAppointmentSlots() {
+        ArrayList<Appointment> appointments = appointmentDb.getAppointments();
+
+        for (Appointment appointment : appointments) {
+            // Add to patient
+            for (Patient patient: patients) {
+                if (patient.getID().equals(appointment.getPatientId())) {
+                    patient.getAppointments().add(appointment);
+                }
+            }
+            
+            // Add to doctor
+            for (Staff staff : staffs) {
+                if (!staff.getRole().equals("Doctor")) continue;
+                Doctor temp = (Doctor) staff;
+                if (temp.getID().equals(appointment.getDoctorId())) {
+                    temp.getAppointments().add(appointment);
+
+                    // Update schedule
+                    Schedule schedule = temp.getPersonalSchedule();
+                    LocalDateTime dateTime = appointment.getSlot().getDate();
+                    ArrayList<AppointmentSlot> slots = schedule.getSlots(dateTime.toLocalDate());
+                    for (int i = 0; i < slots.size(); i++) {
+                        if (slots.get(i).getDate().equals(dateTime)) {
+                            slots.set(i, appointment.getSlot());
+                        }
+                    }
+                }
+            }
         }
     }
 

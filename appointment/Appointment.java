@@ -1,5 +1,7 @@
 package appointment;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import data.CsvCompatible;
@@ -19,12 +21,22 @@ public class Appointment implements CsvCompatible {
         this.record = null;
     }
 
-    public Appointment(String patientId, String doctorId, String appointmentStatus, AppointmentSlot slot) {
-        this.patientId = patientId;
-        this.doctorId = doctorId;
-        this.appointmentStatus = appointmentStatus;
-        this.slot = slot;
-        this.record = null;
+    public Appointment(String[] line) throws IOException {
+        if (line.length != 9) {
+            String line_full = String.join(",", line);
+            throw new IOException("Invalid line " + line_full + ": expected 3 elements.");
+        }
+
+        this.patientId = line[0];
+        this.doctorId = line[1];
+        this.appointmentStatus = line[2];
+
+        this.slot = new AppointmentSlot(Arrays.copyOfRange(line, 3, 5));
+        if (line[5].equals("")) {
+            this.record = null;
+        } else {
+            this.record = new AppointmentOutcomeRecord(Arrays.copyOfRange(line, 5, 9));
+        }
     }
 
     public void doctorAccept(boolean accepted) {

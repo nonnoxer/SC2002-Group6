@@ -18,12 +18,16 @@ public class AppointmentOutcomeRecord {
         this.consultationNotes = consultationNotes;
     }
 
-    public AppointmentOutcomeRecord(AppointmentSlot slot, String serviceType, String consultationNotes, String prescriptionStatus, ArrayList<Medicine> prescription) {
-        this.slot = slot;
-        this.serviceType = serviceType;
-        this.prescriptionStatus = prescriptionStatus;
-        this.prescription = prescription;
-        this.consultationNotes = consultationNotes;
+    public AppointmentOutcomeRecord(String[] line) {
+        this.serviceType = line[0];
+        this.consultationNotes = line[1];
+        this.prescriptionStatus = line[2];
+        String medicines = line[3];
+        String[] medicineNames = medicines.split("::");
+        this.prescription = new ArrayList<Medicine>();
+        for (String medicineName : medicineNames) {
+            prescription.add(new Medicine(medicineName, 0, 0));
+        }
     }
 
     public AppointmentSlot getSlot() {
