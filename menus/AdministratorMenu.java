@@ -1,6 +1,5 @@
 package menus;
 
-import java.util.Scanner;
 import user.Administrator;
 import user.Staff;
 

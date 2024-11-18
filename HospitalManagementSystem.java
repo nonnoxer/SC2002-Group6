@@ -1,16 +1,11 @@
 import java.io.IOException;
 import java.util.ArrayList;
 
-import appointment.Appointment;
-import appointment.AppointmentDatabase;
-import appointment.AppointmentSlot;
-import appointment.Schedule;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import data.ReadFile;
 import data.UserDatabase;
+import data.appointment.AppointmentDatabase;
 import medicine.Inventory;
 import menus.UserInterface;
 import user.Administrator;
@@ -36,11 +31,10 @@ public class HospitalManagementSystem {
             inventory = new Inventory(medicineListPath);
             appointmentDb = new AppointmentDatabase(appointmentListPath);
         } catch (IOException e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
 
         initUsers();
-        initAppointmentSlots();
 
         ui = new UserInterface(db);
     }
@@ -58,6 +52,7 @@ public class HospitalManagementSystem {
 
                     // Set appointment slots
                     temp.setSchedule(LocalDate.parse("2024-01-01"), LocalDate.parse("2025-12-31"));
+                    temp.setAppointmentDb(appointmentDb);
                     break;
                 }
                 // Set global inventory for each pharmacist
@@ -80,38 +75,7 @@ public class HospitalManagementSystem {
         // Set available doctors for each patient
         for (Patient patient : patients) {
             patient.setDoctors(doctorApis);
-        }
-    }
-
-    private void initAppointmentSlots() {
-        ArrayList<Appointment> appointments = appointmentDb.getAppointments();
-
-        for (Appointment appointment : appointments) {
-            // Add to patient
-            for (Patient patient: patients) {
-                if (patient.getID().equals(appointment.getPatientId())) {
-                    patient.getAppointments().add(appointment);
-                }
-            }
-            
-            // Add to doctor
-            for (Staff staff : staffs) {
-                if (!staff.getRole().equals("Doctor")) continue;
-                Doctor temp = (Doctor) staff;
-                if (temp.getID().equals(appointment.getDoctorId())) {
-                    temp.getAppointments().add(appointment);
-
-                    // Update schedule
-                    Schedule schedule = temp.getPersonalSchedule();
-                    LocalDateTime dateTime = appointment.getSlot().getDate();
-                    ArrayList<AppointmentSlot> slots = schedule.getSlots(dateTime.toLocalDate());
-                    for (int i = 0; i < slots.size(); i++) {
-                        if (slots.get(i).getDate().equals(dateTime)) {
-                            slots.set(i, appointment.getSlot());
-                        }
-                    }
-                }
-            }
+            patient.setAppointmentDb(appointmentDb);
         }
     }
 

@@ -3,26 +3,16 @@ package menus;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Scanner;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import appointment.Appointment;
 import appointment.AppointmentSlot;
 import data.ReadFile;
-import data.WriteFile;
 import record.AppointmentOutcomeRecord;
 import record.MedicalRecord;
 import user.*;
-import appointment.Appointment;
-import appointment.AppointmentSlot;
 import appointment.Schedule;
-import data.WriteFile;
-import record.AppointmentOutcomeRecord;
-import record.MedicalRecord;
 import user.DoctorApi;
 import user.Patient;
 
@@ -179,10 +169,7 @@ public class PatientMenu extends Menu{
         return doctorApis.get(choice);
     }
 
-    private void viewAvailableSlots() {
-        DoctorApi doctor = getDoctor();
-        Schedule schedule = doctor.getPersonalSchedule();
-
+    private ArrayList<AppointmentSlot> getSlots(Schedule schedule) {
         int year = sc.promptInt("Enter year: ", 1900, 2037);
         int month = sc.promptInt("Enter month (1-12): ", 1, 12);
 
@@ -191,24 +178,42 @@ public class PatientMenu extends Menu{
         int day = sc.promptInt("Enter day: ", 1, 31);
 
         ArrayList<AppointmentSlot> slots = schedule.getSlots(LocalDate.of(year, month, day));
+        return slots;
+    }
+    
+    private void printSlots(ArrayList<AppointmentSlot> slots) {
         if (slots == null || slots.size() == 0) {
             System.out.println("No available slots.");
             return;
         }
 
         System.out.println("Available Slots: ");
-        for (AppointmentSlot slot : slots) {
+        for (int i = 0; i < slots.size(); i++) {
+            AppointmentSlot slot = slots.get(i);
             if (slot.getAvailability()) {
-                System.out.printf("%s\n", slot.getDate().toString());
+                System.out.printf("%d - %s\n", i, slot.getDate().toLocalTime().toString());
             }
         }
     }
 
+    private void viewAvailableSlots() {
+        DoctorApi doctor = getDoctor();
+        Schedule schedule = doctor.getPersonalSchedule();
+
+        ArrayList<AppointmentSlot> slots = getSlots(schedule);
+        printSlots(slots);
+    }
+
     private void scheduleAppointment() {
         DoctorApi doctor = getDoctor();
-        AppointmentSlot slot = new AppointmentSlot(LocalDateTime.now());
+        Schedule schedule = doctor.getPersonalSchedule();
 
-        this.patient.scheduleAppointment(doctor.getId(), slot);
+        ArrayList<AppointmentSlot> slots = getSlots(schedule);
+        printSlots(slots);
+        if (slots.size() == 0) return;
+
+        int index = sc.promptInt("Enter slot number: ", 0, slots.size()-1);
+        this.patient.scheduleAppointment(doctor.getId(), slots.get(index));
     }
 
     private void rescheduleAppointment() {

@@ -20,7 +20,7 @@ public class ReadFile {
         List<String> lines = Files.readAllLines(Paths.get(path));
         String[][] lines_separated = new String[lines.size()][];
         for (int i = 0; i < lines_separated.length; i++) {
-            lines_separated[i] = lines.get(i).split(",");
+            lines_separated[i] = lines.get(i).split(",", -1);
         }
         return lines_separated;
     }

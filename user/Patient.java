@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import appointment.Appointment;
 import appointment.AppointmentSlot;
 import data.CsvCompatible;
+import data.appointment.AppointmentDatabaseApiPatient;
 import record.MedicalRecord;
 
 public class Patient extends User implements CsvCompatible {
     private String gender, birthDate, bloodType, contactInfo;
     private MedicalRecord record;
-    private ArrayList<Appointment> appointments;
+    private AppointmentDatabaseApiPatient appointmentDb;
     private ArrayList<DoctorApi> doctorApis;
 
     public Patient(String id, String name, String birthDate, String gender, String bloodType, String contactInfo) {
@@ -21,7 +22,7 @@ public class Patient extends User implements CsvCompatible {
         this.contactInfo = contactInfo;
 
         this.record = new MedicalRecord(id, name, birthDate, gender, contactInfo, bloodType);
-        this.appointments = new ArrayList<Appointment>();
+        this.appointmentDb = null;
         this.doctorApis = null;
     }
 
@@ -37,21 +38,24 @@ public class Patient extends User implements CsvCompatible {
         return this.doctorApis;
     }
 
+    public void setAppointmentDb(AppointmentDatabaseApiPatient appointmentDb) {
+        this.appointmentDb = appointmentDb;
+    }
+
     public ArrayList<Appointment> getAppointments() {
-        return this.appointments;
+        return this.appointmentDb.getPatientAppointments(this.id);
     }
 
     public void scheduleAppointment(String doctorId, AppointmentSlot slot) {
-        appointments.add(new Appointment(this.id, doctorId, slot));
+        this.appointmentDb.newAppointment(this.id, doctorId, slot);
     }
 
-    public void rescheduleAppointment(int index, AppointmentSlot slot) {
-        appointments.get(index).patientReschedule(slot);
+    public void rescheduleAppointment(int appointmentId, AppointmentSlot slot) {
+        this.appointmentDb.rescheduleAppointment(this.id, appointmentId, slot);
     }
 
-    public void cancelAppointment(int index) {
-        appointments.get(index).patientCancel();
-        appointments.remove(index);
+    public void cancelAppointment(int appointmentId) {
+        this.appointmentDb.cancelAppointment(this.id, appointmentId);
     }
 
     public void setDoctors(ArrayList<DoctorApi> doctorApis) {

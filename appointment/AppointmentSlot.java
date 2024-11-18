@@ -14,13 +14,13 @@ public class AppointmentSlot {
     }
 
     public AppointmentSlot(String[] line) throws IOException {
-        try {
-            this.date = LocalDateTime.parse(line[0]);
-        } catch (DateTimeParseException e) {
-            throw new IOException("Invalid line: expected " + line[0] + " to be a date-time string.");
-        }
+        this.availability = Boolean.parseBoolean(line[0]);
 
-        this.availability = Boolean.parseBoolean(line[1]);
+        try {
+            this.date = LocalDateTime.parse(line[1]);
+        } catch (DateTimeParseException e) {
+            throw new IOException("Invalid line: expected " + line[1] + " to be a date-time string.");
+        }
     }
 
     public LocalDateTime getDate() {

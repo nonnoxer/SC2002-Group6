@@ -1,7 +1,6 @@
 package menus;
 
 import user.Doctor;
-import java.util.Scanner;
 
 import appointment.Appointment;
 import appointment.AppointmentSlot;

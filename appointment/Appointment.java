@@ -9,38 +9,47 @@ import medicine.Medicine;
 import record.AppointmentOutcomeRecord;
 
 public class Appointment implements CsvCompatible {
+    private int id;
     private String patientId, doctorId, appointmentStatus;
     private AppointmentSlot slot;
     private AppointmentOutcomeRecord record;
 
-    public Appointment(String patientId, String doctorId, AppointmentSlot slot) {
+    public Appointment(int id, String patientId, String doctorId, AppointmentSlot slot) {
+        this.id = id;
         this.patientId = patientId;
         this.doctorId = doctorId;
         this.appointmentStatus = "Pending";
         this.slot = slot;
         this.record = null;
+
+        slot.schedule();
     }
 
     public Appointment(String[] line) throws IOException {
-        if (line.length != 9) {
+        if (line.length != 10) {
             String line_full = String.join(",", line);
-            throw new IOException("Invalid line " + line_full + ": expected 3 elements.");
+            throw new IOException("Invalid line " + line_full + ": expected 10 elements.");
         }
 
-        this.patientId = line[0];
-        this.doctorId = line[1];
-        this.appointmentStatus = line[2];
+        try {
+            this.id = Integer.parseInt(line[0]);
+        } catch (NumberFormatException e) {
+            throw new IOException("Invalid line: expected " + line[0] + " to be an integer.");
+        }
+        this.patientId = line[1];
+        this.doctorId = line[2];
+        this.appointmentStatus = line[3];
 
-        this.slot = new AppointmentSlot(Arrays.copyOfRange(line, 3, 5));
-        if (line[5].equals("")) {
+        this.slot = new AppointmentSlot(Arrays.copyOfRange(line, 4, 6));
+        if (line[6].equals("")) {
             this.record = null;
         } else {
-            this.record = new AppointmentOutcomeRecord(Arrays.copyOfRange(line, 5, 9));
+            this.record = new AppointmentOutcomeRecord(Arrays.copyOfRange(line, 6, 10));
         }
     }
 
     public void doctorAccept(boolean accepted) {
-        if (accepted) this.slot.schedule();
+        if (!accepted) this.slot.cancel();
         this.appointmentStatus = accepted ? "Confirmed" : "Declined";
     }
 
@@ -52,11 +61,23 @@ public class Appointment implements CsvCompatible {
     public void patientReschedule(AppointmentSlot slot) {
         this.slot.cancel();
         this.slot = slot;
+
+        slot.schedule();
     }
 
     public void patientCancel() {
         this.slot.cancel();
         this.appointmentStatus = "Canceled";
+    }
+
+    public void setSlot(AppointmentSlot slot) {
+        this.slot.cancel();
+        this.slot = slot;
+        slot.schedule();
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public String getPatientId() {
@@ -80,16 +101,16 @@ public class Appointment implements CsvCompatible {
     }
 
     public String toCsv() {
-        if (this.record == null) return String.format(
-            "%s,%s,%s,%b,%s,%s,%s,%s,%s",
-            patientId, doctorId, appointmentStatus,
+        if (this.record != null) return String.format(
+            "%d,%s,%s,%s,%b,%s,%s,%s,%s,%s",
+            id, patientId, doctorId, appointmentStatus,
             slot.getAvailability(), slot.getDate(),
             record.getServiceType(), record.getConsultationNotes(), record.getPrescriptionStatus(),
             record.getPrescription().stream().map(Medicine::getName).collect(Collectors.joining("::"))
         );
         else return String.format(
-            "%s,%s,%s,%b,%s,,,,",
-            patientId, doctorId, appointmentStatus,
+            "%d,%s,%s,%s,%b,%s,,,,",
+            id, patientId, doctorId, appointmentStatus,
             slot.getAvailability(), slot.getDate()
         );
     }

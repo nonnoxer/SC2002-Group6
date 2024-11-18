@@ -1,16 +1,19 @@
 package user;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import appointment.Appointment;
+import appointment.AppointmentSlot;
 import appointment.Schedule;
+import data.appointment.AppointmentDatabaseApiDoctor;
 import medicine.Inventory;
 import record.AppointmentOutcomeRecord;
 
 public class Doctor extends Staff {
     private ArrayList<Patient> patients;
-    private ArrayList<Appointment> appointments;
+    private AppointmentDatabaseApiDoctor appointmentDb;
     private Schedule schedule;
     private Inventory inventory;
 
@@ -18,7 +21,7 @@ public class Doctor extends Staff {
         super(id, name, role, gender, age);
 
         this.patients = new ArrayList<Patient>();
-        this.appointments = new ArrayList<Appointment>();
+        this.appointmentDb = null;
         this.schedule = null;
     }
 
@@ -46,17 +49,37 @@ public class Doctor extends Staff {
         return this.schedule;
     }
 
+    public void setAppointmentDb(AppointmentDatabaseApiDoctor appointmentDb) {
+        this.appointmentDb = appointmentDb;
+
+        // update schedule
+        ArrayList<Appointment> appointments = this.getAppointments();
+        for (Appointment appointment : appointments) {
+            LocalDateTime dateTime = appointment.getSlot().getDate();
+            ArrayList<AppointmentSlot> slots = this.schedule.getSlots(dateTime.toLocalDate());
+            for (AppointmentSlot slot : slots) {
+                if (slot.getDate().equals(dateTime)) {
+                    appointment.setSlot(slot);
+                    break;
+                }
+            }
+        }
+    }
+
     public ArrayList<Appointment> getAppointments() {
-        return this.appointments;
+        return this.appointmentDb.getDoctorAppointments(this.id);
     }
 
     public ArrayList<Appointment> getUpcomingAppointments() {
-        ArrayList<Appointment> upcoming = new ArrayList<Appointment>();
-        for (int i = 0; i < appointments.size(); i++) {
-            Appointment appointment = appointments.get(i);
-            if (appointment.getAppointmentStatus() == "Confirmed") upcoming.add(appointment);
-        }
-        return upcoming;
+        return this.appointmentDb.getDoctorAppointmentsUpcoming(this.id);
+    }
+
+    public void acceptRequest(int appointmentId, boolean accepted) {
+        this.appointmentDb.acceptAppointment(this.id, appointmentId, accepted);
+    }
+
+    public void recordOutcome(int appointmentId, AppointmentOutcomeRecord record) {
+        this.appointmentDb.setOutcome(this.id, appointmentId, record);
     }
     
     public Inventory getInventory() {
@@ -65,13 +88,5 @@ public class Doctor extends Staff {
 
     public void setAvailability() {
 
-    }
-
-    public void acceptRequest(Appointment request, boolean accepted) {
-        request.doctorAccept(accepted);
-    }
-
-    public void recordOutcome(Appointment appointment, AppointmentOutcomeRecord record) {
-        appointment.complete(record);
     }
 }
