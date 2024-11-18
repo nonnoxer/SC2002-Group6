@@ -3,17 +3,14 @@ package menus;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.time.LocalDateTime;
 import java.time.LocalDate;
 
 import appointment.Appointment;
 import appointment.AppointmentSlot;
-import data.ReadFile;
 import record.AppointmentOutcomeRecord;
 import record.MedicalRecord;
-import user.*;
 import appointment.Schedule;
-import user.DoctorApi;
+import user.DoctorApiPatient;
 import user.Patient;
 
 
@@ -149,8 +146,8 @@ public class PatientMenu extends Menu{
         }
     }
 
-    private DoctorApi getDoctor() {
-        ArrayList<DoctorApi> doctorApis = this.patient.getDoctors();
+    private DoctorApiPatient getDoctor() {
+        ArrayList<DoctorApiPatient> doctorApis = this.patient.getDoctors();
         System.out.println("Doctors:");
         for (int i = 0; i < doctorApis.size(); i++) {
             System.out.printf("%d. %s\n", i, doctorApis.get(i).getName());
@@ -197,7 +194,7 @@ public class PatientMenu extends Menu{
     }
 
     private void viewAvailableSlots() {
-        DoctorApi doctor = getDoctor();
+        DoctorApiPatient doctor = getDoctor();
         Schedule schedule = doctor.getPersonalSchedule();
 
         ArrayList<AppointmentSlot> slots = getSlots(schedule);
@@ -205,7 +202,7 @@ public class PatientMenu extends Menu{
     }
 
     private void scheduleAppointment() {
-        DoctorApi doctor = getDoctor();
+        DoctorApiPatient doctor = getDoctor();
         Schedule schedule = doctor.getPersonalSchedule();
 
         ArrayList<AppointmentSlot> slots = getSlots(schedule);
@@ -214,13 +211,6 @@ public class PatientMenu extends Menu{
 
         int index = sc.promptInt("Enter slot number: ", 0, slots.size()-1);
         this.patient.scheduleAppointment(doctor.getId(), slots.get(index));
-    }
-
-    private DoctorApi getDoctorById(String DoctorId) {
-        for (DoctorApi doctor : patient.getDoctors()) {
-            if (doctor.getId().equals(DoctorId)) return doctor;
-        }
-        return null;
     }
 
     private void rescheduleAppointment() {
@@ -239,7 +229,7 @@ public class PatientMenu extends Menu{
 
         Appointment appointment = appointments.get(appointmentIndex);
 
-        DoctorApi doctor = getDoctorById(appointment.getDoctorId());
+        DoctorApiPatient doctor = this.patient.getDoctorById(appointment.getDoctorId());
         Schedule schedule = doctor.getPersonalSchedule();
 
         ArrayList<AppointmentSlot> slots = getSlots(schedule);
@@ -289,16 +279,6 @@ public class PatientMenu extends Menu{
 
     private void viewPastAppointments() {
 
-    }
-
-    public static String findDoctorNameById(String doctorId, String staffFilePath) throws IOException { // this is quite a fucked function but im too stupid to figure it out
-        ArrayList<Staff> staffList = ReadFile.readStaffListFile(staffFilePath);
-        for (User user : staffList) {
-            if (user instanceof Doctor && user.getID().equals(doctorId)) {
-                return user.getName();
-            }
-        }
-        return "somethings wrong it should never reach here, the doctor id does not exist in the staff file";
     }
 }
 

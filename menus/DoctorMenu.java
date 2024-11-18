@@ -129,7 +129,7 @@ public class DoctorMenu extends Menu {
         appointments = selectedPatient.getAppointments();
         int index;
         for (index=0; index<appointments.size(); index++){
-            if (appointments.get(index).getDoctorId().equals(this.doctor.getID())){
+            if (appointments.get(index).getDoctorId().equals(this.doctor.getId())){
                 break;
             }
         }
@@ -188,7 +188,7 @@ public class DoctorMenu extends Menu {
     }
 
     private void acceptAppointmentRequest() {
-
+        
     }
 
     private void viewUpcomingAppointments() {

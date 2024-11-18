@@ -6,13 +6,14 @@ import appointment.Appointment;
 import appointment.AppointmentSlot;
 import data.CsvCompatible;
 import data.appointment.AppointmentDatabaseApiPatient;
+import data.user.UserDatabaseApiPatient;
 import record.MedicalRecord;
 
 public class Patient extends User implements CsvCompatible {
     private String gender, birthDate, bloodType, contactInfo;
     private MedicalRecord record;
     private AppointmentDatabaseApiPatient appointmentDb;
-    private ArrayList<DoctorApi> doctorApis;
+    private UserDatabaseApiPatient userDb;
 
     public Patient(String id, String name, String birthDate, String gender, String bloodType, String contactInfo) {
         super(id, "placeholder", name, "Patient");
@@ -23,7 +24,7 @@ public class Patient extends User implements CsvCompatible {
 
         this.record = new MedicalRecord(id, name, birthDate, gender, contactInfo, bloodType);
         this.appointmentDb = null;
-        this.doctorApis = null;
+        this.userDb = null;
     }
 
     public String toCsv() {
@@ -34,8 +35,16 @@ public class Patient extends User implements CsvCompatible {
         return this.record;
     }
 
-    public ArrayList<DoctorApi> getDoctors() {
-        return this.doctorApis;
+    public void setUserDb(UserDatabaseApiPatient userDb) {
+        this.userDb = userDb;
+    }
+
+    public ArrayList<DoctorApiPatient> getDoctors() {
+        return this.userDb.getDoctors();
+    }
+
+    public DoctorApiPatient getDoctorById(String doctorId) {
+        return this.userDb.findDoctorId(doctorId);
     }
 
     public void setAppointmentDb(AppointmentDatabaseApiPatient appointmentDb) {
@@ -56,10 +65,6 @@ public class Patient extends User implements CsvCompatible {
 
     public void cancelAppointment(int appointmentId) {
         this.appointmentDb.cancelAppointment(this.id, appointmentId);
-    }
-
-    public void setDoctors(ArrayList<DoctorApi> doctorApis) {
-        this.doctorApis = doctorApis;
     }
 
     // Move getters and setters to MedicalRecord

@@ -13,7 +13,7 @@ public abstract class User {
     }
 
     // Getters
-    public String getID() {
+    public String getId() {
         return id;
     }
 
@@ -28,6 +28,14 @@ public abstract class User {
     // Setter for updating password
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public abstract String toCsv();

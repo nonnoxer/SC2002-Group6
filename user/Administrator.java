@@ -1,13 +1,16 @@
 package user;
 
-import data.WriteFile;
+import data.appointment.AppointmentDatabase;
+import data.user.UserDatabaseApiAdministrator;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import medicine.Inventory;
 import medicine.Medicine;
 
 public class Administrator extends Staff {
-    private ArrayList<Staff> staffs;
+    private UserDatabaseApiAdministrator userDb;
+    private AppointmentDatabase appointmentDb;
 
     //Inventory object for managing medication
     private Inventory inventory;
@@ -15,19 +18,20 @@ public class Administrator extends Staff {
     //Constructor to initialize Administrator with an empty staff list and inventory
     public Administrator(String id, String name, String role, String gender, int age) throws IOException {
         super(id, name, role, gender, age);
-        this.staffs = null;
+        this.userDb = null;
         this.inventory = null;
     }
 
     //Initialize the staff list from a CSV file
-    public void init(ArrayList<Staff> staffs, Inventory inventory) {
-        this.staffs = staffs;
+    public void init(UserDatabaseApiAdministrator userDb, AppointmentDatabase appointmentDb, Inventory inventory) {
+        this.userDb = userDb;
+        this.appointmentDb = appointmentDb;
         this.inventory = inventory;
     }
 
     public void displayStaffList() {
-        for (Staff staff : staffs) {
-            String staffID = staff.getID();
+        for (Staff staff : this.userDb.getStaff()) {
+            String staffID = staff.getId();
             System.out.println("Staff ID: " + staffID);
             String staffName = staff.getName();
             System.out.println("Staff Name: " + staffName);
@@ -42,63 +46,34 @@ public class Administrator extends Staff {
     }
 
     //Manage Staff methods
-    public void addStaff(Staff staff) {
-        staffs.add(staff);
+    public void addStaff(String id, String name, String role, String gender, int age) {
+        this.userDb.addStaff(id, name, role, gender, age);
         System.out.println("Staff member added successfully.");
-        //Write to file
-        try {
-            writeStaffListToFile();
-        } catch (Exception e) {
-            //Rollback if writing fails
-            staffs.remove(staff);
-        }
     }
 
-    public void removeStaff(Staff staff) {
-        if(staffs.remove(staff)) {
+    public void removeStaff(String id) {
+        Staff result = this.userDb.removeStaff(id);
+        if (result != null) {
             System.out.println("Staff member removed successfully.");
-            //Write to file
-            try {
-                writeStaffListToFile();
-            } catch (Exception e) {
-                System.out.println("Error updating file: " + e.getMessage());
-                //Rollback if writing fails
-                staffs.add(staff);
-            }
-        } else {
+        }
+        else {
             System.out.println("Staff member not found.");
         }
     }
 
-    public void updateStaff(Staff oldStaff, Staff newStaff) {
-        int index = staffs.indexOf(oldStaff);
-        if (index >= 0) {
-            staffs.set(index, newStaff);
+    public void updateStaff(String id, String newName, String newRole, String newGender, int newAge) {
+        Staff result = this.userDb.updateStaff(id, newName, newRole, newGender, newAge);
+        if (result != null) {
             System.out.println("Staff information updated successfully.");
-            //Write to file
-            try {
-                writeStaffListToFile();
-            } catch (Exception e) {
-                //Rollback if writing fails
-                staffs.set(index, oldStaff);
-            }
         } else {
             System.out.println("Staff member not found.");
-        }
-    }
-
-    private void writeStaffListToFile() {
-        try {
-            WriteFile.writeFile(new ArrayList<>(staffs), "Staff_List.csv");
-            System.out.println("Staff list updated successfully.");
-        } catch (Exception e) {
-            System.out.println("Error updating file: " + e.getMessage());
         }
     }
 
     //Appointment management method
     public void viewAppointments() {
         ///Work in progress
+        // do stuff with this.appointmentDb
     }
 
     //View the entire inventory
@@ -142,9 +117,5 @@ public class Administrator extends Staff {
         } else {
             System.out.println("Medicine not found in the inventory.");
         }
-    }
-
-    public ArrayList<Staff> getStaffList() {
-        return this.staffs;
     }
 }

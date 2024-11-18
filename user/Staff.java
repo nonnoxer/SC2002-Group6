@@ -24,6 +24,14 @@ public class Staff extends User implements CsvCompatible {
         return this.gender;
     }
 
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
     public String toCsv() {
         return String.format("%s,%s,%s,%s,%d", id, name, role, gender, age);
     }

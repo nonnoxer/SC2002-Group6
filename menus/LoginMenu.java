@@ -1,7 +1,6 @@
 package menus;
 
-import data.UserDatabase;
-
+import data.user.UserDatabase;
 import user.Administrator;
 import user.Doctor;
 import user.Patient;
@@ -41,6 +40,8 @@ public class LoginMenu {
         System.out.println("Login successful! User type: " + role);
 
         Menu menu;
+
+        System.out.println(id);
 
         switch (role) {
             case "Patient":

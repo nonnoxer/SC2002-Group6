@@ -80,6 +80,16 @@ public class Schedule {
         return this.calendar.get(date);
     }
 
+    public ArrayList<AppointmentSlot> getAvailableSlots(LocalDate date) {
+        ArrayList<AppointmentSlot> allSlots = this.calendar.get(date);
+        if (allSlots == null) return null;
+        ArrayList<AppointmentSlot> slots = new ArrayList<>();
+        for (AppointmentSlot slot : allSlots) {
+            if (slot.getAvailability()) slots.add(slot);
+        }
+        return slots;
+    }
+
     private ArrayList<AppointmentSlot> initSlots(LocalDate day) {
         ArrayList<AppointmentSlot> slots = new ArrayList<AppointmentSlot>();
 

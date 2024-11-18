@@ -11,7 +11,7 @@ import data.appointment.AppointmentDatabaseApiDoctor;
 import medicine.Inventory;
 import record.AppointmentOutcomeRecord;
 
-public class Doctor extends Staff {
+public class Doctor extends Staff implements DoctorApiPatient {
     private ArrayList<Patient> patients;
     private AppointmentDatabaseApiDoctor appointmentDb;
     private Schedule schedule;

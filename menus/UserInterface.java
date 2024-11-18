@@ -2,7 +2,7 @@ package menus;
 
 import java.util.Scanner;
 
-import data.UserDatabase;
+import data.user.UserDatabase;
 
 public class UserInterface {
     private LoginMenu loginMenu;
