@@ -177,7 +177,7 @@ public class PatientMenu extends Menu{
 
         int day = sc.promptInt("Enter day: ", 1, 31);
 
-        ArrayList<AppointmentSlot> slots = schedule.getSlots(LocalDate.of(year, month, day));
+        ArrayList<AppointmentSlot> slots = schedule.getAvailableSlots(LocalDate.of(year, month, day));
         return slots;
     }
     
@@ -216,69 +216,89 @@ public class PatientMenu extends Menu{
         this.patient.scheduleAppointment(doctor.getId(), slots.get(index));
     }
 
+    private DoctorApi getDoctorById(String DoctorId) {
+        for (DoctorApi doctor : patient.getDoctors()) {
+            if (doctor.getId().equals(DoctorId)) return doctor;
+        }
+        return null;
+    }
+
     private void rescheduleAppointment() {
         ArrayList<Appointment> appointments = this.patient.getAppointments();
-        int i = 0;
+
+        if (appointments.isEmpty()) {
+            System.out.println("You have no scheduled appointments to reschedule.");
+            return;
+        }
+
         System.out.println("Choose an appointment to reschedule:");
-        for (; i < appointments.size(); i++) {
+        for (int i = 0; i < appointments.size(); i++) {
             System.out.printf("%d. %s\n", i, appointments.get(i).getSlot().getDate());
         }
+        int appointmentIndex = sc.promptInt("Enter appointment number: ", 0, appointments.size()-1);
 
-        // TODO: change
-        AppointmentSlot newSlot = new AppointmentSlot(LocalDateTime.now());
+        Appointment appointment = appointments.get(appointmentIndex);
 
-        this.patient.rescheduleAppointment(i, newSlot);
+        DoctorApi doctor = getDoctorById(appointment.getDoctorId());
+        Schedule schedule = doctor.getPersonalSchedule();
+
+        ArrayList<AppointmentSlot> slots = getSlots(schedule);
+        printSlots(slots);
+        if (slots.size() == 0) return;
+
+        int slotIndex = sc.promptInt("Enter slot number: ", 0, slots.size()-1);
+        this.patient.rescheduleAppointment(appointment.getId(), slots.get(slotIndex));
     }
 
-        private void cancelAppointment() throws IOException {
-            ArrayList<Appointment> appointments = this.patient.getAppointments();
+    private void cancelAppointment() throws IOException {
+        ArrayList<Appointment> appointments = this.patient.getAppointments();
 
-            if (appointments.isEmpty()) {
-                System.out.println("You have no scheduled appointments to cancel.");
-                return;
-            }
-
-            System.out.println("\n===== Cancel Appointment =====");
-            for (int i = 0; i < appointments.size(); i++) {
-                System.out.printf("%d. %s with Dr. %s\n",
-                        i + 1,
-                        appointments.get(i).getSlot().getDate(),
-                        findDoctorNameById(appointments.get(i).getDoctorId(),"Staff_List.csv")
-                );
-            }
-
-            int choice = sc.promptInt("Enter the number of the appointment you want to cancel (or 0 to return to the menu): ", 0, appointments.size());
-
-            // Handle user input
-            if (choice == 0) {
-                System.out.println("Returning to main menu...");
-                return;
-            } else if (choice < 1 || choice > appointments.size()) {
-                System.out.println("Invalid choice. Please try again.");
-                return;
-            }
-
-            Appointment selectedAppointment = appointments.get(choice - 1);
-            selectedAppointment.patientCancel();
-            System.out.println("Appointment canceled successfully.");
+        if (appointments.isEmpty()) {
+            System.out.println("You have no scheduled appointments to cancel.");
+            return;
         }
 
-        private void viewScheduledAppointments() {
-
+        System.out.println("\n===== Cancel Appointment =====");
+        for (int i = 0; i < appointments.size(); i++) {
+            System.out.printf("%d. %s with Dr. %s\n",
+                    i + 1,
+                    appointments.get(i).getSlot().getDate(),
+                    // findDoctorNameById(appointments.get(i).getDoctorId(),"Staff_List.csv")
+                    appointments.get(i).getDoctorId()
+            );
         }
 
-        private void viewPastAppointments() {
+        int choice = sc.promptInt("Enter the number of the appointment you want to cancel (or 0 to return to the menu): ", 0, appointments.size());
 
+        // Handle user input
+        if (choice == 0) {
+            System.out.println("Returning to main menu...");
+            return;
+        } else if (choice < 1 || choice > appointments.size()) {
+            System.out.println("Invalid choice. Please try again.");
+            return;
         }
 
-        public static String findDoctorNameById(String doctorId, String staffFilePath) throws IOException { // this is quite a fucked function but im too stupid to figure it out
-            ArrayList<Staff> staffList = ReadFile.readStaffListFile(staffFilePath);
-            for (User user : staffList) {
-                if (user instanceof Doctor && user.getID().equals(doctorId)) {
-                    return user.getName();
-                }
-            }
-            return "somethings wrong it should never reach here, the doctor id does not exist in the staff file";
-        }
+        patient.cancelAppointment(appointments.get(choice-1).getId());
+        System.out.println("Appointment canceled successfully.");
     }
+
+    private void viewScheduledAppointments() {
+
+    }
+
+    private void viewPastAppointments() {
+
+    }
+
+    public static String findDoctorNameById(String doctorId, String staffFilePath) throws IOException { // this is quite a fucked function but im too stupid to figure it out
+        ArrayList<Staff> staffList = ReadFile.readStaffListFile(staffFilePath);
+        for (User user : staffList) {
+            if (user instanceof Doctor && user.getID().equals(doctorId)) {
+                return user.getName();
+            }
+        }
+        return "somethings wrong it should never reach here, the doctor id does not exist in the staff file";
+    }
+}
 
