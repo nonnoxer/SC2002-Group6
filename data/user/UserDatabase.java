@@ -20,12 +20,13 @@ import user.Pharmacist;
 import user.Role;
 import user.Staff;
 import user.UserAccount;
+import user.UserId;
 
 public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdministrator, UserDatabaseApiDoctor {
     private ArrayList<UserAccount> accounts;
-    private HashMap<String, Patient> patients;
-    private HashMap<String, Staff> staffs;
-    private HashMap<String, DoctorApiPatient> doctors;
+    private HashMap<UserId, Patient> patients;
+    private HashMap<UserId, Staff> staffs;
+    private HashMap<UserId, DoctorApiPatient> doctors;
 
     private String accountListPath, staffListPath;
 
@@ -141,11 +142,11 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
         return result;
     }
 
-    public Patient findPatientId(String id) {
+    public Patient findPatientId(UserId id) {
         return patients.get(id);
     }
 
-    public Staff findStaffId(String id) {
+    public Staff findStaffId(UserId id) {
         return staffs.get(id);
     }
 
@@ -153,7 +154,7 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
         return new ArrayList<DoctorApiPatient>(this.doctors.values());
     }
 
-    public DoctorApiPatient findDoctorId(String doctorId) {
+    public DoctorApiPatient findDoctorId(UserId doctorId) {
         return doctors.get(doctorId);
     }
 
@@ -161,7 +162,7 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
         return new ArrayList<>(this.staffs.values());
     }
 
-    public Staff addStaff(String id, String name, Role role, String gender, int age) {
+    public Staff addStaff(UserId id, String name, Role role, String gender, int age) {
         Staff staff = new Staff(id, name, role, gender, age);
         UserAccount newAccount = new UserAccount(id, nameToUsername(name), "", role);
 
@@ -174,7 +175,7 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
         return staff;
     }
 
-    public Staff updateStaff(String id, String name, Role role, String gender, int age) {
+    public Staff updateStaff(UserId id, String name, Role role, String gender, int age) {
         Staff staff = staffs.get(id);
         if (staff == null) return null;
         staff.setName(name);
@@ -187,7 +188,7 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
         return staff;
     }
 
-    public Staff removeStaff(String id) {
+    public Staff removeStaff(UserId id) {
         Staff staff = staffs.remove(id);
         for (int i = 0; i < accounts.size(); i++) {
             if (accounts.get(i).getId().equals(id)) {

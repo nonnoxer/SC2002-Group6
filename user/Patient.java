@@ -16,7 +16,7 @@ public class Patient extends User implements CsvCompatible {
     private AppointmentDatabaseApiPatient appointmentDb;
     private UserDatabaseApiPatient userDb;
 
-    public Patient(String id, String name, String birthDate, String gender, String bloodType, String contactInfo) {
+    public Patient(UserId id, String name, String birthDate, String gender, String bloodType, String contactInfo) {
         super(id, "placeholder", name, Role.Patient);
         this.gender = gender;
         this.birthDate = birthDate;
@@ -45,7 +45,7 @@ public class Patient extends User implements CsvCompatible {
         return this.userDb.getDoctors();
     }
 
-    public DoctorApiPatient getDoctorById(String doctorId) {
+    public DoctorApiPatient getDoctorById(UserId doctorId) {
         return this.userDb.findDoctorId(doctorId);
     }
 
@@ -64,7 +64,7 @@ public class Patient extends User implements CsvCompatible {
         return result;
     }
 
-    public void scheduleAppointment(String doctorId, AppointmentSlot slot) {
+    public void scheduleAppointment(UserId doctorId, AppointmentSlot slot) {
         this.appointmentDb.newAppointment(this.id, doctorId, slot);
     }
 

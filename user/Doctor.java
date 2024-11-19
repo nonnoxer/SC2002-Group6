@@ -18,7 +18,7 @@ public class Doctor extends Staff implements DoctorApiPatient {
     private Schedule schedule;
     private Inventory inventory;
 
-    public Doctor(String id, String name, Role role, String gender, int age) {
+    public Doctor(UserId id, String name, Role role, String gender, int age) {
         super(id, name, role, gender, age);
 
         this.userDb = null;
@@ -39,7 +39,7 @@ public class Doctor extends Staff implements DoctorApiPatient {
         return this.userDb.getPatients(this.appointmentDb.getDoctorAppointments(this.id));
     }
 
-    public Patient getPatientIndex(String patientId) {
+    public Patient getPatientIndex(UserId patientId) {
         return this.userDb.findPatientId(patientId);
     }
 

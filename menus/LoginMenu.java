@@ -5,7 +5,9 @@ import user.Administrator;
 import user.Doctor;
 import user.Patient;
 import user.Pharmacist;
+import user.Role;
 import user.UserAccount;
+import user.UserId;
 
 public class LoginMenu {
     private SafeScanner sc;
@@ -36,28 +38,27 @@ public class LoginMenu {
             }
         }
 
-        String id = account.getId(), role = account.getRole().toString();
-        System.out.println("Login successful! User type: " + role);
+        UserId id = account.getId();
+        Role role = account.getRole();
+        System.out.println("Login successful! User type: " + role.toString());
 
         Menu menu;
 
-        System.out.println(id);
-
         switch (role) {
-            case "Patient":
+            case Patient:
                 Patient patient = db.findPatientId(id);
                 menu = new PatientMenu(sc, patient);
                 break;
             // Legal to downcast as staffs is contains Doctor, Pharmacist and Administrator
-            case "Doctor":
+            case Doctor:
                 Doctor doctor = (Doctor) db.findStaffId(id);
                 menu = new DoctorMenu(sc, doctor);
                 break;
-            case "Pharmacist":
+            case Pharmacist:
                 Pharmacist pharmacist = (Pharmacist) db.findStaffId(id);
                 menu = new PharmacistMenu(sc, pharmacist);
                 break;
-            case "Administrator":
+            case Administrator:
                 Administrator administrator = (Administrator) db.findStaffId(id);
                 menu = new AdministratorMenu(sc, administrator);
                 break;

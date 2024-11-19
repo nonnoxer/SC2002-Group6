@@ -18,6 +18,7 @@ public class HospitalManagementSystem {
             appointmentDb = new AppointmentDatabase(appointmentListPath);
         } catch (IOException e) {
             e.printStackTrace();
+            System.exit(-1);
         }
 
         userDb.initUsers(inventory, appointmentDb);

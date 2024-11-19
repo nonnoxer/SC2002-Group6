@@ -4,10 +4,11 @@ import java.util.ArrayList;
 
 import appointment.Appointment;
 import record.AppointmentOutcomeRecord;
+import user.UserId;
 
 public interface AppointmentDatabaseApiDoctor {
-    public abstract ArrayList<Appointment> getDoctorAppointments(String doctorId);
-    public abstract ArrayList<Appointment> getDoctorAppointmentsUpcoming(String doctorId);
-    public abstract Appointment acceptAppointment(String doctorId, int id, boolean accepted);
-    public abstract Appointment setOutcome(String doctorId, int id, AppointmentOutcomeRecord record);
+    public abstract ArrayList<Appointment> getDoctorAppointments(UserId doctorId);
+    public abstract ArrayList<Appointment> getDoctorAppointmentsUpcoming(UserId doctorId);
+    public abstract Appointment acceptAppointment(UserId doctorId, int id, boolean accepted);
+    public abstract Appointment setOutcome(UserId doctorId, int id, AppointmentOutcomeRecord record);
 }

@@ -1,7 +1,2 @@
-javac *.java
-javac appointment/*.java
-javac data/*.java
-javac medicine/*.java
-javac menus/*.java
-javac record/*.java
-javac user/*.java
+find . -type f -name "*.java" > files.txt
+javac @files.txt

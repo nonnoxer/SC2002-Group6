@@ -3,7 +3,7 @@ package user;
 import appointment.Schedule;
 
 public interface DoctorApiPatient {
-    public abstract String getId();
+    public abstract UserId getId();
 
     public abstract String getName();
 

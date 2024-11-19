@@ -2,11 +2,14 @@ package record;
 
 import java.util.ArrayList;
 
+import user.UserId;
+
 public class MedicalRecord {
-    private String id, name, birthDate, gender, contactInfo, bloodType;
+    private UserId id;
+    private String name, birthDate, gender, contactInfo, bloodType;
     private ArrayList<AppointmentOutcomeRecord> pastAppointments;
 
-    public MedicalRecord(String id, String name, String birthDate, String gender, String contactInfo, String bloodType) {
+    public MedicalRecord(UserId id, String name, String birthDate, String gender, String contactInfo, String bloodType) {
         this.id = id;
         this.name = name;
         this.birthDate = birthDate;
@@ -17,7 +20,7 @@ public class MedicalRecord {
         this.pastAppointments = new ArrayList<AppointmentOutcomeRecord>();
     }
 
-    public String getId() {
+    public UserId getId() {
         return id;
     }
 

@@ -1,12 +1,13 @@
 package user;
 
 public abstract class User {
-    protected String id, name;
+    protected UserId id;
+    protected String name;
     protected Role role;
     private String password;
 
     // Constructor to return id, password, name etc
-    public User(String id, String password, String name, Role role) {
+    public User(UserId id, String password, String name, Role role) {
         this.id = id;
         this.password = password;
         this.name = name;
@@ -14,7 +15,7 @@ public abstract class User {
     }
 
     // Getters
-    public String getId() {
+    public UserId getId() {
         return id;
     }
 

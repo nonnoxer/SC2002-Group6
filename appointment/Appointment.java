@@ -7,15 +7,16 @@ import java.util.stream.Collectors;
 import data.CsvCompatible;
 import medicine.Prescription;
 import record.AppointmentOutcomeRecord;
+import user.UserId;
 
 public class Appointment implements CsvCompatible {
     private int id;
-    private String patientId, doctorId;
+    private UserId patientId, doctorId;
     private AppointmentStatus appointmentStatus;
     private AppointmentSlot slot;
     private AppointmentOutcomeRecord record;
 
-    public Appointment(int id, String patientId, String doctorId, AppointmentSlot slot) {
+    public Appointment(int id, UserId patientId, UserId doctorId, AppointmentSlot slot) {
         this.id = id;
         this.patientId = patientId;
         this.doctorId = doctorId;
@@ -37,8 +38,16 @@ public class Appointment implements CsvCompatible {
         } catch (NumberFormatException e) {
             throw new IOException("Invalid line: expected " + line[0] + " to be an integer.");
         }
-        this.patientId = line[1];
-        this.doctorId = line[2];
+        try {
+            this.patientId = new UserId(line[1]);
+        } catch (IllegalArgumentException e) {
+            throw new IOException("Invalid line: expected " + line[1] + " to be a user ID.");
+        }
+        try {
+            this.doctorId = new UserId(line[2]);
+        } catch (IllegalArgumentException e) {
+            throw new IOException("Invalid line: expected " + line[2] + " to be a user ID.");
+        }
         this.appointmentStatus = AppointmentStatus.valueOf(line[3]);
 
         this.slot = new AppointmentSlot(Arrays.copyOfRange(line, 4, 6));
@@ -81,11 +90,11 @@ public class Appointment implements CsvCompatible {
         return this.id;
     }
 
-    public String getPatientId() {
+    public UserId getPatientId() {
         return this.patientId;
     }
 
-    public String getDoctorId() {
+    public UserId getDoctorId() {
         return this.doctorId;
     }
 

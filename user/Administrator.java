@@ -16,7 +16,7 @@ public class Administrator extends Staff {
     private Inventory inventory;
     
     //Constructor to initialize Administrator with an empty staff list and inventory
-    public Administrator(String id, String name, Role role, String gender, int age) throws IOException {
+    public Administrator(UserId id, String name, Role role, String gender, int age) throws IOException {
         super(id, name, role, gender, age);
         this.userDb = null;
         this.inventory = null;
@@ -31,8 +31,8 @@ public class Administrator extends Staff {
 
     public void displayStaffList() {
         for (Staff staff : this.userDb.getStaff()) {
-            String staffID = staff.getId();
-            System.out.println("Staff ID: " + staffID);
+            UserId staffID = staff.getId();
+            System.out.println("Staff ID: " + staffID.toString());
             String staffName = staff.getName();
             System.out.println("Staff Name: " + staffName);
             String staffRole = staff.getRole().toString();
@@ -46,12 +46,12 @@ public class Administrator extends Staff {
     }
 
     //Manage Staff methods
-    public void addStaff(String id, String name, Role role, String gender, int age) {
+    public void addStaff(UserId id, String name, Role role, String gender, int age) {
         this.userDb.addStaff(id, name, role, gender, age);
         System.out.println("Staff member added successfully.");
     }
 
-    public void removeStaff(String id) {
+    public void removeStaff(UserId id) {
         Staff result = this.userDb.removeStaff(id);
         if (result != null) {
             System.out.println("Staff member removed successfully.");
@@ -61,7 +61,7 @@ public class Administrator extends Staff {
         }
     }
 
-    public void updateStaff(String id, String newName, Role newRole, String newGender, int newAge) {
+    public void updateStaff(UserId id, String newName, Role newRole, String newGender, int newAge) {
         Staff result = this.userDb.updateStaff(id, newName, newRole, newGender, newAge);
         if (result != null) {
             System.out.println("Staff information updated successfully.");

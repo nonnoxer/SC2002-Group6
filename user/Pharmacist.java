@@ -10,7 +10,7 @@ public class Pharmacist extends Staff {
     private Inventory inventory;
 
     // Constructor
-    public Pharmacist(String id, String name, Role role, String gender, int age) {
+    public Pharmacist(UserId id, String name, Role role, String gender, int age) {
         super(id, name, role, gender, age);
         this.records = new ArrayList<>();
         this.inventory = null;

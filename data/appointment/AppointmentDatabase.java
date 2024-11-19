@@ -12,6 +12,7 @@ import appointment.AppointmentStatus;
 import data.ReadFile;
 import data.WriteFile;
 import record.AppointmentOutcomeRecord;
+import user.UserId;
 
 public class AppointmentDatabase implements AppointmentDatabaseApiPatient, AppointmentDatabaseApiDoctor {
     private HashMap<Integer, Appointment> appointments;
@@ -43,7 +44,7 @@ public class AppointmentDatabase implements AppointmentDatabaseApiPatient, Appoi
         return this.appointments;
     }
 
-    public Appointment newAppointment(String patientId, String doctorId, AppointmentSlot slot) {
+    public Appointment newAppointment(UserId patientId, UserId doctorId, AppointmentSlot slot) {
         Appointment appointment = new Appointment(id, patientId, doctorId, slot);
         this.appointments.put(id, appointment);
         update();
@@ -51,7 +52,7 @@ public class AppointmentDatabase implements AppointmentDatabaseApiPatient, Appoi
         return appointment;
     }
 
-    public Appointment rescheduleAppointment(String patientId, int id, AppointmentSlot slot) {
+    public Appointment rescheduleAppointment(UserId patientId, int id, AppointmentSlot slot) {
         Appointment appointment = this.appointments.get(id);
         if (appointment == null) return null;
         if (!appointment.getPatientId().equals(patientId)) return null;
@@ -60,7 +61,7 @@ public class AppointmentDatabase implements AppointmentDatabaseApiPatient, Appoi
         return appointment;
     }
 
-    public Appointment cancelAppointment(String patientId, int id) {
+    public Appointment cancelAppointment(UserId patientId, int id) {
         Appointment appointment = this.appointments.get(id);
         if (appointment == null) return null;
         if (!appointment.getPatientId().equals(patientId)) return null;
@@ -70,7 +71,7 @@ public class AppointmentDatabase implements AppointmentDatabaseApiPatient, Appoi
         return appointment;
     }
 
-    public Appointment acceptAppointment(String doctorId, int id, boolean accepted) {
+    public Appointment acceptAppointment(UserId doctorId, int id, boolean accepted) {
         Appointment appointment = this.appointments.get(id);
         if (appointment == null) return null;
         if (!appointment.getDoctorId().equals(doctorId)) return null;
@@ -79,7 +80,7 @@ public class AppointmentDatabase implements AppointmentDatabaseApiPatient, Appoi
         return appointment;
     }
 
-    public Appointment setOutcome(String doctorId, int id, AppointmentOutcomeRecord record) {
+    public Appointment setOutcome(UserId doctorId, int id, AppointmentOutcomeRecord record) {
         Appointment appointment = this.appointments.get(id);
         if (appointment == null) return null;
         if (!appointment.getDoctorId().equals(doctorId)) return null;
@@ -92,7 +93,7 @@ public class AppointmentDatabase implements AppointmentDatabaseApiPatient, Appoi
         return this.appointments.get(id);
     }
 
-    public ArrayList<Appointment> getPatientAppointments(String patientId) {
+    public ArrayList<Appointment> getPatientAppointments(UserId patientId) {
         ArrayList<Appointment> result = new ArrayList<>();
         for (Appointment appointment : appointments.values()) {
             if (appointment.getPatientId().equals(patientId)) {
@@ -102,7 +103,7 @@ public class AppointmentDatabase implements AppointmentDatabaseApiPatient, Appoi
         return result;
     }
 
-    public ArrayList<Appointment> getDoctorAppointments(String doctorId) {
+    public ArrayList<Appointment> getDoctorAppointments(UserId doctorId) {
         ArrayList<Appointment> result = new ArrayList<>();
         for (Appointment appointment : appointments.values()) {
             if (appointment.getDoctorId().equals(doctorId)) {
@@ -112,7 +113,7 @@ public class AppointmentDatabase implements AppointmentDatabaseApiPatient, Appoi
         return result;
     }
 
-    public ArrayList<Appointment> getDoctorAppointmentsUpcoming(String doctorId) {
+    public ArrayList<Appointment> getDoctorAppointmentsUpcoming(UserId doctorId) {
         ArrayList<Appointment> result = new ArrayList<>();
         for (Appointment appointment : appointments.values()) {
             if (appointment.getDoctorId().equals(doctorId) && appointment.getAppointmentStatus() == AppointmentStatus.Confirmed) {

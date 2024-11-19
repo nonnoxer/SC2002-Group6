@@ -10,3 +10,8 @@ If permission denied:
 sudo chmod +x build.sh
 ```
 Then rerun above.
+
+To rebuild if no files are added or deleted:
+```sh
+javac @files.txt
+```

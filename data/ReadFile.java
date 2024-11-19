@@ -15,6 +15,7 @@ import user.Pharmacist;
 import user.Role;
 import user.Staff;
 import user.UserAccount;
+import user.UserId;
 
 public class ReadFile {
     private static String[][] readCSV(String path) throws IOException {
@@ -36,7 +37,14 @@ public class ReadFile {
                 String line_full = String.join(",", line);
                 throw new IOException("Invalid line " + line_full + ": expected 4 elements.");
             }
-            String id = line[0], username = line[1], password = line[2];
+            String username = line[1], password = line[2];
+
+            UserId id;
+            try {
+                id = new UserId(line[0]);
+            } catch (IllegalArgumentException e) {
+                throw new IOException("Invalid line: expected " + line[0] + "to be a user ID.");
+            }
 
             Role role;
             try {
@@ -60,7 +68,16 @@ public class ReadFile {
                 String line_full = String.join(",", line);
                 throw new IOException("Invalid line " + line_full + ": expected 5 elements.");
             }
-            String id = line[0], name = line[1], gender = line[3];
+            String name = line[1], gender = line[3];
+
+            UserId id;
+            try {
+                id = new UserId(line[0]);
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+                throw new IOException("Invalid line: expected " + line[0] + "to be a user ID.");
+            }
+
             Role role = Role.valueOf(line[2]);
             int age;
             try {
@@ -100,7 +117,13 @@ public class ReadFile {
                 String line_full = String.join(",", line);
                 throw new IOException("Invalid line " + line_full + ": expected 6 elements.");
             }
-            String id = line[0], name = line[1], birthDate = line[2], gender = line[3], bloodType = line[4], contactInfo = line[5];
+            String name = line[1], birthDate = line[2], gender = line[3], bloodType = line[4], contactInfo = line[5];
+            UserId id;
+            try {
+                id = new UserId(line[0]);
+            } catch (IllegalArgumentException e) {
+                throw new IOException("Invalid line: expected " + line[0] + "to be a user ID.");
+            }
 
             patients.add(new Patient(id, name, birthDate, gender, bloodType, contactInfo));
         }

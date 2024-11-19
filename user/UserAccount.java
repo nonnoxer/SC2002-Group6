@@ -3,10 +3,11 @@ package user;
 import data.CsvCompatible;
 
 public class UserAccount implements CsvCompatible {
-    private String username, password, id;
+    private String username, password;
+    UserId id;
     private Role role;
 
-    public UserAccount(String id, String username, String password, Role role) {
+    public UserAccount(UserId id, String username, String password, Role role) {
         this.username = username;
         this.password = password;
         this.role = role;
@@ -14,7 +15,7 @@ public class UserAccount implements CsvCompatible {
     }
 
     public String toCsv() {
-        return String.format("%s,%s,%s,%s", id, username, password, role);
+        return String.format("%s,%s,%s,%s", id.toString(), username, password, role);
     }
 
     public String getUsername() {
@@ -25,7 +26,7 @@ public class UserAccount implements CsvCompatible {
         return this.role;
     }
 
-    public String getId() {
+    public UserId getId() {
         return this.id;
     }
 
