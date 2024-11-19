@@ -71,12 +71,11 @@ public class AdministratorMenu extends Menu{
                     break;
                 //Add a new staff member
                 case 2:
-                    String id = sc.promptLine("Enter Staff ID: ");
                     String name = sc.promptLine("Enter Staff Name: ");
                     String role = sc.promptLine("Enter Staff Role: ");
                     String gender = sc.promptLine("Enter Staff Gender:");
                     int age = sc.promptInt("Enter staff age: ", 0, 200);
-                    administrator.addStaff(new UserId(id), name, Role.valueOf(role), gender, age);
+                    administrator.addStaff(name, Role.valueOf(role), gender, age);
                     break;
                 //Update a staff member
                 case 3:

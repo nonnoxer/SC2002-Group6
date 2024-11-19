@@ -46,8 +46,8 @@ public class Administrator extends Staff {
     }
 
     //Manage Staff methods
-    public void addStaff(UserId id, String name, Role role, String gender, int age) {
-        this.userDb.addStaff(id, name, role, gender, age);
+    public void addStaff(String name, Role role, String gender, int age) {
+        this.userDb.addStaff(name, role, gender, age);
         System.out.println("Staff member added successfully.");
     }
 

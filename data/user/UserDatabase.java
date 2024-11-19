@@ -162,11 +162,31 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
         return new ArrayList<>(this.staffs.values());
     }
 
-    public Staff addStaff(UserId id, String name, Role role, String gender, int age) {
-        Staff staff = new Staff(id, name, role, gender, age);
-        UserAccount newAccount = new UserAccount(id, nameToUsername(name), "", role);
+    public Staff addStaff(String name, Role role, String gender, int age) {
+        char prefix;
+        switch (role) {
+            case Doctor:
+                prefix = 'D';
+                break;
+            case Administrator:
+                prefix = 'A';
+                break;
+            case Pharmacist:
+                prefix = 'P';
+                break;
+            default:
+                return null;
+        }
+        int num = 0;
+        for (UserId staffId : staffs.keySet()) {
+            if (staffId.getPrefix() == prefix && staffId.getNum() >= num) num = staffId.getNum() + 1;
+        }
+        UserId newId = new UserId(prefix, num);
 
-        staffs.put(id, staff);
+        Staff staff = new Staff(newId, name, role, gender, age);
+        UserAccount newAccount = new UserAccount(newId, nameToUsername(name), "", role);
+
+        staffs.put(newId, staff);
         accounts.add(newAccount);
 
         updateStaffFile();
