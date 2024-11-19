@@ -16,4 +16,8 @@ public class Prescription {
     public int getQuantity() {
         return this.quantity;
     }
+
+    public String toString() {
+        return String.format("%s (%d)", this.name, this.quantity);
+    }
 }

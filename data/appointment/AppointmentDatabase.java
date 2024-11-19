@@ -8,7 +8,6 @@ import java.util.HashMap;
 
 import appointment.Appointment;
 import appointment.AppointmentSlot;
-import appointment.AppointmentStatus;
 import data.ReadFile;
 import data.WriteFile;
 import record.AppointmentOutcomeRecord;
@@ -66,7 +65,7 @@ public class AppointmentDatabase implements AppointmentDatabaseApiPatient, Appoi
         if (appointment == null) return null;
         if (!appointment.getPatientId().equals(patientId)) return null;
         appointment.patientCancel();
-        this.appointments.remove(id);
+        // this.appointments.remove(id);
         update();
         return appointment;
     }
@@ -107,16 +106,6 @@ public class AppointmentDatabase implements AppointmentDatabaseApiPatient, Appoi
         ArrayList<Appointment> result = new ArrayList<>();
         for (Appointment appointment : appointments.values()) {
             if (appointment.getDoctorId().equals(doctorId)) {
-                result.add(appointment);
-            }
-        }
-        return result;
-    }
-
-    public ArrayList<Appointment> getDoctorAppointmentsUpcoming(UserId doctorId) {
-        ArrayList<Appointment> result = new ArrayList<>();
-        for (Appointment appointment : appointments.values()) {
-            if (appointment.getDoctorId().equals(doctorId) && appointment.getAppointmentStatus() == AppointmentStatus.Confirmed) {
                 result.add(appointment);
             }
         }

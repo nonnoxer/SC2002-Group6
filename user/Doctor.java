@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import appointment.Appointment;
 import appointment.AppointmentSlot;
+import appointment.AppointmentStatus;
 import appointment.Schedule;
 import data.appointment.AppointmentDatabaseApiDoctor;
 import data.user.UserDatabaseApiDoctor;
@@ -68,8 +69,26 @@ public class Doctor extends Staff implements DoctorApiPatient {
         return this.appointmentDb.getDoctorAppointments(this.id);
     }
 
+    public ArrayList<Appointment> getPendingAppointments() {
+        ArrayList<Appointment> result = new ArrayList<>();
+        for (Appointment appointment : this.appointmentDb.getDoctorAppointments(this.id)) {
+            AppointmentStatus status = appointment.getAppointmentStatus();
+            if (status.equals(AppointmentStatus.Pending)) {
+                result.add(appointment);
+            }
+        }
+        return result;
+    }
+
     public ArrayList<Appointment> getUpcomingAppointments() {
-        return this.appointmentDb.getDoctorAppointmentsUpcoming(this.id);
+        ArrayList<Appointment> result = new ArrayList<>();
+        for (Appointment appointment : this.appointmentDb.getDoctorAppointments(this.id)) {
+            AppointmentStatus status = appointment.getAppointmentStatus();
+            if (status.equals(AppointmentStatus.Confirmed)) {
+                result.add(appointment);
+            }
+        }
+        return result;
     }
 
     public void acceptRequest(int appointmentId, boolean accepted) {

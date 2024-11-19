@@ -71,6 +71,7 @@ public class Appointment implements CsvCompatible {
     public void patientReschedule(AppointmentSlot slot) {
         this.slot.cancel();
         this.slot = slot;
+        this.appointmentStatus = AppointmentStatus.Pending;
 
         slot.schedule();
     }

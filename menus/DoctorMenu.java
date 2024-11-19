@@ -190,7 +190,23 @@ public class DoctorMenu extends Menu {
     }
 
     private void acceptAppointmentRequest() {
-        
+        ArrayList<Appointment> appointments = this.doctor.getPendingAppointments();
+        if (appointments.size() == 0) {
+            System.out.println("No pending appointments.");
+            return;
+        }
+
+        System.out.println("Select an appointment:");
+        for (int i = 0; i < appointments.size(); i++) {
+            Appointment appointment = appointments.get(i);
+            System.out.printf("%d. %s\n", i, appointment.getSlot().getDate().toString());
+        }
+        int choice = sc.promptInt("", 0, appointments.size()-1);
+        System.out.println("0. Accept");
+        System.out.println("1. Decline");
+        int accept = sc.promptInt("Enter your choice: ", 0, 1);
+        boolean accepted = accept == 0;
+        this.doctor.acceptRequest(appointments.get(choice).getId(), accepted);
     }
 
     private void viewUpcomingAppointments() {

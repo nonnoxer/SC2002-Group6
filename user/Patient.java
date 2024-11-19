@@ -64,6 +64,17 @@ public class Patient extends User implements CsvCompatible {
         return result;
     }
 
+    public ArrayList<Appointment> getCompletedAppointments() {
+        ArrayList<Appointment> result = new ArrayList<>();
+        for (Appointment appointment : this.appointmentDb.getPatientAppointments(this.id)) {
+            AppointmentStatus status = appointment.getAppointmentStatus();
+            if (status.equals(AppointmentStatus.Completed)) {
+                result.add(appointment);
+            }
+        }
+        return result;
+    }
+
     public void scheduleAppointment(UserId doctorId, AppointmentSlot slot) {
         this.appointmentDb.newAppointment(this.id, doctorId, slot);
     }

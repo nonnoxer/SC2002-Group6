@@ -3,6 +3,7 @@ package menus;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 import java.time.LocalDate;
 
 import appointment.Appointment;
@@ -10,6 +11,7 @@ import appointment.AppointmentSlot;
 import record.AppointmentOutcomeRecord;
 import record.MedicalRecord;
 import appointment.Schedule;
+import medicine.Prescription;
 import user.DoctorApiPatient;
 import user.Patient;
 
@@ -214,7 +216,7 @@ public class PatientMenu extends Menu{
     }
 
     private void rescheduleAppointment() {
-        ArrayList<Appointment> appointments = this.patient.getAllAppointments();
+        ArrayList<Appointment> appointments = this.patient.getScheduledAppointments();
 
         if (appointments.isEmpty()) {
             System.out.println("You have no scheduled appointments to reschedule.");
@@ -241,7 +243,7 @@ public class PatientMenu extends Menu{
     }
 
     private void cancelAppointment() throws IOException {
-        ArrayList<Appointment> appointments = this.patient.getAllAppointments();
+        ArrayList<Appointment> appointments = this.patient.getScheduledAppointments();
 
         if (appointments.isEmpty()) {
             System.out.println("You have no scheduled appointments to cancel.");
@@ -274,11 +276,37 @@ public class PatientMenu extends Menu{
     }
 
     private void viewScheduledAppointments() {
+        ArrayList<Appointment> appointments = this.patient.getScheduledAppointments();
 
+        if (appointments.isEmpty()) {
+            System.out.println("You have no scheduled appointments.");
+            return;
+        }
+
+        for (Appointment appointment : appointments) {
+            System.out.printf("%s - %s\n", 
+            appointment.getSlot().getDate(),
+            appointment.getAppointmentStatus().toString());
+        }
     }
 
     private void viewPastAppointments() {
+        ArrayList<Appointment> appointments = this.patient.getCompletedAppointments();
 
+        if (appointments.isEmpty()) {
+            System.out.println("You have no past appointments.");
+            return;
+        }
+
+        for (Appointment appointment : appointments) {
+            System.out.println(appointment.getSlot().getDate());
+            AppointmentOutcomeRecord record = appointment.getRecord();
+            System.out.println("Service type: " + record.getServiceType());
+            System.out.println("Consultation notes: " + record.getConsultationNotes());
+            System.out.println("Prescription: " + record.getPrescription().stream().map(Prescription::toString).collect(Collectors.joining(", ")));
+            System.out.println("Prescription status: " + record.getPrescriptionStatus());
+            System.out.println();
+        }
     }
 }
 
