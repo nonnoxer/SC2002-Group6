@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import appointment.Appointment;
 import data.ReadFile;
 import data.WriteFile;
 import data.appointment.AppointmentDatabase;
@@ -19,7 +20,7 @@ import user.Pharmacist;
 import user.Staff;
 import user.UserAccount;
 
-public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdministrator {
+public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdministrator, UserDatabaseApiDoctor {
     private ArrayList<UserAccount> accounts;
     private HashMap<String, Patient> patients;
     private HashMap<String, Staff> staffs;
@@ -72,7 +73,7 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
             switch (staff.getRole()) {
                 case "Doctor": {
                     Doctor temp = (Doctor) staff;
-                    temp.init(inventory);
+                    temp.init(this, inventory);
                     // Create doctor API
                     doctors.put(temp.getId(), temp);
 
@@ -99,7 +100,7 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
         }
 
         for (Patient patient : patients.values()) {
-            patient.setAppointmentDb(appointmentDb);
+            patient.init(this, appointmentDb);
         }
     }
 
@@ -128,6 +129,15 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
             }
         }
         return null;
+    }
+
+    public ArrayList<Patient> getPatients(ArrayList<Appointment> appointments) {
+        ArrayList<Patient> result = new ArrayList<>();
+        for (Appointment appointment : appointments) {
+            Patient patient = patients.get(appointment.getPatientId());
+            if (patient != null) result.add(patient);
+        }
+        return result;
     }
 
     public Patient findPatientId(String id) {

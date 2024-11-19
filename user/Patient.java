@@ -35,8 +35,9 @@ public class Patient extends User implements CsvCompatible {
         return this.record;
     }
 
-    public void setUserDb(UserDatabaseApiPatient userDb) {
+    public void init(UserDatabaseApiPatient userDb, AppointmentDatabaseApiPatient appointmentDb) {
         this.userDb = userDb;
+        this.appointmentDb = appointmentDb;
     }
 
     public ArrayList<DoctorApiPatient> getDoctors() {
@@ -45,10 +46,6 @@ public class Patient extends User implements CsvCompatible {
 
     public DoctorApiPatient getDoctorById(String doctorId) {
         return this.userDb.findDoctorId(doctorId);
-    }
-
-    public void setAppointmentDb(AppointmentDatabaseApiPatient appointmentDb) {
-        this.appointmentDb = appointmentDb;
     }
 
     public ArrayList<Appointment> getAppointments() {

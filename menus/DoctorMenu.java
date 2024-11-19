@@ -9,6 +9,7 @@ import record.AppointmentOutcomeRecord;
 import record.MedicalRecord;
 import medicine.Inventory;
 import medicine.Medicine;
+import medicine.Prescription;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -74,20 +75,19 @@ public class DoctorMenu extends Menu {
     }
 
     private Patient selectPatient() {
-        ArrayList<String> patientNames = doctor.getPatientNames();
-        if (patientNames.size() == 0){
+        ArrayList<Patient> patients = doctor.getPatients();
+        if (patients.size() == 0){
             System.out.println("No patients!");
             return null;
         }
         else{
-            System.out.println(patientNames);
             System.out.println("Select a patient:");
-            for (int i = 0; i < patientNames.size(); i++) {
-                System.out.printf("%d. %s\n", i, patientNames.get(i));
+            for (int i = 0; i < patients.size(); i++) {
+                System.out.printf("%d. %s\n", i, patients.get(i).getName());
             }
-            int choice = sc.promptInt("", 0, patientNames.size()-1);
+            int choice = sc.promptInt("", 0, patients.size()-1);
 
-            Patient selectedPatient = doctor.getPatientIndex(choice);
+            Patient selectedPatient = doctor.getPatientIndex(patients.get(choice).getId());
             return selectedPatient;
         }
     }
@@ -124,7 +124,7 @@ public class DoctorMenu extends Menu {
         String serviceType, consultationNotes;
         ArrayList<Appointment> appointments;
         ArrayList<Medicine> medicines;
-        ArrayList<Medicine> selectedMedicines = new ArrayList<Medicine>();
+        ArrayList<Prescription> selectedMedicines = new ArrayList<>();
         // Finding patient appointment
         appointments = selectedPatient.getAppointments();
         int index;
@@ -148,16 +148,18 @@ public class DoctorMenu extends Menu {
             }
             // if press size+1 for first time means no medicine neeeded
             System.out.printf("%d: Done with selection!\n", medicines.size()+1);
-            choice = sc.promptInt("", 1, medicines.size());
+            choice = sc.promptInt("", 1, medicines.size()+1);
             if (choice != medicines.size()+1){
-                selectedMedicines.add(medicines.get(choice-1));
+                String name = medicines.get(choice-1).getName();
+                int quantity = sc.promptInt("Enter medicine quantity: ", 1, medicines.get(choice-1).getStock());
+                selectedMedicines.add(new Prescription(name, quantity));
             }
             else{
                 break;
             }
         }
         outcomeRecord = new AppointmentOutcomeRecord(slot, serviceType, consultationNotes, selectedMedicines);
-        appointments.get(index).complete(outcomeRecord);
+        this.doctor.recordOutcome(appointments.get(index).getId(), outcomeRecord);
     }
 
     private void viewSchedule() {

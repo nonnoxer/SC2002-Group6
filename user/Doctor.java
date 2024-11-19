@@ -8,11 +8,12 @@ import appointment.Appointment;
 import appointment.AppointmentSlot;
 import appointment.Schedule;
 import data.appointment.AppointmentDatabaseApiDoctor;
+import data.user.UserDatabaseApiDoctor;
 import medicine.Inventory;
 import record.AppointmentOutcomeRecord;
 
 public class Doctor extends Staff implements DoctorApiPatient {
-    private ArrayList<Patient> patients;
+    private UserDatabaseApiDoctor userDb;
     private AppointmentDatabaseApiDoctor appointmentDb;
     private Schedule schedule;
     private Inventory inventory;
@@ -20,12 +21,13 @@ public class Doctor extends Staff implements DoctorApiPatient {
     public Doctor(String id, String name, String role, String gender, int age) {
         super(id, name, role, gender, age);
 
-        this.patients = new ArrayList<Patient>();
+        this.userDb = null;
         this.appointmentDb = null;
         this.schedule = null;
     }
 
-    public void init(Inventory inventory) {
+    public void init(UserDatabaseApiDoctor userDb, Inventory inventory) {
+        this.userDb = userDb;
         this.inventory = inventory;
     }
 
@@ -33,16 +35,12 @@ public class Doctor extends Staff implements DoctorApiPatient {
         this.schedule = new Schedule(startDate, endDate);
     }
 
-    public ArrayList<String> getPatientNames() {
-        ArrayList<String> patientNames = new ArrayList<String>();
-        for (Patient patient : patients) {
-            patientNames.add(patient.getName());
-        }
-        return patientNames;
+    public ArrayList<Patient> getPatients() {
+        return this.userDb.getPatients(this.appointmentDb.getDoctorAppointments(this.id));
     }
 
-    public Patient getPatientIndex(int index) {
-        return this.patients.get(index);
+    public Patient getPatientIndex(String patientId) {
+        return this.userDb.findPatientId(patientId);
     }
 
     public Schedule getPersonalSchedule() {
