@@ -4,12 +4,10 @@ public abstract class User {
     protected UserId id;
     protected String name;
     protected Role role;
-    private String password;
 
     // Constructor to return id, password, name etc
-    public User(UserId id, String password, String name, Role role) {
+    public User(UserId id, String name, Role role) {
         this.id = id;
-        this.password = password;
         this.name = name;
         this.role = role;
     }
@@ -25,11 +23,6 @@ public abstract class User {
 
     public Role getRole() {
         return role;
-    }
-
-    // Setter for updating password
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public void setName(String name) {

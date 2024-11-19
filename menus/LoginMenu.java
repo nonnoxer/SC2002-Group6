@@ -23,18 +23,15 @@ public class LoginMenu {
         System.out.println("Welcome to the Hospital Management System (HMS)");
 
         while (account == null) {
-            String username = promptForInput("Enter username: ");
+            String username = sc.promptLine("Enter username: ");
             account = db.getAccount(username);
             if (account == null) continue;
 
             if (account.passwordEmpty()) {
-                setPassword(account);
+                setPassword(account.getId());
             } else {
-                String password = promptForInput("Enter password: ");
-                if (!account.checkPassword(password)) {
-                    System.out.println("Wrong credentials");
-                    return null;
-                }
+                boolean result = checkPassword(account, 3);
+                if (!result) return null;
             }
         }
 
@@ -69,14 +66,25 @@ public class LoginMenu {
         return menu;
     }
 
-    private void setPassword(UserAccount account) {
-        String password = promptForInput("Enter a new password: ");
-        account.setPassword(password);
+    private void setPassword(UserId id) {
+        String password = sc.promptLine("Enter a new password: ");;
+        while (password.equals("")){
+            System.out.println("Password cannot be blank.");
+            password = sc.promptLine("Enter a new password: ");
+        }
+        
+        db.setPassword(id, password);
     }
 
-    private String promptForInput(String message) {
-        System.out.print(message);
-        return sc.nextLine();
+    private boolean checkPassword(UserAccount account, int tries) {
+        for (int i = 0; i < tries; i++) {
+            String password = sc.promptLine("Enter password: ");
+            if (account.checkPassword(password)) {
+                return true;
+            }
+            System.out.printf("Incorrect password. %d attempts left.\n", tries-i-1);
+        }
+        return false;
     }
 }
 

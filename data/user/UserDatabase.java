@@ -23,7 +23,7 @@ import user.UserAccount;
 import user.UserId;
 
 public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdministrator, UserDatabaseApiDoctor {
-    private ArrayList<UserAccount> accounts;
+    private HashMap<UserId, UserAccount> accounts;
     private HashMap<UserId, Patient> patients;
     private HashMap<UserId, Staff> staffs;
     private HashMap<UserId, DoctorApiPatient> doctors;
@@ -34,6 +34,7 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
         ArrayList<Staff> staffList = ReadFile.readStaffListFile(staffListPath);
         ArrayList<Patient> patientList = ReadFile.readPatientListFile(patientListPath);
 
+        this.accounts = new HashMap<>();
         this.staffs = new HashMap<>();
         this.patients = new HashMap<>();
         this.doctors = new HashMap<>();
@@ -47,18 +48,21 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
 
         if (Files.notExists(Path.of(accountListPath))) {
             System.out.printf("%s does not exist, creating new database...\n\n", accountListPath);
-            accounts = new ArrayList<UserAccount>();
+            accounts = new HashMap<>();
             for (Patient patient : patientList) {
                 String username = nameToUsername(patient.getName());
-                accounts.add(new UserAccount(patient.getId(), username, "", Role.Patient));
+                accounts.put(patient.getId(), new UserAccount(patient.getId(), username, "", Role.Patient));
             }
             for (Staff staff : staffList) {
                 String username = nameToUsername(staff.getName());
-                accounts.add(new UserAccount(staff.getId(), username, "", staff.getRole()));
+                accounts.put(staff.getId(), new UserAccount(staff.getId(), username, "", staff.getRole()));
             }
-            WriteFile.writeFile(accounts, accountListPath);
+            WriteFile.writeFile(accounts.values(), accountListPath);
         } else {
-            accounts = ReadFile.readAccountListFile(accountListPath);
+            ArrayList<UserAccount> accountList = ReadFile.readAccountListFile(accountListPath);
+            for (UserAccount account : accountList) {
+                accounts.put(account.getId(), account);
+            }
         }
 
         this.accountListPath = accountListPath;
@@ -108,7 +112,7 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
 
     private void updateAccountFile() {
         try {
-            WriteFile.writeFile(accounts, accountListPath);
+            WriteFile.writeFile(accounts.values(), accountListPath);
             System.out.println("Account list updated successfully.");
         } catch (Exception e) {
             System.out.println("Error updating file: " + e.getMessage());
@@ -125,7 +129,7 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
     }
 
     public UserAccount getAccount(String username) {
-        for (UserAccount account : accounts) {
+        for (UserAccount account : accounts.values()) {
             if (account.getUsername().equals(username)) {
                 return account;
             }
@@ -187,7 +191,7 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
         UserAccount newAccount = new UserAccount(newId, nameToUsername(name), "", role);
 
         staffs.put(newId, staff);
-        accounts.add(newAccount);
+        accounts.put(newId, newAccount);
 
         updateStaffFile();
         updateAccountFile();
@@ -210,16 +214,17 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
 
     public Staff removeStaff(UserId id) {
         Staff staff = staffs.remove(id);
-        for (int i = 0; i < accounts.size(); i++) {
-            if (accounts.get(i).getId().equals(id)) {
-                accounts.remove(i);
-                break;
-            }
-        }
+        accounts.remove(id);
 
         updateAccountFile();
         updateStaffFile();
 
         return staff;
+    }
+
+    public void setPassword(UserId id, String password) {
+        UserAccount account = accounts.get(id);
+        account.setPassword(password);
+        updateAccountFile();
     }
 }

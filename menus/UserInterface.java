@@ -13,10 +13,23 @@ public class UserInterface {
         this.loginMenu = new LoginMenu(scanner, db);
     }
 
-    // TODO: make a while loop
     public void start() {
-        menu = loginMenu.login();
+        int choice = -1;
 
-        menu.showMenu();
+        while (choice != 0) {
+            System.out.println("\n===== Hospital Management System =====");
+            System.out.println("1. Login");
+            System.out.println("2. Quit");
+            choice = scanner.promptInt("Enter your choice: ", 1, 2);
+
+            switch (choice) {
+                case 1:
+                    menu = loginMenu.login();
+                    if (menu != null) menu.showMenu();
+                    break;
+                case 2:
+                    return;
+            }   
+        }     
     }
 }

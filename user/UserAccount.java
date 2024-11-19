@@ -39,6 +39,6 @@ public class UserAccount implements CsvCompatible {
     }
     
     public boolean checkPassword(String password) {
-        return this.password == password;
+        return this.password.equals(password);
     }
 }

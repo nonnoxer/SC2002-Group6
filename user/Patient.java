@@ -17,7 +17,7 @@ public class Patient extends User implements CsvCompatible {
     private UserDatabaseApiPatient userDb;
 
     public Patient(UserId id, String name, String birthDate, String gender, String bloodType, String contactInfo) {
-        super(id, "placeholder", name, Role.Patient);
+        super(id, name, Role.Patient);
         this.gender = gender;
         this.birthDate = birthDate;
         this.bloodType = bloodType;

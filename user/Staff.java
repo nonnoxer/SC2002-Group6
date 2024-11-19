@@ -7,7 +7,7 @@ public class Staff extends User implements CsvCompatible {
     private String gender;
 
     public Staff(UserId id, String name, Role role, String gender, int age) {
-        super(id, "", name, role);
+        super(id, name, role);
         this.age = age;
         this.gender = gender;
     }
