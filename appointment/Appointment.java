@@ -10,7 +10,8 @@ import record.AppointmentOutcomeRecord;
 
 public class Appointment implements CsvCompatible {
     private int id;
-    private String patientId, doctorId, appointmentStatus;
+    private String patientId, doctorId;
+    private AppointmentStatus appointmentStatus;
     private AppointmentSlot slot;
     private AppointmentOutcomeRecord record;
 
@@ -18,7 +19,7 @@ public class Appointment implements CsvCompatible {
         this.id = id;
         this.patientId = patientId;
         this.doctorId = doctorId;
-        this.appointmentStatus = "Pending";
+        this.appointmentStatus = AppointmentStatus.Pending;
         this.slot = slot;
         this.record = null;
 
@@ -38,7 +39,7 @@ public class Appointment implements CsvCompatible {
         }
         this.patientId = line[1];
         this.doctorId = line[2];
-        this.appointmentStatus = line[3];
+        this.appointmentStatus = AppointmentStatus.valueOf(line[3]);
 
         this.slot = new AppointmentSlot(Arrays.copyOfRange(line, 4, 6));
         if (line[6].equals("")) {
@@ -50,11 +51,11 @@ public class Appointment implements CsvCompatible {
 
     public void doctorAccept(boolean accepted) {
         if (!accepted) this.slot.cancel();
-        this.appointmentStatus = accepted ? "Confirmed" : "Declined";
+        this.appointmentStatus = accepted ? AppointmentStatus.Confirmed : AppointmentStatus.Declined;
     }
 
     public void complete(AppointmentOutcomeRecord record) {
-        this.appointmentStatus = "Completed";
+        this.appointmentStatus = AppointmentStatus.Completed;
         this.record = record;
     }
 
@@ -67,7 +68,7 @@ public class Appointment implements CsvCompatible {
 
     public void patientCancel() {
         this.slot.cancel();
-        this.appointmentStatus = "Canceled";
+        this.appointmentStatus = AppointmentStatus.Canceled;
     }
 
     public void setSlot(AppointmentSlot slot) {
@@ -88,7 +89,7 @@ public class Appointment implements CsvCompatible {
         return this.doctorId;
     }
 
-    public String getAppointmentStatus() {
+    public AppointmentStatus getAppointmentStatus() {
         return this.appointmentStatus;
     }
 
@@ -103,7 +104,7 @@ public class Appointment implements CsvCompatible {
     public String toCsv() {
         if (this.record != null) return String.format(
             "%d,%s,%s,%s,%b,%s,%s,%s,%s,%s,%s",
-            id, patientId, doctorId, appointmentStatus,
+            id, patientId, doctorId, appointmentStatus.toString(),
             slot.getAvailability(), slot.getDate(),
             record.getServiceType(), record.getConsultationNotes(), record.getPrescriptionStatus(),
             record.getPrescription().stream().map(Prescription::getName).collect(Collectors.joining("::")),

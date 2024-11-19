@@ -18,7 +18,7 @@ public class Doctor extends Staff implements DoctorApiPatient {
     private Schedule schedule;
     private Inventory inventory;
 
-    public Doctor(String id, String name, String role, String gender, int age) {
+    public Doctor(String id, String name, Role role, String gender, int age) {
         super(id, name, role, gender, age);
 
         this.userDb = null;

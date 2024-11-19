@@ -1,11 +1,12 @@
 package user;
 
 public abstract class User {
-    protected String id, name, role;
+    protected String id, name;
+    protected Role role;
     private String password;
 
     // Constructor to return id, password, name etc
-    public User(String id, String password, String name, String role) {
+    public User(String id, String password, String name, Role role) {
         this.id = id;
         this.password = password;
         this.name = name;
@@ -21,7 +22,7 @@ public abstract class User {
         return name;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
@@ -34,7 +35,7 @@ public abstract class User {
         this.name = name;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 

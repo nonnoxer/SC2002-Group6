@@ -126,7 +126,7 @@ public class DoctorMenu extends Menu {
         ArrayList<Medicine> medicines;
         ArrayList<Prescription> selectedMedicines = new ArrayList<>();
         // Finding patient appointment
-        appointments = selectedPatient.getAppointments();
+        appointments = selectedPatient.getAllAppointments();
         int index;
         for (index=0; index<appointments.size(); index++){
             if (appointments.get(index).getDoctorId().equals(this.doctor.getId())){

@@ -17,6 +17,7 @@ import user.Doctor;
 import user.DoctorApiPatient;
 import user.Patient;
 import user.Pharmacist;
+import user.Role;
 import user.Staff;
 import user.UserAccount;
 
@@ -48,7 +49,7 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
             accounts = new ArrayList<UserAccount>();
             for (Patient patient : patientList) {
                 String username = nameToUsername(patient.getName());
-                accounts.add(new UserAccount(patient.getId(), username, "", "Patient"));
+                accounts.add(new UserAccount(patient.getId(), username, "", Role.Patient));
             }
             for (Staff staff : staffList) {
                 String username = nameToUsername(staff.getName());
@@ -71,7 +72,7 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
         // Patients have access to specific functions of Doctor
         for (Staff staff : staffs.values()) {
             switch (staff.getRole()) {
-                case "Doctor": {
+                case Doctor: {
                     Doctor temp = (Doctor) staff;
                     temp.init(this, inventory);
                     // Create doctor API
@@ -83,13 +84,13 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
                     break;
                 }
                 // Set global inventory for each pharmacist
-                case "Pharmacist": {
+                case Pharmacist: {
                     Pharmacist temp = (Pharmacist) staff;
                     temp.init(inventory);
                     break;
                 }
                 // Set global inventory and staff list for each administrator
-                case "Administrator": {
+                case Administrator: {
                     Administrator temp = (Administrator) staff;
                     temp.init(this, appointmentDb, inventory);
                     break;
@@ -160,7 +161,7 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
         return new ArrayList<>(this.staffs.values());
     }
 
-    public Staff addStaff(String id, String name, String role, String gender, int age) {
+    public Staff addStaff(String id, String name, Role role, String gender, int age) {
         Staff staff = new Staff(id, name, role, gender, age);
         UserAccount newAccount = new UserAccount(id, nameToUsername(name), "", role);
 
@@ -173,11 +174,11 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
         return staff;
     }
 
-    public Staff updateStaff(String id, String name, String role, String gender, int age) {
+    public Staff updateStaff(String id, String name, Role role, String gender, int age) {
         Staff staff = staffs.get(id);
         if (staff == null) return null;
         staff.setName(name);
-        staff.setRole(name);
+        // staff.setRole(name); I don't think you should be allowed to change staff role
         staff.setGender(gender);
         staff.setAge(age);
 

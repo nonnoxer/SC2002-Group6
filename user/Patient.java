@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import appointment.Appointment;
 import appointment.AppointmentSlot;
+import appointment.AppointmentStatus;
 import data.CsvCompatible;
 import data.appointment.AppointmentDatabaseApiPatient;
 import data.user.UserDatabaseApiPatient;
@@ -16,7 +17,7 @@ public class Patient extends User implements CsvCompatible {
     private UserDatabaseApiPatient userDb;
 
     public Patient(String id, String name, String birthDate, String gender, String bloodType, String contactInfo) {
-        super(id, "placeholder", name, "Patient");
+        super(id, "placeholder", name, Role.Patient);
         this.gender = gender;
         this.birthDate = birthDate;
         this.bloodType = bloodType;
@@ -48,8 +49,19 @@ public class Patient extends User implements CsvCompatible {
         return this.userDb.findDoctorId(doctorId);
     }
 
-    public ArrayList<Appointment> getAppointments() {
+    public ArrayList<Appointment> getAllAppointments() {
         return this.appointmentDb.getPatientAppointments(this.id);
+    }
+
+    public ArrayList<Appointment> getScheduledAppointments() {
+        ArrayList<Appointment> result = new ArrayList<>();
+        for (Appointment appointment : this.appointmentDb.getPatientAppointments(this.id)) {
+            AppointmentStatus status = appointment.getAppointmentStatus();
+            if (status.equals(AppointmentStatus.Pending) || status.equals(AppointmentStatus.Confirmed)) {
+                result.add(appointment);
+            }
+        }
+        return result;
     }
 
     public void scheduleAppointment(String doctorId, AppointmentSlot slot) {

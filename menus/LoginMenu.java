@@ -36,7 +36,7 @@ public class LoginMenu {
             }
         }
 
-        String id = account.getId(), role = account.getRole();
+        String id = account.getId(), role = account.getRole().toString();
         System.out.println("Login successful! User type: " + role);
 
         Menu menu;

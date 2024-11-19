@@ -12,6 +12,7 @@ import user.Administrator;
 import user.Doctor;
 import user.Patient;
 import user.Pharmacist;
+import user.Role;
 import user.Staff;
 import user.UserAccount;
 
@@ -35,9 +36,12 @@ public class ReadFile {
                 String line_full = String.join(",", line);
                 throw new IOException("Invalid line " + line_full + ": expected 4 elements.");
             }
-            String id = line[0], username = line[1], password = line[2], role = line[3];
+            String id = line[0], username = line[1], password = line[2];
 
-            if (!(role.equals("Doctor") || role.equals("Pharmacist") || role.equals("Administrator") || role.equals("Patient"))) {
+            Role role;
+            try {
+                role = Role.valueOf(line[3]);
+            } catch (IllegalArgumentException e) {
                 throw new IOException("Invalid line: expected " + line[3] + " to be one of 'Patient', 'Doctor', 'Pharmacist', 'Administrator'.");
             }
 
@@ -56,7 +60,8 @@ public class ReadFile {
                 String line_full = String.join(",", line);
                 throw new IOException("Invalid line " + line_full + ": expected 5 elements.");
             }
-            String id = line[0], name = line[1], role = line[2], gender = line[3];
+            String id = line[0], name = line[1], gender = line[3];
+            Role role = Role.valueOf(line[2]);
             int age;
             try {
                 age = Integer.parseInt(line[4]);
@@ -66,13 +71,13 @@ public class ReadFile {
 
             Staff staff;
             switch (role) {
-                case "Doctor":
+                case Doctor:
                     staff = new Doctor(id, name, role, gender, age);
                     break;
-                case "Pharmacist":
+                case Pharmacist:
                     staff = new Pharmacist(id, name, role, gender, age);
                     break;
-                case "Administrator":
+                case Administrator:
                     staff = new Administrator(id, name, role, gender, age);
                     break;
                 default:

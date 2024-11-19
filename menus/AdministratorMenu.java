@@ -1,6 +1,7 @@
 package menus;
 
 import user.Administrator;
+import user.Role;
 
 public class AdministratorMenu extends Menu{
     private SafeScanner sc;
@@ -74,7 +75,7 @@ public class AdministratorMenu extends Menu{
                     String role = sc.promptLine("Enter Staff Role: ");
                     String gender = sc.promptLine("Enter Staff Gender:");
                     int age = sc.promptInt("Enter staff age: ", 0, 200);
-                    administrator.addStaff(id, name, role, gender, age);
+                    administrator.addStaff(id, name, Role.valueOf(role), gender, age);
                     break;
                 //Update a staff member
                 case 3:
@@ -86,7 +87,7 @@ public class AdministratorMenu extends Menu{
                     int newAge = sc.promptInt("Enter staff age: ", 0, 200);
                     sc.nextLine(); // Consume newline
                     // Staff newStaff = new Staff(oldId, newName, newRole, newGender, newAge);
-                    administrator.updateStaff(oldId, newName, newRole, newGender, newAge);
+                    administrator.updateStaff(oldId, newName, Role.valueOf(newRole), newGender, newAge);
                     break;
                 case 4: // Remove a staff member
                     String removeId = sc.promptLine("Enter Staff ID to remove: ");

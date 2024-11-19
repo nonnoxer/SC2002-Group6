@@ -214,7 +214,7 @@ public class PatientMenu extends Menu{
     }
 
     private void rescheduleAppointment() {
-        ArrayList<Appointment> appointments = this.patient.getAppointments();
+        ArrayList<Appointment> appointments = this.patient.getAllAppointments();
 
         if (appointments.isEmpty()) {
             System.out.println("You have no scheduled appointments to reschedule.");
@@ -241,7 +241,7 @@ public class PatientMenu extends Menu{
     }
 
     private void cancelAppointment() throws IOException {
-        ArrayList<Appointment> appointments = this.patient.getAppointments();
+        ArrayList<Appointment> appointments = this.patient.getAllAppointments();
 
         if (appointments.isEmpty()) {
             System.out.println("You have no scheduled appointments to cancel.");

@@ -16,7 +16,7 @@ public class Administrator extends Staff {
     private Inventory inventory;
     
     //Constructor to initialize Administrator with an empty staff list and inventory
-    public Administrator(String id, String name, String role, String gender, int age) throws IOException {
+    public Administrator(String id, String name, Role role, String gender, int age) throws IOException {
         super(id, name, role, gender, age);
         this.userDb = null;
         this.inventory = null;
@@ -35,7 +35,7 @@ public class Administrator extends Staff {
             System.out.println("Staff ID: " + staffID);
             String staffName = staff.getName();
             System.out.println("Staff Name: " + staffName);
-            String staffRole = staff.getRole();
+            String staffRole = staff.getRole().toString();
             System.out.println("Staff Role: " + staffRole);
             String staffGender = staff.getGender();
             System.out.println("Staff Gender: " + staffGender);
@@ -46,7 +46,7 @@ public class Administrator extends Staff {
     }
 
     //Manage Staff methods
-    public void addStaff(String id, String name, String role, String gender, int age) {
+    public void addStaff(String id, String name, Role role, String gender, int age) {
         this.userDb.addStaff(id, name, role, gender, age);
         System.out.println("Staff member added successfully.");
     }
@@ -61,7 +61,7 @@ public class Administrator extends Staff {
         }
     }
 
-    public void updateStaff(String id, String newName, String newRole, String newGender, int newAge) {
+    public void updateStaff(String id, String newName, Role newRole, String newGender, int newAge) {
         Staff result = this.userDb.updateStaff(id, newName, newRole, newGender, newAge);
         if (result != null) {
             System.out.println("Staff information updated successfully.");
