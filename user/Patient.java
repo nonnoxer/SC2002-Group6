@@ -24,8 +24,6 @@ public class Patient extends User implements CsvCompatible {
         this.bloodType = bloodType;
         this.contactInfo = contactInfo;
 
-
-        this.record = new MedicalRecord(id, name, birthDate, gender, contactInfo, bloodType);
         this.appointmentDb = null;
         this.userDb = null;
     }
@@ -41,6 +39,7 @@ public class Patient extends User implements CsvCompatible {
     public void init(UserDatabaseApiPatient userDb, AppointmentDatabaseApiPatient appointmentDb) {
         this.userDb = userDb;
         this.appointmentDb = appointmentDb;
+        this.record = new MedicalRecord(id, name, birthDate, gender, contactInfo, bloodType, appointmentDb.getPatientAppointments(id));
     }
 
     public ArrayList<DoctorApiPatient> getDoctors() {

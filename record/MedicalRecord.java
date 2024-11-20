@@ -2,15 +2,16 @@ package record;
 
 import java.util.ArrayList;
 
+import appointment.Appointment;
 import user.UserId;
 import data.CsvCompatible;
 
 public class MedicalRecord{
     private UserId id;
     private String name, birthDate, gender, contactInfo, bloodType;
-    private ArrayList<AppointmentOutcomeRecord> pastAppointments;
+    private ArrayList<Appointment> pastAppointments;
 
-    public MedicalRecord(UserId id, String name, String birthDate, String gender, String contactInfo, String bloodType) {
+    public MedicalRecord(UserId id, String name, String birthDate, String gender, String contactInfo, String bloodType, ArrayList<Appointment> pastAppointments) {
         this.id = id;
         this.name = name;
         this.birthDate = birthDate;
@@ -18,7 +19,7 @@ public class MedicalRecord{
         this.contactInfo = contactInfo;
         this.bloodType = bloodType;
 
-        this.pastAppointments = new ArrayList<AppointmentOutcomeRecord>();
+        this.pastAppointments = pastAppointments;
     }
 
     public UserId getId() {
@@ -46,8 +47,15 @@ public class MedicalRecord{
     }
 
     public ArrayList<AppointmentOutcomeRecord> getPastAppointments() {
-        return pastAppointments;
+        ArrayList<AppointmentOutcomeRecord> allRecords = new ArrayList<>();
+        
+        for (Appointment appointment : pastAppointments) {
+            allRecords.add(appointment.getRecord()); 
+        }
+
+        return allRecords;
     }
+    
 
     // public void setId(String id){
     //     this.id = id;
@@ -74,8 +82,4 @@ public class MedicalRecord{
     // public void setBloodType(String bloodType){
     //     this.bloodType = bloodType;
     // }
-
-    public void addPastAppointments(AppointmentOutcomeRecord newAppointment){
-        this.pastAppointments.add(newAppointment);
-    }
 }

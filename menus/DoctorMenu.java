@@ -120,7 +120,7 @@ public class DoctorMenu extends Menu {
 
         System.out.printf("Updating records of %s:\n", selectedPatient.getName());
         // Update records
-        ArrayList<Appointment> appointments = this.doctor.getUpcomingAppointments();
+        ArrayList<Appointment> appointments = selectedPatient.getAllAppointments();
         System.out.println("Select an appointment:");
         for (int i = 0; i < appointments.size(); i++) {
             Appointment appointment = appointments.get(i);
@@ -156,8 +156,9 @@ public class DoctorMenu extends Menu {
                 break;
             }
         }
-        record.addPrescription(selectedMedicines);
-
+        if (record.addPrescription(selectedMedicines)==0){
+            System.out.println("Unable to update record, medicine is already dispensed!");
+        }
     }
 
     private void viewSchedule() {
