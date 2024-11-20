@@ -8,6 +8,7 @@ import medicine.Prescription;
 import medicine.PrescriptionStatus;
 
 public class AppointmentOutcomeRecord {
+    private int appointmentId;
     private String serviceType, consultationNotes;
     private PrescriptionStatus prescriptionStatus;
     private AppointmentSlot slot;
@@ -49,6 +50,10 @@ public class AppointmentOutcomeRecord {
         }
     }
 
+    public int getAppointmentId() {
+        return this.appointmentId;
+    }
+
     public AppointmentSlot getSlot() {
         return this.slot;
     }
@@ -69,13 +74,21 @@ public class AppointmentOutcomeRecord {
         return this.prescription;
     }
 
-    public void updatePrescriptionStatus(PrescriptionStatus status) {
-    this.prescriptionStatus = status;
-}
+    public void setAppointmentId(int appointmentId) {
+        this.appointmentId = appointmentId;
+    }
+
+    public void setSlot(AppointmentSlot slot) {
+        this.slot = slot;
+    }
+
+    public void dispensePrescription() {
+        this.prescriptionStatus = PrescriptionStatus.Dispensed;
+    }
 
 
     public void printAppointmentOutcomeRecord() {
-        System.out.printf("Slot: %s\n", this.slot);
+        System.out.printf("Slot: %s\n", this.slot.getDate().toString());
         System.out.printf("Type of service: %s\n", this.serviceType);
         System.out.printf("Prescription Status: %s\n", this.prescriptionStatus);
         System.out.printf("Prescription: %s\n", this.prescription.stream().map(Prescription::getName).collect(Collectors.joining(", ")));

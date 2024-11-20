@@ -13,7 +13,7 @@ import data.WriteFile;
 import record.AppointmentOutcomeRecord;
 import user.UserId;
 
-public class AppointmentDatabase implements AppointmentDatabaseApiPatient, AppointmentDatabaseApiDoctor {
+public class AppointmentDatabase implements AppointmentDatabaseApiPatient, AppointmentDatabaseApiDoctor, AppointmentDatabaseApiPharmacist {
     private HashMap<Integer, Appointment> appointments;
     private int id;
     private String path;
@@ -110,5 +110,30 @@ public class AppointmentDatabase implements AppointmentDatabaseApiPatient, Appoi
             }
         }
         return result;
+    }
+
+    public ArrayList<AppointmentOutcomeRecord> getRecords() {
+        ArrayList<AppointmentOutcomeRecord> records = new ArrayList<>();
+
+        for (Appointment appointment : appointments.values()) {
+            AppointmentOutcomeRecord record = appointment.getRecord();
+            if (record == null) continue;
+            records.add(record);
+        }
+
+        return records;
+    }
+
+    public AppointmentOutcomeRecord dispensePrescription(int id) {
+        Appointment appointment = appointments.get(id);
+        if (appointment == null) return null;
+
+        AppointmentOutcomeRecord record = appointment.getRecord();
+        if (record == null) return null;
+
+        record.dispensePrescription();
+
+        update();
+        return record;
     }
 }

@@ -33,6 +33,7 @@
 ./menus/SafeScanner.java
 ./menus/AdministratorMenu.java
 ./data/appointment/AppointmentDatabaseApiDoctor.java
+./data/appointment/AppointmentDatabaseApiPharmacist.java
 ./data/appointment/AppointmentDatabaseApiPatient.java
 ./data/appointment/AppointmentDatabase.java
 ./data/user/UserDatabase.java

@@ -2,7 +2,6 @@ package menus;
 
 import java.util.ArrayList;
 import medicine.Medicine;
-import medicine.PrescriptionStatus;
 import medicine.ReplenishmentRequest;
 import record.AppointmentOutcomeRecord;
 import user.Pharmacist;
@@ -61,7 +60,7 @@ public class PharmacistMenu extends Menu {
 
     // View all Appointment Outcome Records
     private void viewAppointmentOutcome() {
-        ArrayList<AppointmentOutcomeRecord> records = pharmacist.getRecords();
+        ArrayList<AppointmentOutcomeRecord> records = pharmacist.getPendingRecords();
         if (records.isEmpty()) {
             System.out.println("No appointment outcome records available.");
             return;
@@ -75,7 +74,7 @@ public class PharmacistMenu extends Menu {
 
     // Update the prescription status of a specific Appointment Outcome Record
     private void updatePrescriptionStatus() {
-        ArrayList<AppointmentOutcomeRecord> records = pharmacist.getRecords();
+        ArrayList<AppointmentOutcomeRecord> records = pharmacist.getPendingRecords();
         if (records.isEmpty()) {
             System.out.println("No appointment outcome records available.");
             return;
@@ -86,17 +85,23 @@ public class PharmacistMenu extends Menu {
             System.out.printf("%d. Appointment Slot: %s, Current Status: %s\n", i + 1, 
                     records.get(i).getSlot().getDate(), records.get(i).getPrescriptionStatus());
         }
+        System.out.println("0. Cancel");
 
-        int choice = sc.promptInt("Enter record number: ", 1, records.size()) - 1;
-        AppointmentOutcomeRecord selectedRecord = records.get(choice);
+        int choice = sc.promptInt("Enter record number: ", 0, records.size());
+        if (choice == 0) return;
+        AppointmentOutcomeRecord selectedRecord = records.get(choice-1);
 
         System.out.println("1. Dispense prescription");
         System.out.println("0. Cancel");
         int dispenseChoice = sc.promptInt("Enter your choice: ", 0, 1);
         if (dispenseChoice == 0) return;
 
-        pharmacist.updatePrescriptionStatus(selectedRecord, PrescriptionStatus.Dispensed);
-        System.out.println("Prescription status updated successfully.");
+        boolean result = pharmacist.dispensePrescription(selectedRecord);
+        if (result) {
+            System.out.println("Prescription status updated successfully.");
+        } else {
+            System.out.println("Insufficient stock.");
+        }
     }
 
     // View the inventory details

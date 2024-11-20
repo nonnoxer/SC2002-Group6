@@ -32,6 +32,10 @@ public class Medicine implements CsvCompatible {
         this.stock = stock;
     }
 
+    public void dispenseStock(int stock) {
+        this.stock -= stock;
+    }
+
     public void addStock(int stock) {
         this.stock += stock;
     }

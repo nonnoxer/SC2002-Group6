@@ -92,7 +92,7 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
                 // Set global inventory for each pharmacist
                 case Pharmacist: {
                     Pharmacist temp = (Pharmacist) staff;
-                    temp.init(inventory);
+                    temp.init(appointmentDb, inventory);
                     break;
                 }
                 // Set global inventory and staff list for each administrator

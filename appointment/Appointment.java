@@ -55,6 +55,8 @@ public class Appointment implements CsvCompatible {
             this.record = null;
         } else {
             this.record = new AppointmentOutcomeRecord(Arrays.copyOfRange(line, 6, 11));
+            this.record.setAppointmentId(this.id);
+            this.record.setSlot(this.slot);
         }
     }
 
@@ -66,6 +68,7 @@ public class Appointment implements CsvCompatible {
     public void complete(AppointmentOutcomeRecord record) {
         this.appointmentStatus = AppointmentStatus.Completed;
         this.record = record;
+        record.setAppointmentId(this.id);
     }
 
     public void patientReschedule(AppointmentSlot slot) {
