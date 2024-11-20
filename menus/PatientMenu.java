@@ -185,7 +185,7 @@ public class PatientMenu extends Menu{
         for (int i = 0; i < slots.size(); i++) {
             AppointmentSlot slot = slots.get(i);
             if (slot.getAvailability()) {
-                System.out.printf("%d - %s\n", i, slot.getDate().toLocalTime().toString());
+                System.out.printf("Slot %-2d: %s\n", i, slot.getDate().toLocalTime().toString());
             }
         }
     }
