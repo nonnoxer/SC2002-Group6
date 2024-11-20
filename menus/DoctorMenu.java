@@ -119,48 +119,6 @@ public class DoctorMenu extends Menu {
 
         System.out.printf("Updating records of %s:\n", selectedPatient.getName());
         // Update records
-        AppointmentOutcomeRecord outcomeRecord;
-        AppointmentSlot slot;
-        Inventory inventory;
-        String serviceType, consultationNotes;
-        ArrayList<Appointment> appointments;
-        ArrayList<Medicine> medicines;
-        ArrayList<Prescription> selectedMedicines = new ArrayList<>();
-        // Finding patient appointment
-        appointments = selectedPatient.getAllAppointments();
-        int index;
-        for (index=0; index<appointments.size(); index++){
-            if (appointments.get(index).getDoctorId().equals(this.doctor.getId())){
-                break;
-            }
-        }
-        // filling up the form
-        slot = appointments.get(index).getSlot();
-        serviceType = sc.promptLine("Enter service type: ");
-        consultationNotes = sc.promptLine("Enter consultation notes: ");
-        // medicine for patient
-        inventory = this.doctor.getInventory();
-        medicines = inventory.getInventory();
-        int choice = -1;
-        while(choice != medicines.size()+1){
-            System.out.println("Medicine List:");
-            for(int i=0; i<medicines.size(); i++){
-                System.out.printf("%d: %s (stock: %d)\n", i+1, medicines.get(i).getName(), medicines.get(i).getStock());
-            }
-            // if press size+1 for first time means no medicine neeeded
-            System.out.printf("%d: Done with selection!\n", medicines.size()+1);
-            choice = sc.promptInt("", 1, medicines.size()+1);
-            if (choice != medicines.size()+1){
-                String name = medicines.get(choice-1).getName();
-                int quantity = sc.promptInt("Enter medicine quantity: ", 1, medicines.get(choice-1).getStock());
-                selectedMedicines.add(new Prescription(name, quantity));
-            }
-            else{
-                break;
-            }
-        }
-        outcomeRecord = new AppointmentOutcomeRecord(slot, serviceType, consultationNotes, selectedMedicines);
-        this.doctor.recordOutcome(appointments.get(index).getId(), outcomeRecord);
     }
 
     private void viewSchedule() {
@@ -280,13 +238,42 @@ public class DoctorMenu extends Menu {
     }
 
     private void recordAppointmentOutcome() {
+        ArrayList<Prescription> selectedMedicines = new ArrayList<>();
         ArrayList<Appointment> appointments = this.doctor.getUpcomingAppointments();
         System.out.println("Select an appointment:");
         for (int i = 0; i < appointments.size(); i++) {
             Appointment appointment = appointments.get(i);
             System.out.printf("%d. %s", i, appointment.getSlot().getDate());
         }
-        int choice = sc.promptInt("", 0, appointments.size()-1);
+        int appointmentChoice = sc.promptInt("", 0, appointments.size()-1);
 
+        // Finding patient appointment
+        AppointmentSlot slot = appointments.get(appointmentChoice).getSlot();
+        // filling up the form
+        String serviceType = sc.promptLine("Enter service type: ");
+        String consultationNotes = sc.promptLine("Enter consultation notes: ");
+        // medicine for patient
+        Inventory inventory = this.doctor.getInventory();
+        ArrayList<Medicine> medicines = inventory.getInventory();
+        int choice = -1;
+        while(choice != medicines.size()+1){
+            System.out.println("Medicine List:");
+            for(int i=0; i<medicines.size(); i++){
+                System.out.printf("%d: %s (stock: %d)\n", i+1, medicines.get(i).getName(), medicines.get(i).getStock());
+            }
+            // if press size+1 for first time means no medicine neeeded
+            System.out.printf("%d: Done with selection!\n", medicines.size()+1);
+            choice = sc.promptInt("", 1, medicines.size()+1);
+            if (choice != medicines.size()+1){
+                String name = medicines.get(choice-1).getName();
+                int quantity = sc.promptInt("Enter medicine quantity: ", 1, medicines.get(choice-1).getStock());
+                selectedMedicines.add(new Prescription(name, quantity));
+            }
+            else{
+                break;
+            }
+        }
+        AppointmentOutcomeRecord outcomeRecord = new AppointmentOutcomeRecord(slot, serviceType, consultationNotes, selectedMedicines);
+        this.doctor.recordOutcome(appointments.get(appointmentChoice).getId(), outcomeRecord);
     }
 }
