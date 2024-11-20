@@ -114,7 +114,6 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
     private void updateAccountFile() {
         try {
             WriteFile.writeFile(accounts.values(), accountListPath);
-            System.out.println("Account list updated successfully.");
         } catch (Exception e) {
             System.out.println("Error updating file: " + e.getMessage());
         }
@@ -123,7 +122,6 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
     private void updateStaffFile() {
         try {
             WriteFile.writeFile(staffs.values(), staffListPath);
-            System.out.println("Staff list updated successfully.");
         } catch (Exception e) {
             System.out.println("Error updating file: " + e.getMessage());
         }
@@ -132,7 +130,6 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
     private void udpatePatientFile(){
         try {
             WriteFile.writeFile(patients.values(), patientListPath);
-            System.out.println("Patient list updated successfully.");
         } catch (Exception e) {
             System.out.println("Error updating file: " + e.getMessage());
         }
@@ -145,6 +142,24 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
             }
         }
         return null;
+    }
+
+    public Patient registerPatient(String username, String name, String birthDate, String gender, String bloodType, String contactInfo) {
+        int num = 0;
+        for (UserId patientId : patients.keySet()) {
+            if (patientId.getNum() >= num) num = patientId.getNum() + 1;
+        }
+        UserId newId = new UserId('P', num);
+        
+        Patient patient = new Patient(newId, name, birthDate, gender, bloodType, contactInfo);
+        patients.put(newId, patient);
+        UserAccount account = new UserAccount(newId, username, contactInfo, Role.Patient);
+        accounts.put(newId, account);
+
+        udpatePatientFile();
+        updateAccountFile();
+
+        return patient;
     }
 
     public ArrayList<Patient> getPatients(ArrayList<Appointment> appointments) {
