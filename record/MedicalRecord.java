@@ -3,8 +3,9 @@ package record;
 import java.util.ArrayList;
 
 import user.UserId;
+import data.CsvCompatible;
 
-public class MedicalRecord {
+public class MedicalRecord{
     private UserId id;
     private String name, birthDate, gender, contactInfo, bloodType;
     private ArrayList<AppointmentOutcomeRecord> pastAppointments;
@@ -66,7 +67,9 @@ public class MedicalRecord {
 
     public void setContactInfo(String contactInfo) {
         this.contactInfo = contactInfo;
+
     }
+
 
     // public void setBloodType(String bloodType){
     //     this.bloodType = bloodType;

@@ -28,7 +28,7 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
     private HashMap<UserId, Staff> staffs;
     private HashMap<UserId, DoctorApiPatient> doctors;
 
-    private String accountListPath, staffListPath;
+    private String accountListPath, staffListPath, patientListPath;
 
     public UserDatabase(String accountListPath, String patientListPath, String staffListPath) throws IOException {
         ArrayList<Staff> staffList = ReadFile.readStaffListFile(staffListPath);
@@ -67,6 +67,7 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
 
         this.accountListPath = accountListPath;
         this.staffListPath = staffListPath;
+        this.patientListPath = patientListPath;
     }
 
     private String nameToUsername(String name) {
@@ -123,6 +124,15 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
         try {
             WriteFile.writeFile(staffs.values(), staffListPath);
             System.out.println("Staff list updated successfully.");
+        } catch (Exception e) {
+            System.out.println("Error updating file: " + e.getMessage());
+        }
+    }
+
+    private void udpatePatientFile(){
+        try {
+            WriteFile.writeFile(patients.values(), patientListPath);
+            System.out.println("Patient list updated successfully.");
         } catch (Exception e) {
             System.out.println("Error updating file: " + e.getMessage());
         }
@@ -226,5 +236,9 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
         UserAccount account = accounts.get(id);
         account.setPassword(password);
         updateAccountFile();
+    }
+
+    public void updatePatient(){
+        this.udpatePatientFile();
     }
 }

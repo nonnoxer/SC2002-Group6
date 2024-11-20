@@ -110,7 +110,6 @@ public class PatientMenu extends Menu{
     }
 
     private void updatePersonalInfo() {
-        MedicalRecord record = this.patient.getMedicalRecord();
         int choice = -1;
 
         while (choice != 0) {
@@ -125,19 +124,15 @@ public class PatientMenu extends Menu{
                 case 1:
                     System.out.print("Enter your new email address: ");
                     String newEmail = sc.nextLine();
-
                     if (newEmail.matches("^[A-Za-z0-9+_.-]+@(.+)$")) { //gpt
-                        record.setContactInfo(newEmail);
-                        //WriteFile.writeFile(patient.toCsv());
-                        //to save the record after setting?
+                        patient.setContactInfo(newEmail);
+                        //update patient file
 
                         System.out.println("Email address updated successfully.");
-
                     } else {
                         System.out.println("Invalid email format. Please try again.");
                     }
                     break;
-
                 case 0:
                     System.out.println("Returning to main menu...");
                     break;
@@ -201,6 +196,8 @@ public class PatientMenu extends Menu{
 
         ArrayList<AppointmentSlot> slots = getSlots(schedule);
         printSlots(slots);
+
+
     }
 
     private void scheduleAppointment() {
@@ -255,7 +252,7 @@ public class PatientMenu extends Menu{
             System.out.printf("%d. %s with Dr. %s\n",
                     i + 1,
                     appointments.get(i).getSlot().getDate(),
-                    // findDoctorNameById(appointments.get(i).getDoctorId(),"Staff_List.csv")
+                    //findDoctorNameById(appointments.get(i).getDoctorId(),"Staff_List.csv")
                     appointments.get(i).getDoctorId()
             );
         }

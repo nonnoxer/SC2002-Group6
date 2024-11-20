@@ -8,4 +8,5 @@ import user.UserId;
 public interface UserDatabaseApiPatient {
     public abstract ArrayList<DoctorApiPatient> getDoctors();
     public abstract DoctorApiPatient findDoctorId(UserId doctorId);
+    public abstract void updatePatient();
 }

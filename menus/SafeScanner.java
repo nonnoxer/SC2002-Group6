@@ -42,6 +42,7 @@ public class SafeScanner {
                 return result;
             } catch (InputMismatchException e) {
                 System.out.printf("Please enter a valid number from %d to %d.\n", min, max);
+                //sc.nextLine();// Without this line, entering a letter will give infinite loop
             }
         }
     }

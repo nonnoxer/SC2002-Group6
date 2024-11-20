@@ -7,6 +7,7 @@ import appointment.AppointmentSlot;
 import appointment.AppointmentStatus;
 import data.CsvCompatible;
 import data.appointment.AppointmentDatabaseApiPatient;
+import data.user.UserDatabase;
 import data.user.UserDatabaseApiPatient;
 import record.MedicalRecord;
 
@@ -22,6 +23,7 @@ public class Patient extends User implements CsvCompatible {
         this.birthDate = birthDate;
         this.bloodType = bloodType;
         this.contactInfo = contactInfo;
+
 
         this.record = new MedicalRecord(id, name, birthDate, gender, contactInfo, bloodType);
         this.appointmentDb = null;
@@ -119,7 +121,9 @@ public class Patient extends User implements CsvCompatible {
     //     this.bloodType = bloodType;
     // }
 
-    // public void setContactInfo(String contactInfo) {
-    //     this.contactInfo = contactInfo;
-    // }
+     public void setContactInfo(String contactInfo) {
+         this.contactInfo = contactInfo;
+         this.record.setContactInfo(contactInfo);
+         this.userDb.updatePatient();
+     }
 }
