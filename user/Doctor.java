@@ -102,8 +102,4 @@ public class Doctor extends Staff implements DoctorApiPatient {
     public Inventory getInventory() {
         return this.inventory;
     }
-
-    public void setAvailability() {
-
-    }
 }

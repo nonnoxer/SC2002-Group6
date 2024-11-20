@@ -128,7 +128,7 @@ public class DoctorMenu extends Menu {
         }
         int appointmentChoice = sc.promptInt("", 0, appointments.size()-1);
         AppointmentOutcomeRecord record = appointments.get(appointmentChoice).getRecord();
-        
+
         String newDiagnosis = sc.promptLine("Enter new diagnosis: ");
         record.addDiagnoses(newDiagnosis);
 
@@ -270,6 +270,9 @@ public class DoctorMenu extends Menu {
 
     private void viewUpcomingAppointments() {
         ArrayList<Appointment> appointments = this.doctor.getUpcomingAppointments();
+        if (appointments.size() == 0){
+            System.out.println("No appointments!");
+        }
         for (int i = 0; i < appointments.size(); i++) {
             Appointment appointment = appointments.get(i);
             System.out.println(appointment.getSlot().getDate());
@@ -279,6 +282,10 @@ public class DoctorMenu extends Menu {
     private void recordAppointmentOutcome() {
         ArrayList<Prescription> selectedMedicines = new ArrayList<>();
         ArrayList<Appointment> appointments = this.doctor.getUpcomingAppointments();
+        if (appointments.size() == 0){
+            System.out.println("No appointments");
+            return;
+        }
         System.out.println("Select an appointment:");
         for (int i = 0; i < appointments.size(); i++) {
             Appointment appointment = appointments.get(i);
