@@ -1,5 +1,8 @@
 package menus;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import data.user.UserDatabase;
 import user.Administrator;
 import user.Doctor;
@@ -66,14 +69,25 @@ public class LoginMenu {
         return menu;
     }
 
+
     private void setPassword(UserId id) {
-        String password = sc.promptLine("Enter a new password: ");;
-        while (password.equals("")){
-            System.out.println("Password cannot be blank.");
+        String password = sc.promptLine("Enter a new password: ");
+        while (password.equals("") || !isValidPassword(password)) {
+            if (password.equals("")) {
+                System.out.println("Password cannot be blank.");
+            } else {
+                System.out.println("Password must meet the following criteria: ");
+                System.out.println("- At least 8 characters long.");
+                System.out.println("- Contains at least one uppercase letter.");
+                System.out.println("- Contains at least one lowercase letter.");
+                System.out.println("- Contains at least one digit.");
+                System.out.println("- Contains at least one special character (e.g., @, #, $, %).");
+            }
             password = sc.promptLine("Enter a new password: ");
         }
         
         db.setPassword(id, password);
+        System.out.println("Password successfully updated.");
     }
 
     private boolean checkPassword(UserAccount account, int tries) {
@@ -85,6 +99,18 @@ public class LoginMenu {
             System.out.printf("Incorrect password. %d attempts left.\n", tries-i-1);
         }
         return false;
+    }
+private boolean isValidPassword(String password) {
+        // Regular expression to check password complexity:
+        // - At least 8 characters long
+        // - At least one uppercase letter
+        // - At least one lowercase letter
+        // - At least one digit
+        // - At least one special character
+        String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*(),.?\":{}|<>]).{8,}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
     }
 }
 
