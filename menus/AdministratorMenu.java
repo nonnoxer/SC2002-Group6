@@ -1,7 +1,6 @@
 package menus;
 
 import java.util.ArrayList;
-
 import medicine.Medicine;
 import medicine.ReplenishmentRequest;
 import user.Administrator;
@@ -89,7 +88,6 @@ public class AdministratorMenu extends Menu{
                     String newRole = sc.promptLine("Enter Staff Role: ");
                     String newGender = sc.promptLine("Enter Staff Gender:");
                     int newAge = sc.promptInt("Enter staff age: ", 0, 200);
-                    sc.nextLine(); // Consume newline
                     // Staff newStaff = new Staff(oldId, newName, newRole, newGender, newAge);
                     administrator.updateStaff(new UserId(oldId), newName, Role.valueOf(newRole), newGender, newAge);
                     break;
@@ -110,15 +108,63 @@ public class AdministratorMenu extends Menu{
     }
 
     private void viewInventory() {
-        ArrayList<Medicine> medicines = administrator.getInventory();
-        if (medicines.isEmpty()) {
-            System.out.println("The inventory is currently empty.");
-            return;
-        }
-        System.out.println("Medication Inventory:");
-        for (Medicine medicine : medicines) {
-            System.out.printf("Medicine: %s, Stock: %d, Low Stock Alert: %d\n",
-                medicine.getName(), medicine.getStock(), medicine.getLowStockLevelAlert());
+        while (true) { 
+            System.out.println("===== Manage Medication Inventory =====");
+            System.out.println("1. View Inventory");
+            System.out.println("2. Update Stock Level");
+            System.out.println("3. Add New Medicine");
+            System.out.println("4. Remove Medicine");
+            System.out.println("5. Update Stock and Low Stock Alert Level");
+            System.out.println("6. Back to Main Menu");
+            int choice = sc.promptInt("Enter your choice: ", 1, 6);
+
+            String medicineName;
+            int stockNum = 0, lowStockAlert = 0;
+
+            switch(choice) {
+                //View Inventory
+                case 1:
+                    ArrayList<Medicine> medicines = administrator.getInventory();
+                    if (medicines.isEmpty()) {
+                        System.out.println("The inventory is currently empty.");
+                        break;
+                        }
+                    System.out.println("Medication Inventory:");
+                    for (Medicine medicine : medicines) {
+                        System.out.printf("Medicine: %s, Stock: %d, Low Stock Alert: %d\n",
+                            medicine.getName(), medicine.getStock(), medicine.getLowStockLevelAlert());
+                        }
+                        break;
+                //Update Stock Level
+                case 2:
+                    medicineName = sc.promptLine("Enter the name of the medicine: ");
+                    stockNum = sc.promptInt("Enter the new stock level: ", 0, Integer.MAX_VALUE);
+                    administrator.updateInventoryStock(medicineName, stockNum);
+                    break;
+                //Add New Medicine
+                case 3:
+                    medicineName = sc.promptLine("Enter the name of the new medicine: ");
+                    stockNum = sc.promptInt("Enter the initial stock level: ", 0, Integer.MAX_VALUE);
+                    lowStockAlert = sc.promptInt("Enter the low stock alert level: ", 0, Integer.MAX_VALUE);
+                    administrator.addNewMedicine(medicineName, stockNum, lowStockAlert);
+                    break;
+                //Remove Medicine
+                case 4:
+                    medicineName = sc.promptLine("Enter the name of the medicine to remove: ");
+                    administrator.removeMedicine(medicineName);
+                    break;
+                //Update Low Stock Alert Level
+                case 5:
+                    medicineName = sc.promptLine("Enter the name of the medicine: ");
+                    stockNum = sc.promptInt("Enter the stock level: ", 0, Integer.MAX_VALUE);
+                    lowStockAlert = sc.promptInt("Enter the new low stock alert level: ", 0, Integer.MAX_VALUE);
+                    administrator.updateInventoryStock(medicineName, stockNum, lowStockAlert);
+                    break;
+                case 6:
+                    return;
+                default:
+                    System.out.println("Invalid choice, please try again.");
+            }
         }
     }
 
