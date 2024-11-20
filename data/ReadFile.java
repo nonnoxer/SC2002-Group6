@@ -8,6 +8,7 @@ import java.util.List;
 
 import appointment.Appointment;
 import medicine.Medicine;
+import medicine.ReplenishmentRequest;
 import user.Administrator;
 import user.Doctor;
 import user.Patient;
@@ -158,6 +159,17 @@ public class ReadFile {
         }
 
         return inventory;
+    }
+
+    public static ArrayList<ReplenishmentRequest> readRequestListFile(String path) throws IOException {
+        String[][] values = ReadFile.readCSV(path);
+
+        ArrayList<ReplenishmentRequest> requests = new ArrayList<>();
+        for (int i = 0; i < values.length; i++) {
+            String[] line = values[i];
+            requests.add(new ReplenishmentRequest(line));
+        }
+        return requests;
     }
 
     public static ArrayList<Appointment> readAppointmentListFile(String path) throws IOException {

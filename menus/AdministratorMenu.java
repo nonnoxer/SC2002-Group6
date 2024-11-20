@@ -1,5 +1,9 @@
 package menus;
 
+import java.util.ArrayList;
+
+import medicine.Medicine;
+import medicine.ReplenishmentRequest;
 import user.Administrator;
 import user.Role;
 import user.UserId;
@@ -17,7 +21,7 @@ public class AdministratorMenu extends Menu{
 
         int choice = -1;
         
-        while (choice != 8) {
+        while (choice != 5) {
             System.out.println("===== Administrator Menu =====");
             System.out.println("1. View and Manage Hospital Staff");
             System.out.println("2. View Appointment Details");
@@ -45,7 +49,7 @@ public class AdministratorMenu extends Menu{
                 approveRequests();
                 break;
             case 5:
-                break;
+                return;
             default:
                 System.out.println("The option is chosen incorrectly, please try again!");
         }
@@ -106,13 +110,38 @@ public class AdministratorMenu extends Menu{
     }
 
     private void viewInventory() {
-
+        ArrayList<Medicine> medicines = administrator.getInventory();
+        if (medicines.isEmpty()) {
+            System.out.println("The inventory is currently empty.");
+            return;
+        }
+        System.out.println("Medication Inventory:");
+        for (Medicine medicine : medicines) {
+            System.out.printf("Medicine: %s, Stock: %d, Low Stock Alert: %d\n",
+                medicine.getName(), medicine.getStock(), medicine.getLowStockLevelAlert());
+        }
     }
 
     private void approveRequests() {
+        ArrayList<ReplenishmentRequest> requests = administrator.getPendingRequests();
+        if (requests.isEmpty()) {
+            System.out.println("No pending replenishment requests.");
+            return;
+        }
 
+        System.out.println("Pending replenishment requests:");
+        for (int i = 0; i < requests.size(); i++) {
+            ReplenishmentRequest request = requests.get(i);
+            System.out.printf("%d. %s: %d\n", i+1, request.getName(), request.getStock());
+        }
+        System.out.println("0. Cancel");
+        int choice = sc.promptInt("Enter your choice: ", 0, requests.size());
+        if (choice == 0) return;
+
+        ReplenishmentRequest request = requests.get(choice-1);
+        System.out.println("1. Approve");
+        System.out.println("0. Reject");
+        boolean approved = sc.promptInt("Enter your choice: ", 0, 1) == 1;
+        this.administrator.approveRequest(request, approved);
     }
 }
-
-
-

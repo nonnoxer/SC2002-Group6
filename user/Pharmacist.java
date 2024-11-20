@@ -2,6 +2,7 @@ package user;
 
 import java.util.ArrayList;
 import medicine.Inventory;
+import medicine.Medicine;
 import medicine.PrescriptionStatus;
 import medicine.ReplenishmentRequest;
 import record.AppointmentOutcomeRecord;
@@ -44,16 +45,14 @@ public class Pharmacist extends Staff {
     }
 
     // Get the inventory associated with the Pharmacist
-    public Inventory getInventory() {
-        return this.inventory;
+    public ArrayList<Medicine> getInventory() {
+        return this.inventory.getInventory();
     }
 
     // Submit a replenishment request for medicine
     public void requestReplenishment(ReplenishmentRequest request) {
         if (this.inventory != null) {
-            // Assuming the inventory has a method to handle replenishment requests
-            System.out.println("Submitting replenishment request for medicine: " + request.getName());
-            request.approveRequest(true); // Mark request as approved
+            this.inventory.handleReplenishmentRequest(request);
         } else {
             System.out.println("Inventory is not initialized.");
         }

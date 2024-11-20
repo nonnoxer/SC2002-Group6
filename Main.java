@@ -4,6 +4,7 @@ class Main {
             "Staff_List.csv", 
             "Patient_List.csv", 
             "Medicine_List.csv", 
+            "Replenishment_Request_List.csv",
             "Account_List.csv", 
             "Appointment_List.csv"
         );

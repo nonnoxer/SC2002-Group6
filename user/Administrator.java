@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import medicine.Inventory;
 import medicine.Medicine;
+import medicine.ReplenishmentRequest;
+import medicine.ReplenishmentStatus;
 
 public class Administrator extends Staff {
     private UserDatabaseApiAdministrator userDb;
@@ -77,11 +79,8 @@ public class Administrator extends Staff {
     }
 
     //View the entire inventory
-    public void viewInventory() {
-        ArrayList<Medicine> inventoryList = inventory.getInventory();
-        for(Medicine medicine: inventoryList) {
-            System.out.println("Medicine: " + medicine.getName() + ", Stock: " + medicine.getStock() + ", Low Stock Alert Level: " + medicine.getLowStockLevelAlert());
-        }
+    public ArrayList<Medicine> getInventory() {
+        return this.inventory.getInventory();
     }
 
     //Update stock num for an existing medicine 
@@ -117,5 +116,19 @@ public class Administrator extends Staff {
         } else {
             System.out.println("Medicine not found in the inventory.");
         }
+    }
+
+    public ArrayList<ReplenishmentRequest> getPendingRequests() {
+        ArrayList<ReplenishmentRequest> result = new ArrayList<>();
+        for (ReplenishmentRequest request : this.inventory.getRequests()) {
+            if (request.getStatus().equals(ReplenishmentStatus.Pending)) {
+                result.add(request);
+            }
+        }
+        return result;
+    }
+
+    public void approveRequest(ReplenishmentRequest request, boolean approved) {
+        this.inventory.approveReplenishmentRequest(request, approved);
     }
 }

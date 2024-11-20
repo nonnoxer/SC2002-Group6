@@ -31,6 +31,10 @@ public class Medicine implements CsvCompatible {
     public void setStock(int stock){
         this.stock = stock;
     }
+
+    public void addStock(int stock) {
+        this.stock += stock;
+    }
     
     public void setLowStockLevelAlert(int lowStockLevelAlert){
         this.lowStockLevelAlert = lowStockLevelAlert;

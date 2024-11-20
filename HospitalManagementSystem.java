@@ -11,10 +11,17 @@ public class HospitalManagementSystem {
     private AppointmentDatabase appointmentDb;
     private UserInterface ui;
 
-    public HospitalManagementSystem(String staffListPath, String patientListPath, String medicineListPath, String accountListPath, String appointmentListPath) {
+    public HospitalManagementSystem(
+        String staffListPath,
+        String patientListPath,
+        String medicineListPath,
+        String requestListPath,
+        String accountListPath,
+        String appointmentListPath
+    ) {
         try {
             userDb = new UserDatabase(accountListPath, patientListPath, staffListPath);
-            inventory = new Inventory(medicineListPath);
+            inventory = new Inventory(medicineListPath, requestListPath);
             appointmentDb = new AppointmentDatabase(appointmentListPath);
         } catch (IOException e) {
             e.printStackTrace();

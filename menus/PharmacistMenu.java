@@ -1,7 +1,7 @@
 package menus;
 
 import java.util.ArrayList;
-import medicine.Inventory;
+import medicine.Medicine;
 import medicine.PrescriptionStatus;
 import medicine.ReplenishmentRequest;
 import record.AppointmentOutcomeRecord;
@@ -101,13 +101,7 @@ public class PharmacistMenu extends Menu {
 
     // View the inventory details
     private void viewInventory() {
-        Inventory inventory = pharmacist.getInventory();
-        if (inventory == null) {
-            System.out.println("Inventory not initialized.");
-            return;
-        }
-
-        ArrayList<medicine.Medicine> medicines = inventory.getInventory();
+        ArrayList<Medicine> medicines = pharmacist.getInventory();
         if (medicines.isEmpty()) {
             System.out.println("The inventory is currently empty.");
             return;
@@ -122,19 +116,11 @@ public class PharmacistMenu extends Menu {
 
     // Submit a replenishment request for medicine
     private void submitRequest() {
-        Inventory inventory = pharmacist.getInventory();
-        if (inventory == null) {
-            System.out.println("Inventory not initialized.");
-            return;
-        }
-
         String name = sc.promptLine("Enter medicine name: ");
         int stock = sc.promptInt("Enter stock request amount: ", 1, Integer.MAX_VALUE);
 
         ReplenishmentRequest request = new ReplenishmentRequest(name, stock);
         pharmacist.requestReplenishment(request);
-
-        inventory.handleReplenishmentRequest(request);
-        System.out.printf("Replenishment request for '%s' has been submitted.\n", name);
+        System.out.printf("Replenishment request for '%s' (%d) has been submitted.\n", name, stock);
     }
 }
