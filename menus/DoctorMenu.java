@@ -210,7 +210,7 @@ public class DoctorMenu extends Menu {
         }
         List<Integer> slotToChange = sc.promptRange("Slot to change: ", 0, slots.size());
         boolean availibility = sc.promptInt("Set availablility (available: 1, unavailable: 0): ", 0, 1) == 1;
-        if (availibility){
+        if (!availibility){
             // if its true its easy, dont need to check appointment 
             for (int i = 0; i < slotToChange.size(); i++) {
                 tmp = slots.get(slotToChange.get(i));
@@ -218,28 +218,36 @@ public class DoctorMenu extends Menu {
             }
         } else{
             boolean flag = true;
-            ArrayList<Appointment> appointments = this.doctor.getUpcomingAppointments();
+            ArrayList<Appointment> appointments = new ArrayList<>();
+            
+            if (this.doctor.getUpcomingAppointments() != null) {
+                appointments.addAll(this.doctor.getUpcomingAppointments());
+            }
+            if (this.doctor.getPendingAppointments() != null) {
+                appointments.addAll(this.doctor.getPendingAppointments());
+            }
             for (int i = 0; i < slotToChange.size(); i++) {
+                flag = true;
                 tmp = slots.get(slotToChange.get(i));
-                for (int j = 0; i < appointments.size(); j++) {
+                for (int j = 0; j < appointments.size(); j++) {
                     Appointment appointment = appointments.get(j);
-                    if (appointment.getSlot() == tmp){
+                    if (appointment.getSlot().equals(tmp)) {
                         flag = false;
                         break;
                     }
                 }
-                if (flag==false){
+                if (flag == false) {
                     break;
                 }
             }
-            if (flag){
+            if (flag) {
                 for (int i = 0; i < slotToChange.size(); i++) {
-                    tmp = slots.get(slotToChange.get(i));
-                    tmp.setAvailability(availibility);
+                    tmp = slots.get(slotToChange.get(i)); 
+                    tmp.setAvailability(availibility); 
                 }
-            }else{
-                System.out.println("One or more slot has an appointment, unable to change availability!");
-            }
+            } else {
+                System.out.println("One or more slots have an appointment, unable to change availability!");
+            }            
         }
     }
 
