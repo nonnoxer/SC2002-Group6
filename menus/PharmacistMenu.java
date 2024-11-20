@@ -113,9 +113,14 @@ public class PharmacistMenu extends Menu {
         }
 
         System.out.println("Medication Inventory:");
-        for (medicine.Medicine medicine : medicines) {
-            System.out.printf("Medicine: %s, Stock: %d, Low Stock Alert: %d\n",
-                    medicine.getName(), medicine.getStock(), medicine.getLowStockLevelAlert());
+        for (Medicine medicine : medicines) {
+            System.out.printf("Medicine: %s, Stock: %d",
+                medicine.getName(), medicine.getStock());
+            if (medicine.checkLowStock()) {
+                System.out.printf(" [ALERT: Stock low (<%d)]",
+                medicine.getLowStockLevelAlert());
+            }
+            System.out.print("\n");
         }
     }
 

@@ -23,6 +23,10 @@ public class Medicine implements CsvCompatible {
     public int getLowStockLevelAlert(){
         return this.lowStockLevelAlert;
     }
+
+    public boolean checkLowStock() {
+        return this.stock < this.lowStockLevelAlert;
+    }
     
     public void setName(String name){
         this.name = name;
