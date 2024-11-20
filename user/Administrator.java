@@ -2,7 +2,6 @@ package user;
 
 import data.appointment.AppointmentDatabase;
 import data.user.UserDatabaseApiAdministrator;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import medicine.Inventory;
