@@ -38,4 +38,8 @@ public class AppointmentSlot {
     public void cancel() {
         this.availability = true;
     }
+
+    public void setAvailability(boolean availability){
+        this.availability = availability;
+    }
 }

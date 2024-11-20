@@ -13,6 +13,7 @@ import medicine.Prescription;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import user.Patient;
 
@@ -186,7 +187,60 @@ public class DoctorMenu extends Menu {
     }
 
     private void setAvailability() {
-        this.doctor.setAvailability();
+        AppointmentSlot tmp;
+        Schedule schedule = this.doctor.getPersonalSchedule();
+
+        int year = sc.promptInt("Enter year: ", 1900, 2037);
+        int month = sc.promptInt("Enter month (1-12): ", 1, 12);
+
+        schedule.printMonth(LocalDate.of(year, month, 1), false);
+
+        int day = sc.promptInt("Enter day: ", 1, 31);
+
+        ArrayList<AppointmentSlot> slots = schedule.getSlots(LocalDate.of(year, month, day));
+        if (slots == null || slots.size() == 0) {
+            System.out.println("No slots found.");
+            return;
+        }
+
+        for (int i = 0; i < slots.size(); i++) {
+            AppointmentSlot slot = slots.get(i);
+            String available = slot.getAvailability() ? "Available" : "Not Available";
+            System.out.printf("Slot %-2d: %s: %s\n", i, slot.getDate(), available);
+        }
+        List<Integer> slotToChange = sc.promptRange("Slot to change: ", 0, slots.size());
+        boolean availibility = sc.promptInt("Set availablility (available: 1, unavailable: 0): ", 0, 1) == 1;
+        if (availibility){
+            // if its true its easy, dont need to check appointment 
+            for (int i = 0; i < slotToChange.size(); i++) {
+                tmp = slots.get(slotToChange.get(i));
+                tmp.setAvailability(availibility);
+            }
+        } else{
+            boolean flag = true;
+            ArrayList<Appointment> appointments = this.doctor.getUpcomingAppointments();
+            for (int i = 0; i < slotToChange.size(); i++) {
+                tmp = slots.get(slotToChange.get(i));
+                for (int j = 0; i < appointments.size(); j++) {
+                    Appointment appointment = appointments.get(j);
+                    if (appointment.getSlot() == tmp){
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag==false){
+                    break;
+                }
+            }
+            if (flag){
+                for (int i = 0; i < slotToChange.size(); i++) {
+                    tmp = slots.get(slotToChange.get(i));
+                    tmp.setAvailability(availibility);
+                }
+            }else{
+                System.out.println("One or more slot has an appointment, unable to change availability!");
+            }
+        }
     }
 
     private void acceptAppointmentRequest() {
