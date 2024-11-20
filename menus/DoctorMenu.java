@@ -114,11 +114,50 @@ public class DoctorMenu extends Menu {
     }
 
     private void updatePatientRecords() {
+        ArrayList<Prescription> selectedMedicines = new ArrayList<>();
         Patient selectedPatient = selectPatient();
         if (selectedPatient == null) return;
 
         System.out.printf("Updating records of %s:\n", selectedPatient.getName());
         // Update records
+        ArrayList<Appointment> appointments = this.doctor.getUpcomingAppointments();
+        System.out.println("Select an appointment:");
+        for (int i = 0; i < appointments.size(); i++) {
+            Appointment appointment = appointments.get(i);
+            System.out.printf("%d. %s", i, appointment.getSlot().getDate());
+        }
+        int appointmentChoice = sc.promptInt("", 0, appointments.size()-1);
+        AppointmentOutcomeRecord record = appointments.get(appointmentChoice).getRecord();
+        
+        String newDiagnosis = sc.promptLine("Enter new diagnosis: ");
+        record.addDiagnoses(newDiagnosis);
+
+        String newTreatmentPlan = sc.promptLine("Enter new treatment plan: ");
+        record.addTreatmentPlan(newTreatmentPlan);
+    
+        // Adding a prescription
+        Inventory inventory = this.doctor.getInventory();
+        ArrayList<Medicine> medicines = inventory.getInventory();
+        int choice = -1;
+        while(choice != medicines.size()+1){
+            System.out.println("Medicine List:");
+            for(int i=0; i<medicines.size(); i++){
+                System.out.printf("%d: %s (stock: %d)\n", i+1, medicines.get(i).getName(), medicines.get(i).getStock());
+            }
+            // if press size+1 for first time means no medicine neeeded
+            System.out.printf("%d: Done with selection!\n", medicines.size()+1);
+            choice = sc.promptInt("", 1, medicines.size()+1);
+            if (choice != medicines.size()+1){
+                String name = medicines.get(choice-1).getName();
+                int quantity = sc.promptInt("Enter medicine quantity: ", 1, medicines.get(choice-1).getStock());
+                selectedMedicines.add(new Prescription(name, quantity));
+            }
+            else{
+                break;
+            }
+        }
+        record.addPrescription(selectedMedicines);
+
     }
 
     private void viewSchedule() {
@@ -252,6 +291,8 @@ public class DoctorMenu extends Menu {
         // filling up the form
         String serviceType = sc.promptLine("Enter service type: ");
         String consultationNotes = sc.promptLine("Enter consultation notes: ");
+        String diagnosis = sc.promptLine("Enter diagnosis: ");
+        String treatmentPlan = sc.promptLine("Enter treatment plan, if any: ");
         // medicine for patient
         Inventory inventory = this.doctor.getInventory();
         ArrayList<Medicine> medicines = inventory.getInventory();
@@ -273,7 +314,7 @@ public class DoctorMenu extends Menu {
                 break;
             }
         }
-        AppointmentOutcomeRecord outcomeRecord = new AppointmentOutcomeRecord(slot, serviceType, consultationNotes, selectedMedicines);
+        AppointmentOutcomeRecord outcomeRecord = new AppointmentOutcomeRecord(slot, serviceType, consultationNotes, selectedMedicines, diagnosis, treatmentPlan);
         this.doctor.recordOutcome(appointments.get(appointmentChoice).getId(), outcomeRecord);
     }
 }
