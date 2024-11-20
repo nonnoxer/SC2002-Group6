@@ -2,6 +2,7 @@ package menus;
 
 import java.util.ArrayList;
 import medicine.Inventory;
+import medicine.PrescriptionStatus;
 import medicine.ReplenishmentRequest;
 import record.AppointmentOutcomeRecord;
 import user.Pharmacist;
@@ -89,8 +90,12 @@ public class PharmacistMenu extends Menu {
         int choice = sc.promptInt("Enter record number: ", 1, records.size()) - 1;
         AppointmentOutcomeRecord selectedRecord = records.get(choice);
 
-        String newStatus = sc.promptLine("Enter new prescription status (e.g., 'Approved', 'Rejected'): ");
-        pharmacist.updatePrescriptionStatus(selectedRecord, newStatus);
+        System.out.println("1. Dispense prescription");
+        System.out.println("0. Cancel");
+        int dispenseChoice = sc.promptInt("Enter your choice: ", 0, 1);
+        if (dispenseChoice == 0) return;
+
+        pharmacist.updatePrescriptionStatus(selectedRecord, PrescriptionStatus.Dispensed);
         System.out.println("Prescription status updated successfully.");
     }
 

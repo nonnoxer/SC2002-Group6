@@ -18,11 +18,15 @@ public class Inventory{
         return medicines;
     }
 
+    private void update() {
+        WriteFile.writeFile(medicines, this.medicineListPath);
+    }
+
     public int setInventory(String name, int stock){
         for(int i=0; i<medicines.size(); i++){
             if (medicines.get(i).getName().equals(name)){
                 medicines.get(i).setStock(stock);
-                WriteFile.writeFile(medicines, this.medicineListPath);
+                update();
                 return 1;
             }
         }
@@ -34,7 +38,7 @@ public class Inventory{
             if (medicines.get(i).getName().equals(name)){
                 medicines.get(i).setStock(stock);
                 medicines.get(i).setLowStockLevelAlert(lowStockLevelAlert);
-                WriteFile.writeFile(medicines, this.medicineListPath);
+                update();
                 return 1;
             }
         }
@@ -43,7 +47,7 @@ public class Inventory{
 
     public void addInventory(String name, int initialStock, int lowStockLevelAlert){
         medicines.add(new Medicine(name, initialStock, lowStockLevelAlert));
-        WriteFile.writeFile(medicines, this.medicineListPath);
+        update();
     }
 
     public void handleReplenishmentRequest(ReplenishmentRequest request) {
@@ -55,6 +59,7 @@ public class Inventory{
         for (int i = 0; i < medicines.size(); i++) {
             if (medicines.get(i).getName().equals(name)) {
                 medicines.remove(i);
+                update();
                 return 1; 
             }
         }

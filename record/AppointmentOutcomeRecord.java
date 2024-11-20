@@ -5,16 +5,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import appointment.AppointmentSlot;
 import medicine.Prescription;
+import medicine.PrescriptionStatus;
 
 public class AppointmentOutcomeRecord {
-    private String serviceType, consultationNotes, prescriptionStatus;
+    private String serviceType, consultationNotes;
+    private PrescriptionStatus prescriptionStatus;
     private AppointmentSlot slot;
     private ArrayList<Prescription> prescription;
 
     public AppointmentOutcomeRecord(AppointmentSlot slot, String serviceType, String consultationNotes, ArrayList<Prescription> prescription) {
         this.slot = slot;
         this.serviceType = serviceType;
-        this.prescriptionStatus = "Pending";
+        this.prescriptionStatus = PrescriptionStatus.Pending;
         this.prescription = prescription;
         this.consultationNotes = consultationNotes;
     }
@@ -22,7 +24,11 @@ public class AppointmentOutcomeRecord {
     public AppointmentOutcomeRecord(String[] line) throws IOException {
         this.serviceType = line[0];
         this.consultationNotes = line[1];
-        this.prescriptionStatus = line[2];
+        try {
+            this.prescriptionStatus = PrescriptionStatus.valueOf(line[2]);
+        } catch (IllegalArgumentException e) {
+            throw new IOException("Invalid line: expected " + line[2] + " to be one of 'Pending', 'Dispensed'.");
+        }
 
         String medicines = line[3];
         String quantities = line[4];
@@ -55,7 +61,7 @@ public class AppointmentOutcomeRecord {
         return this.consultationNotes;
     }
 
-    public String getPrescriptionStatus() {
+    public PrescriptionStatus getPrescriptionStatus() {
         return this.prescriptionStatus;
     }
     
@@ -63,7 +69,7 @@ public class AppointmentOutcomeRecord {
         return this.prescription;
     }
 
-    public void updatePrescriptionStatus(String status) {
+    public void updatePrescriptionStatus(PrescriptionStatus status) {
     this.prescriptionStatus = status;
 }
 

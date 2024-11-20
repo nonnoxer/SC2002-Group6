@@ -2,6 +2,7 @@ package user;
 
 import java.util.ArrayList;
 import medicine.Inventory;
+import medicine.PrescriptionStatus;
 import medicine.ReplenishmentRequest;
 import record.AppointmentOutcomeRecord;
 
@@ -33,7 +34,7 @@ public class Pharmacist extends Staff {
     }
 
     // Update the prescription status in an appointment outcome record
-    public void updatePrescriptionStatus(AppointmentOutcomeRecord record, String status) {
+    public void updatePrescriptionStatus(AppointmentOutcomeRecord record, PrescriptionStatus status) {
         if (this.records.contains(record)) {
             record.updatePrescriptionStatus(status);
             System.out.println("Prescription status updated to: " + status);

@@ -116,13 +116,13 @@ public class Appointment implements CsvCompatible {
             "%d,%s,%s,%s,%b,%s,%s,%s,%s,%s,%s",
             id, patientId, doctorId, appointmentStatus.toString(),
             slot.getAvailability(), slot.getDate(),
-            record.getServiceType(), record.getConsultationNotes(), record.getPrescriptionStatus(),
+            record.getServiceType(), record.getConsultationNotes(), record.getPrescriptionStatus().toString(),
             record.getPrescription().stream().map(Prescription::getName).collect(Collectors.joining("::")),
             record.getPrescription().stream().map((prescription) -> String.valueOf(prescription.getQuantity())).collect(Collectors.joining("::"))
         );
         else return String.format(
             "%d,%s,%s,%s,%b,%s,,,,,",
-            id, patientId, doctorId, appointmentStatus,
+            id, patientId, doctorId, appointmentStatus.toString(),
             slot.getAvailability(), slot.getDate()
         );
     }

@@ -16,12 +16,15 @@
 ./user/Pharmacist.java
 ./user/UserAccount.java
 ./user/Patient.java
+./medicine/PrescriptionStatus.java
 ./medicine/Inventory.java
 ./medicine/Prescription.java
+./medicine/ReplenishmentStatus.java
 ./medicine/ReplenishmentRequest.java
 ./medicine/Medicine.java
 ./Main.java
 ./menus/UserInterface.java
+./menus/RegisterMenu.java
 ./menus/DoctorMenu.java
 ./menus/Menu.java
 ./menus/PharmacistMenu.java
