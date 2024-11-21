@@ -10,9 +10,9 @@ import record.AppointmentOutcomeRecord;
 import user.UserId;
 
 /**
- * Represents a medical appointment between a patient and a doctor.
- * The appointment contains information such as the appointment status, scheduled time slot, 
- * and potentially the outcome record if the appointment has been completed.
+ * Shows a medical appointment with a patient and a doctor
+ * It contains information like appointment status, sheduled time slot etc.,
+ * and the outcome record if the appointment has been completed.
  * It also provides methods for scheduling, rescheduling, and canceling the appointment.
  * @author NATANAEL TAN TIONG OON
  * @version 1.0
@@ -47,7 +47,7 @@ public class Appointment implements CsvCompatible {
 
     /**
      * Constructs an Appointment object by parsing a CSV line. 
-     * The line must contain exactly 13 elements (columns).
+     * This line must have exactly 13 elements (columns).
      *
      * @param line an array of strings representing a CSV line
      * @throws IOException if the line does not have the correct format
@@ -86,7 +86,7 @@ public class Appointment implements CsvCompatible {
     }
 
     /**
-     * Accepts or declines the appointment by the doctor.
+     * Accepts or declines the appointment. Done by the doctor.
      * If declined, the appointment status is set to Declined and the slot is canceled.
      *
      * @param accepted true if the appointment is accepted, false if declined
@@ -139,18 +139,18 @@ public class Appointment implements CsvCompatible {
     }
 
     /**
-     * Returns the user ID of the patient associated with the appointment.
+     * Returns the patientId associated with the appointment.
      *
-     * @return the patient user ID
+     * @return the patientId
      */
     public UserId getPatientId() {
         return this.patientId;
     }
 
     /**
-     * Returns the user ID of the doctor associated with the appointment.
+     * Returns the doctorId associated with the appointment.
      *
-     * @return the doctor user ID
+     * @return the doctorId
      */
     public UserId getDoctorId() {
         return this.doctorId;
@@ -184,7 +184,7 @@ public class Appointment implements CsvCompatible {
     }
 
     /**
-     * Converts the Appointment object to a CSV string format.
+     * Converts from Appointment object to a CSV string format.
      * If the appointment has an outcome record, all related information will be included in the CSV string.
      *
      * @return a CSV string representing the appointment
