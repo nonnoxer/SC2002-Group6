@@ -39,15 +39,15 @@ public class AdministratorMenu extends Menu{
      */
     public void showMenu(){
         int choice = -1;
-        while (choice != 5) {
-            System.out.println("===== Administrator Menu =====");
+        while (choice != 0) {
+            System.out.println("\n===== Administrator Menu =====");
             System.out.println("1. View and Manage Hospital Staff");
             System.out.println("2. View Appointment Details");
             System.out.println("3. View and Manage Medication Inventory");
             System.out.println("4. Approve Replenishment Requests");
-            System.out.println("5. Logout");
+            System.out.println("0. Logout");
 
-            choice = sc.promptInt("Enter your choice: ", 1, 5);
+            choice = sc.promptInt("Enter your choice: ", 0, 4);
             handleSelection(choice);
         }
     }
@@ -72,7 +72,7 @@ public class AdministratorMenu extends Menu{
             case 4:
                 approveRequests();
                 break;
-            case 5:
+            case 0:
                 return;
             default:
                 System.out.println("The option is chosen incorrectly, please try again!");
