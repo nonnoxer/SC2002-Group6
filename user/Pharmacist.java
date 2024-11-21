@@ -9,24 +9,52 @@ import medicine.PrescriptionStatus;
 import medicine.ReplenishmentRequest;
 import record.AppointmentOutcomeRecord;
 
+/**
+ * Represents a Pharmacist, extending the Staff class.
+ * The Pharmacist class is responsible for managing prescription records, dispensing prescriptions, 
+ * handling inventory management, and submitting replenishment requests.
+ * 
+ * @author FONG JIAN YUAN
+ * @version 1.0
+ * @since 2024-11-21
+ */
 public class Pharmacist extends Staff {
     private AppointmentDatabaseApiPharmacist appointmentDb;
     private InventoryApiPharmacist inventory;
 
-    // Constructor
+    /**
+     * Constructs a new Pharmacist object with the provided user details.
+     *
+     * @param id The unique user ID of the pharmacist.
+     * @param name The name of the pharmacist.
+     * @param role The role of the user (should be Role.Pharmacist).
+     * @param gender The gender of the pharmacist.
+     * @param age The age of the pharmacist.
+     */
     public Pharmacist(UserId id, String name, Role role, String gender, int age) {
         super(id, name, role, gender, age);
         this.appointmentDb = null;
         this.inventory = null;
     }
 
-    // Initialize the inventory object for the Pharmacist
+    /**
+     * Initializes the Pharmacist object with the appointment database and inventory.
+     * This method establishes the connection with the relevant data sources.
+     *
+     * @param appointmentDb The AppointmentDatabaseApiPharmacist instance to interact with appointment records.
+     * @param inventory The InventoryApiPharmacist instance to manage the inventory of medicines.
+     */
     public void init(AppointmentDatabaseApiPharmacist appointmentDb, InventoryApiPharmacist inventory) {
         this.appointmentDb = appointmentDb;
         this.inventory = inventory;
     }
 
-    // Getter for appointment outcome records
+    /**
+     * Retrieves all pending prescription records from the appointment database.
+     * A pending prescription status indicates that the pharmacist needs to dispense the prescription.
+     *
+     * @return An ArrayList of AppointmentOutcomeRecord objects with a Pending prescription status.
+     */
     public ArrayList<AppointmentOutcomeRecord> getPendingRecords() {
         ArrayList<AppointmentOutcomeRecord> result = new ArrayList<>();
         for (AppointmentOutcomeRecord record : this.appointmentDb.getRecords()) {
@@ -37,7 +65,13 @@ public class Pharmacist extends Staff {
         return result;
     }
 
-    // Update the prescription status in an appointment outcome record
+    /**
+     * Dispenses a prescription for a given appointment outcome record.
+     * If successful, updates the prescription status and interacts with the inventory to dispense the medication.
+     *
+     * @param record The AppointmentOutcomeRecord object containing the prescription to be dispensed.
+     * @return True if the prescription was successfully dispensed, otherwise false.
+     */
     public boolean dispensePrescription(AppointmentOutcomeRecord record) {
         boolean success = this.inventory.dispensePrescription(record.getPrescription());
         if (!success) return false;
@@ -49,12 +83,21 @@ public class Pharmacist extends Staff {
         return result != null;
     }
 
-    // Get the inventory associated with the Pharmacist
+    /**
+     * Retrieves the inventory of medicines associated with the pharmacist.
+     *
+     * @return An ArrayList of Medicine objects currently in the inventory.
+     */
     public ArrayList<Medicine> getInventory() {
         return this.inventory.getInventory();
     }
 
-    // Submit a replenishment request for medicine
+    /**
+     * Submits a replenishment request for medicines in the inventory.
+     * The request is forwarded to the inventory system for handling.
+     *
+     * @param request The ReplenishmentRequest object containing details of the requested replenishment.
+     */
     public void requestReplenishment(ReplenishmentRequest request) {
         if (this.inventory != null) {
             this.inventory.handleReplenishmentRequest(request);
@@ -63,7 +106,10 @@ public class Pharmacist extends Staff {
         }
     }
 
-    // View the inventory
+    /**
+     * Views the current inventory of medicines.
+     * Prints the name, stock level, and low stock alert level for each medicine in the inventory.
+     */
     public void viewInventory() {
         if (this.inventory != null) {
             ArrayList<medicine.Medicine> inventoryList = inventory.getInventory();
