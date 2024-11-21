@@ -28,8 +28,8 @@ public class DoctorMenu extends Menu {
     public void showMenu(){
         int choice = -1;
         
-        while (choice != 8) {
-            System.out.println("===== Doctor Menu =====");
+        while (choice != 0) {
+            System.out.println("\n===== Doctor Menu =====");
             System.out.println("1. View Patient Medical Records");
             System.out.println("2. Update Patient Medical Records");
             System.out.println("3. View Personal Schedule");
@@ -37,9 +37,9 @@ public class DoctorMenu extends Menu {
             System.out.println("5. Accept or Decline Appointment Requests");
             System.out.println("6. View Upcoming Appointments");
             System.out.println("7. Record Appointment Outcome");
-            System.out.println("8. Logout");
+            System.out.println("0. Logout");
 
-            choice = sc.promptInt("Enter your choice: ", 1, 8);
+            choice = sc.promptInt("Enter your choice: ", 0, 7);
             handleSelection(choice);
         }
     }
@@ -67,7 +67,7 @@ public class DoctorMenu extends Menu {
             case 7:
                 recordAppointmentOutcome();
                 break;
-            case 8:
+            case 0:
                 break;
             default:
                 System.out.println("The option is chosen incorrectly, please try again!");
@@ -83,11 +83,13 @@ public class DoctorMenu extends Menu {
         else{
             System.out.println("Select a patient:");
             for (int i = 0; i < patients.size(); i++) {
-                System.out.printf("%d. %s\n", i, patients.get(i).getName());
+                System.out.printf("%d. %s\n", i+1, patients.get(i).getName());
             }
-            int choice = sc.promptInt("", 0, patients.size()-1);
+            System.out.println("0. Cancel");
+            int choice = sc.promptInt("", 0, patients.size());
+            if (choice == 0) return null;
 
-            Patient selectedPatient = doctor.getPatientIndex(patients.get(choice).getId());
+            Patient selectedPatient = doctor.getPatientIndex(patients.get(choice-1).getId());
             return selectedPatient;
         }
     }
@@ -123,10 +125,12 @@ public class DoctorMenu extends Menu {
         System.out.println("Select an appointment:");
         for (int i = 0; i < appointments.size(); i++) {
             Appointment appointment = appointments.get(i);
-            System.out.printf("%d. %s\n", i, appointment.getSlot().getDate());
+            System.out.printf("%d. %s\n", i+1, appointment.getSlot().getDate());
         }
-        int appointmentChoice = sc.promptInt("", 0, appointments.size()-1);
-        AppointmentOutcomeRecord record = appointments.get(appointmentChoice).getRecord();
+        System.out.println("0. Cancel");
+        int appointmentChoice = sc.promptInt("Enter your choice: ", 0, appointments.size());
+        if (appointmentChoice == 0) return;
+        AppointmentOutcomeRecord record = appointments.get(appointmentChoice-1).getRecord();
         if (record == null){
             System.err.println("No records!");
             return;
@@ -144,12 +148,11 @@ public class DoctorMenu extends Menu {
         while(choice != medicines.size()+1){
             System.out.println("Medicine List:");
             for(int i=0; i<medicines.size(); i++){
-                System.out.printf("%d: %s (stock: %d)\n", i+1, medicines.get(i).getName(), medicines.get(i).getStock());
+                System.out.printf("%d. %s (stock: %d)\n", i+1, medicines.get(i).getName(), medicines.get(i).getStock());
             }
-            // if press size+1 for first time means no medicine neeeded
-            System.out.printf("%d: Done with selection!\n", medicines.size()+1);
-            choice = sc.promptInt("", 1, medicines.size()+1);
-            if (choice != medicines.size()+1){
+            System.out.println("0. Done with selection!");
+            choice = sc.promptInt("", 0, medicines.size());
+            if (choice != 0){
                 String name = medicines.get(choice-1).getName();
                 int quantity = sc.promptInt("Enter medicine quantity: ", 1, medicines.get(choice-1).getStock());
                 selectedMedicines.add(new Prescription(name, quantity));
@@ -262,14 +265,18 @@ public class DoctorMenu extends Menu {
         System.out.println("Select an appointment:");
         for (int i = 0; i < appointments.size(); i++) {
             Appointment appointment = appointments.get(i);
-            System.out.printf("%d. %s\n", i, appointment.getSlot().getDate().toString());
+            System.out.printf("%d. %s\n", i+1, appointment.getSlot().getDate().toString());
         }
-        int choice = sc.promptInt("", 0, appointments.size()-1);
-        System.out.println("0. Accept");
-        System.out.println("1. Decline");
+        System.out.println("0. Cancel");
+        int choice = sc.promptInt("Enter your choice: ", 0, appointments.size());
+        if (choice == 0) return;
+        System.out.println("1. Accept");
+        System.out.println("0. Decline");
         int accept = sc.promptInt("Enter your choice: ", 0, 1);
-        boolean accepted = accept == 0;
-        this.doctor.acceptRequest(appointments.get(choice).getId(), accepted);
+        boolean accepted = accept == 1;
+        this.doctor.acceptRequest(appointments.get(choice-1).getId(), accepted);
+        if (accepted) System.out.println("Successfully accepted appointment.");
+        else System.out.println("Successfully declined appointment.");
     }
 
     private void viewUpcomingAppointments() {
@@ -279,7 +286,10 @@ public class DoctorMenu extends Menu {
         }
         for (int i = 0; i < appointments.size(); i++) {
             Appointment appointment = appointments.get(i);
-            System.out.println(appointment.getSlot().getDate());
+            System.out.printf(
+                "%s - %s\n",
+                appointment.getSlot().getDate(),
+                this.doctor.getPatientIndex(appointment.getPatientId()).getName());
         }
     }
 
@@ -293,12 +303,14 @@ public class DoctorMenu extends Menu {
         System.out.println("Select an appointment:");
         for (int i = 0; i < appointments.size(); i++) {
             Appointment appointment = appointments.get(i);
-            System.out.printf("%d. %s", i, appointment.getSlot().getDate());
+            System.out.printf("%d. %s\n", i+1, appointment.getSlot().getDate());
         }
-        int appointmentChoice = sc.promptInt("", 0, appointments.size()-1);
+        System.out.println("0. Cancel");
+        int appointmentChoice = sc.promptInt("Enter your choice: ", 0, appointments.size());
+        if (appointmentChoice == 0) return;
 
         // Finding patient appointment
-        AppointmentSlot slot = appointments.get(appointmentChoice).getSlot();
+        AppointmentSlot slot = appointments.get(appointmentChoice-1).getSlot();
         // filling up the form
         String serviceType = sc.promptLine("Enter service type: ");
         String consultationNotes = sc.promptLine("Enter consultation notes: ");
@@ -310,12 +322,12 @@ public class DoctorMenu extends Menu {
         while(choice != medicines.size()+1){
             System.out.println("Medicine List:");
             for(int i=0; i<medicines.size(); i++){
-                System.out.printf("%d: %s (stock: %d)\n", i+1, medicines.get(i).getName(), medicines.get(i).getStock());
+                System.out.printf("%d. %s (stock: %d)\n", i+1, medicines.get(i).getName(), medicines.get(i).getStock());
             }
             // if press size+1 for first time means no medicine neeeded
-            System.out.printf("%d: Done with selection!\n", medicines.size()+1);
-            choice = sc.promptInt("", 1, medicines.size()+1);
-            if (choice != medicines.size()+1){
+            System.out.println("0. Done with selection!");
+            choice = sc.promptInt("Enter your choice: ", 0, medicines.size());
+            if (choice != 0){
                 String name = medicines.get(choice-1).getName();
                 int quantity = sc.promptInt("Enter medicine quantity: ", 1, medicines.get(choice-1).getStock());
                 selectedMedicines.add(new Prescription(name, quantity));
@@ -325,6 +337,7 @@ public class DoctorMenu extends Menu {
             }
         }
         AppointmentOutcomeRecord outcomeRecord = new AppointmentOutcomeRecord(slot, serviceType, consultationNotes, selectedMedicines, diagnosis, treatmentPlan);
-        this.doctor.recordOutcome(appointments.get(appointmentChoice).getId(), outcomeRecord);
+        this.doctor.recordOutcome(appointments.get(appointmentChoice-1).getId(), outcomeRecord);
+        System.out.println("Marked appointment as complete.");
     }
 }
