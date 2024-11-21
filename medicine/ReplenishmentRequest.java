@@ -1,11 +1,10 @@
 package medicine;
 
+import data.CsvCompatible;
 import java.io.IOException;
 
-import data.CsvCompatible;
-
 /**
- * Represents a replenishment request for a specific medicine, including its current stock and approval status.
+ * The ReplenishmentRequest class represents a replenishment request for a specific medicine, including its current stock and approval status.
  * This class allows tracking and updating of inventory restocking requests and their processing.
  * 
  * @author LOW KAN YUI (LIU GENGRUI)

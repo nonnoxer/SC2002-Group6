@@ -243,7 +243,7 @@ public class Administrator extends Staff {
     }
 
     /**
-     * Approves or rejects a replenishment request.
+     * Approve or reject a replenishment request.
      *
      * @param request  The replenishment request to approve or reject.
      * @param approved A boolean indicating whether the request is approved (true) or rejected (false).
