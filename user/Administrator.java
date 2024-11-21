@@ -17,7 +17,7 @@ public class Administrator extends Staff {
     private Inventory inventory;
     
     //Constructor to initialize Administrator with an empty staff list and inventory
-    public Administrator(UserId id, String name, Role role, String gender, int age) throws IOException {
+    public Administrator(UserId id, String name, Role role, String gender, int age) {
         super(id, name, role, gender, age);
         this.userDb = null;
         this.inventory = null;

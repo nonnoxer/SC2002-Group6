@@ -27,6 +27,8 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
     private HashMap<UserId, Patient> patients;
     private HashMap<UserId, Staff> staffs;
     private HashMap<UserId, DoctorApiPatient> doctors;
+    private AppointmentDatabase appointmentDb;
+    private Inventory inventory;
 
     private String accountListPath, staffListPath, patientListPath;
 
@@ -38,6 +40,8 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
         this.staffs = new HashMap<>();
         this.patients = new HashMap<>();
         this.doctors = new HashMap<>();
+        this.appointmentDb = null;
+        this.inventory = null;
 
         for (Patient patient: patientList) {
             patients.put(patient.getId(), patient);
@@ -75,6 +79,9 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
     }
 
     public void initUsers(Inventory inventory, AppointmentDatabase appointmentDb) {
+        this.appointmentDb = appointmentDb;
+        this.inventory = inventory;
+
         // Patients have access to specific functions of Doctor
         for (Staff staff : staffs.values()) {
             switch (staff.getRole()) {
@@ -159,6 +166,8 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
         udpatePatientFile();
         updateAccountFile();
 
+        patient.init(this, appointmentDb);
+
         return patient;
     }
 
@@ -212,8 +221,33 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
         }
         UserId newId = new UserId(prefix, num);
 
-        Staff staff = new Staff(newId, name, role, gender, age);
+        Staff staff;
         UserAccount newAccount = new UserAccount(newId, nameToUsername(name), "", role);
+    
+        switch (role) {
+            case Doctor: {
+                Doctor temp = new Doctor(newId, name, role, gender, age);
+                temp.init(this, inventory);
+                temp.setSchedule(LocalDate.parse("2024-01-01"), LocalDate.parse("2025-12-31"));
+                temp.setAppointmentDb(appointmentDb);
+                staff = temp;
+                break;
+            }
+            case Pharmacist: {
+                Pharmacist temp = new Pharmacist(newId, name, role, gender, age);
+                temp.init(appointmentDb, inventory);
+                staff = temp;
+                break;
+            }
+            case Administrator: {
+                Administrator temp = new Administrator(newId, name, role, gender, age);
+                temp.init(this, appointmentDb, inventory);
+                staff = temp;
+                break;
+            }
+            default:
+                return null;
+        }
 
         staffs.put(newId, staff);
         accounts.put(newId, newAccount);
@@ -251,9 +285,5 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
         UserAccount account = accounts.get(id);
         account.setPassword(password);
         updateAccountFile();
-    }
-
-    public void updatePatient(){
-        this.udpatePatientFile();
     }
 }
