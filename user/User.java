@@ -15,7 +15,7 @@ public abstract class User {
     protected Role role;
 
     /**
-     * Constructs a new User object with the provided ID, name, and role.
+     * Construct a new User object with the provided ID, name, and role.
      * This constructor initializes the user with their unique identifier, name, and role in the system.
      *
      * @param id The unique ID of the user.
@@ -29,7 +29,7 @@ public abstract class User {
     }
 
     /**
-     * Gets the unique ID of the user.
+     * Get the unique ID of the user.
      *
      * @return The unique ID of the user.
      */
@@ -38,7 +38,7 @@ public abstract class User {
     }
 
     /**
-     * Gets the name of the user.
+     * Get the name of the user.
      *
      * @return The name of the user.
      */
@@ -47,7 +47,7 @@ public abstract class User {
     }
 
     /**
-     * Gets the role of the user.
+     * Get the role of the user.
      *
      * @return The role of the user.
      */
@@ -56,7 +56,7 @@ public abstract class User {
     }
 
     /**
-     * Sets the name of the user.
+     * Set the name of the user.
      *
      * @param name The new name of the user.
      */
@@ -65,7 +65,7 @@ public abstract class User {
     }
 
     /**
-     * Sets the role of the user.
+     * Set the role of the user.
      *
      * @param role The new role of the user.
      */
@@ -74,7 +74,7 @@ public abstract class User {
     }
 
     /**
-     * Converts the user's data to a CSV format string.
+     * Convert the user's data to a CSV format string.
      * This method should be implemented by subclasses to return their specific CSV representation.
      *
      * @return A string in CSV format representing the user's details.

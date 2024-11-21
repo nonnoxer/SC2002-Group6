@@ -1,23 +1,23 @@
 package user;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-
 import appointment.Appointment;
 import appointment.AppointmentSlot;
 import appointment.AppointmentStatus;
 import appointment.Schedule;
 import data.appointment.AppointmentDatabaseApiDoctor;
 import data.user.UserDatabaseApiDoctor;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import medicine.InventoryApiDoctor;
 import medicine.Medicine;
 import record.AppointmentOutcomeRecord;
 
 /**
- * Represents a Doctor in the system, who is responsible for managing their schedule,
- * handling appointments, and interacting with patients. The Doctor can also manage
- * inventory related to medical supplies and medications.
+ * The Docter class represents a Doctor in the system who is responsible for managing their schedule,
+ * handling appointments, and interacting with patients. The Doctor can also manage inventory related
+ * to medical supplies and medications.
+ * 
  * The Doctor implements the DoctorApiPatient interface to handle patient-related operations.
  * 
  * @author LOW KAN YUI (LIU GENGRUI)
@@ -161,7 +161,7 @@ public class Doctor extends Staff implements DoctorApiPatient {
     }
 
     /**
-     * Accepts or rejects an appointment request.
+     * Accept or reject an appointment request.
      *
      * @param appointmentId The unique identifier of the appointment.
      * @param accepted      A boolean indicating whether the appointment is accepted (true) or rejected (false).

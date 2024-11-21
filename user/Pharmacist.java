@@ -1,8 +1,7 @@
 package user;
 
-import java.util.ArrayList;
-
 import data.appointment.AppointmentDatabaseApiPharmacist;
+import java.util.ArrayList;
 import medicine.InventoryApiPharmacist;
 import medicine.Medicine;
 import medicine.PrescriptionStatus;
@@ -23,7 +22,7 @@ public class Pharmacist extends Staff {
     private InventoryApiPharmacist inventory;
 
     /**
-     * Constructs a new Pharmacist object with the provided user details.
+     * Construct a new Pharmacist object with the provided user details.
      *
      * @param id The unique user ID of the pharmacist.
      * @param name The name of the pharmacist.
@@ -84,7 +83,7 @@ public class Pharmacist extends Staff {
     }
 
     /**
-     * Retrieves the inventory of medicines associated with the pharmacist.
+     * Retrieves the inventory of medicines.
      *
      * @return An ArrayList of Medicine objects currently in the inventory.
      */

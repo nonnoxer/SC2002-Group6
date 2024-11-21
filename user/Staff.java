@@ -3,7 +3,7 @@ package user;
 import data.CsvCompatible;
 
 /**
- * Represents a Staff member in the system, extending the User class and implementing the CsvCompatible interface.
+ * The Staff class represents a Staff member in the system, extending the User class and implementing the CsvCompatible interface.
  * A staff member has personal information such as name, age, and gender, and is assigned a role in the system.
  * This class is the base for other staff roles such as doctors, pharmacists, and administrators.
  * 
@@ -16,7 +16,7 @@ public class Staff extends User implements CsvCompatible {
     private String gender;
 
     /**
-     * Constructs a new Staff object with the provided details.
+     * Construct a new Staff object with the provided details.
      *
      * @param id The unique user ID of the staff member.
      * @param name The name of the staff member.
@@ -31,7 +31,7 @@ public class Staff extends User implements CsvCompatible {
     }
 
     /**
-     * Gets the name of the staff member.
+     * Get the name of the staff member.
      *
      * @return The name of the staff member.
      */
@@ -40,7 +40,7 @@ public class Staff extends User implements CsvCompatible {
     }
 
     /**
-     * Gets the age of the staff member.
+     * Get the age of the staff member.
      *
      * @return The age of the staff member.
      */
@@ -49,7 +49,7 @@ public class Staff extends User implements CsvCompatible {
     }
 
     /**
-     * Gets the gender of the staff member.
+     * Get the gender of the staff member.
      *
      * @return The gender of the staff member.
      */
@@ -58,7 +58,7 @@ public class Staff extends User implements CsvCompatible {
     }
 
     /**
-     * Sets the gender of the staff member.
+     * Set the gender of the staff member.
      *
      * @param gender The new gender of the staff member.
      */
@@ -67,7 +67,7 @@ public class Staff extends User implements CsvCompatible {
     }
 
     /**
-     * Sets the age of the staff member.
+     * Set the age of the staff member.
      *
      * @param age The new age of the staff member.
      */
@@ -76,7 +76,7 @@ public class Staff extends User implements CsvCompatible {
     }
 
     /**
-     * Converts the staff member's data to a CSV format string.
+     * Convert the staff member's data to a CSV format string.
      *
      * @return A string in CSV format representing the staff member's details.
      */

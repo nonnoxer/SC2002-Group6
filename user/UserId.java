@@ -1,7 +1,7 @@
 package user;
 
 /**
- * Represents a unique user identifier in the system, consisting of a character prefix and a numeric part.
+ * The userId class represents a unique user identifier in the system, consisting of a character prefix and a numeric part.
  * The prefix is typically used to categorize users (e.g., 'P' for patient, 'D' for doctor), 
  * while the numeric part uniquely identifies each user.
  * 
@@ -14,7 +14,7 @@ public class UserId {
     private int num;
 
     /**
-     * Constructs a UserId object from a string representation.
+     * Construct a UserId object from a string representation.
      * The string should start with a character (prefix) followed by a numeric value.
      * If the string format is invalid, an IllegalArgumentException is thrown.
      *
@@ -34,7 +34,7 @@ public class UserId {
     }
 
     /**
-     * Constructs a UserId object from a given character prefix and numeric value.
+     * Construct a UserId object from a given character prefix and numeric value.
      *
      * @param prefix The character prefix that categorizes the user (e.g., 'P' for Patient, 'D' for Doctor).
      * @param num The unique numeric identifier for the user.
@@ -45,7 +45,7 @@ public class UserId {
     }
 
     /**
-     * Converts the UserId to its string representation.
+     * Convert the UserId to its string representation.
      * The string consists of the prefix followed by the numeric part, formatted with leading zeros if necessary.
      *
      * @return A string representing the user ID (e.g., "P001" for Patient with ID 1).
@@ -55,7 +55,7 @@ public class UserId {
     }
     
     /**
-     * Gets the character prefix of the UserId.
+     * Get the character prefix of the UserId.
      * The prefix typically represents a category of users (e.g., 'P' for Patient).
      *
      * @return The character prefix of the user ID.
@@ -65,7 +65,7 @@ public class UserId {
     }
 
     /**
-     * Gets the numeric part of the UserId.
+     * Get the numeric part of the UserId.
      * The numeric part is a unique identifier for the user within their category.
      *
      * @return The numeric part of the user ID.
@@ -75,7 +75,7 @@ public class UserId {
     }
 
     /**
-     * Returns a hash code value for the UserId.
+     * Return a hash code value for the UserId.
      * The hash code is computed based on the string representation of the UserId.
      *
      * @return The hash code of the UserId.
@@ -86,7 +86,7 @@ public class UserId {
     }
 
     /**
-     * Checks whether two UserId objects are equal.
+     * Check whether two UserId objects are equal.
      * Two UserIds are considered equal if their string representations are identical.
      *
      * @param o The object to compare with.

@@ -3,7 +3,7 @@ package user;
 import data.CsvCompatible;
 
 /**
- * Represents a user account in the system.
+ * The UserAccount class represents a user account in the system.
  * A user account holds the login credentials (username, password) and the role of the user.
  * It is used for authentication and authorization within the system.
  * 
@@ -17,7 +17,7 @@ public class UserAccount implements CsvCompatible {
     private Role role;
 
     /**
-     * Constructs a new UserAccount with the provided user ID, username, password, and role.
+     * Construct a new UserAccount with the provided user ID, username, password, and role.
      * This constructor initializes the account with the specified details.
      *
      * @param id The unique user ID associated with the account.
@@ -33,7 +33,7 @@ public class UserAccount implements CsvCompatible {
     }
 
     /**
-     * Converts the user account's data to a CSV format string.
+     * Convert the user account's data to a CSV format string.
      * The resulting string contains the user ID, username, password, and role.
      *
      * @return A string in CSV format representing the user's account details.
@@ -43,7 +43,7 @@ public class UserAccount implements CsvCompatible {
     }
 
     /**
-     * Gets the username associated with the user account.
+     * Get the username associated with the user account.
      *
      * @return The username of the user account.
      */
@@ -52,7 +52,7 @@ public class UserAccount implements CsvCompatible {
     }
 
     /**
-     * Gets the role of the user associated with the account.
+     * Get the role of the user associated with the account.
      *
      * @return The role of the user
      */
@@ -61,7 +61,7 @@ public class UserAccount implements CsvCompatible {
     }
 
     /**
-     * Gets the unique ID associated with the user account.
+     * Get the unique ID associated with the user account.
      *
      * @return The unique user ID.
      */
@@ -70,7 +70,7 @@ public class UserAccount implements CsvCompatible {
     }
 
     /**
-     * Sets a new password for the user account.
+     * Set a new password for the user account.
      *
      * @param password The new password to set.
      */
@@ -79,7 +79,7 @@ public class UserAccount implements CsvCompatible {
     }
 
     /**
-     * Checks if the password is empty.
+     * Check if the password is empty.
      *
      * @return True if the password is an empty string, otherwise false.
      */
@@ -88,7 +88,7 @@ public class UserAccount implements CsvCompatible {
     }
     
     /**
-     * Checks if the provided password matches the stored password for this account.
+     * Check if the provided password matches the stored password for this account.
      *
      * @param password The password to check.
      * @return True if the provided password matches the stored password, otherwise false.

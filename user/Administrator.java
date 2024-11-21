@@ -14,7 +14,7 @@ import medicine.ReplenishmentStatus;
 import record.AppointmentOutcomeRecord;
 
 /**
- * Represents an Administrator in the system who has responsibilities such as managing staff, appointments, and inventory.
+ * The Aministrator class represents an Administrator in the system who has responsibilities such as managing staff, appointments, and inventory.
  * The Administrator can interact with databases for users, appointments, and inventory.
  * 
  * @author LOH HAN MENG
