@@ -6,7 +6,7 @@ import record.AppointmentOutcomeRecord;
 
 /**
  * This interface defines the methods for a pharmacist to interact with the appointment database.
- * It provides functionality for retrieving appointment records and dispensing prescriptions.
+ * It provides functionality to retrieve appointment records and dispensing prescriptions.
  * @author NATANAEL TAN TIONG OON
  * @version 1.0
  * @since 2024-11-21

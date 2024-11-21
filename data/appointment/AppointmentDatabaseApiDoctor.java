@@ -7,9 +7,9 @@ import record.AppointmentOutcomeRecord;
 import user.UserId;
 
 /**
- * This interface defines the methods for a doctor to interact with the appointment database.
- * It provides functionality for retrieving a doctor's appointments, accepting or declining appointments, 
- * and setting the outcome of an appointment.
+ * This interface defines the methods for how the doctor is to interact with the appointment database.
+ * It provides functionality to retrieve a doctor's appointments, allowing to accept or decline appointments,
+ * and set the outcome of an appointment.
  * @author NATANAEL TAN TIONG OON
  * @version 1.0
  * @since 2024-11-21
@@ -23,16 +23,17 @@ public interface AppointmentDatabaseApiDoctor {
      */
     public abstract ArrayList<Appointment> getDoctorAppointments(UserId doctorId);
     /**
-     * Allows the doctor to accept or decline an appointment.
+     * Allow the doctor to accept or decline the appointment.
+     * Appoinment is selected using the id
      *
-     * @param doctorId the unique identifier of the doctor making the decision
-     * @param id the ID of the appointment being accepted or declined
-     * @param accepted a boolean value where true means the appointment is accepted, false means it is declined
-     * @return the updated Appointment object after the decision is made
+     * @param doctorId is the unique identifier of the doctor that is making the decision
+     * @param id is the ID of the appointment being accepted or declined
+     * @param accepted is a boolean value where true means the appointment is accepted, false means it is declined
+     * @return the updated Appointment object after accepted is set
      */
     public abstract Appointment acceptAppointment(UserId doctorId, int id, boolean accepted);
     /**
-     * Allows the doctor to set the outcome of an appointment, including consultation notes, diagnoses, and treatment plan.
+     * Allow the doctor to set the outcome of the appointment, including consultation notes, diagnoses, and treatment plan.
      *
      * @param doctorId the unique identifier of the doctor who is setting the outcome
      * @param id the ID of the appointment whose outcome is being set
