@@ -139,7 +139,7 @@ public class DoctorMenu extends Menu {
         System.out.printf("Gender: %s\n", record.getGender());
         System.out.printf("Contact Information: %s\n", record.getContactInfo());
         System.out.printf("Blood Type: %s\n", record.getBloodType());
-        System.out.printf("Appointment Record: ");
+        System.out.printf("Appointment Record: \n");
         record.getPastAppointments().forEach(appointment -> {
             appointment.printAppointmentOutcomeRecord(); 
             System.out.println();
