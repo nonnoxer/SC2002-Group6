@@ -199,7 +199,7 @@ public class DoctorMenu extends Menu {
         if (record.addPrescription(selectedMedicines)==0){
             System.out.println("Unable to update record, medicine is already dispensed!");
         }
-        this.doctor.recordOutcome(appointments.get(appointmentChoice).getId(), record);
+        this.doctor.recordOutcome(appointments.get(appointmentChoice-1).getId(), record);
     }
 
     /**
