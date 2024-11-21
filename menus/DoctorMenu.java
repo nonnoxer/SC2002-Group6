@@ -159,7 +159,7 @@ public class DoctorMenu extends Menu {
 
         System.out.printf("Updating records of %s:\n", selectedPatient.getName());
         // Update records
-        ArrayList<Appointment> appointments = selectedPatient.getAllAppointments();
+        ArrayList<Appointment> appointments = selectedPatient.getCompletedAppointments();
         System.out.println("Select an appointment:");
         for (int i = 0; i < appointments.size(); i++) {
             Appointment appointment = appointments.get(i);
