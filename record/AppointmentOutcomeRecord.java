@@ -63,7 +63,7 @@ public class AppointmentOutcomeRecord {
             this.diagnoses.add(diagnosesList[i]);
         }
         for (int i = 0; i < treatmentPlanList.length; i++) {
-            this.diagnoses.add(treatmentPlanList[i]);
+            this.treatmentPlan.add(treatmentPlanList[i]);
         }
     }
 
@@ -158,13 +158,13 @@ public class AppointmentOutcomeRecord {
         if (this.diagnoses.isEmpty()) {
             System.out.printf("Diagnosis: No diagnosis thus far\n");
         } else {
-            System.out.printf("Diagnosis: %s\n", this.diagnoses);
+            System.out.printf("Diagnosis: %s\n", this.diagnoses.stream().collect(Collectors.joining(", ")));
         }
         
         if (this.treatmentPlan.isEmpty()) {
             System.out.printf("Treatment Plan: No treatment plan thus far\n");
         } else {
-            System.out.printf("Treatment Plan: %s\n", this.treatmentPlan);
+            System.out.printf("Treatment Plan: %s\n", this.treatmentPlan.stream().collect(Collectors.joining(", ")));
         }
     }
 }
