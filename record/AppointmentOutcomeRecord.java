@@ -171,7 +171,7 @@ public class AppointmentOutcomeRecord {
     /**
      * Adds a new diagnosis to the list of diagnoses.
      *
-     * @param diagnosis the diagnosis to add
+     * @param diagnoses the diagnosis to add
      */
     public void addDiagnoses(String diagnoses){
         this.diagnoses.add(diagnoses);
