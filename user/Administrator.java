@@ -97,9 +97,9 @@ public class Administrator extends Staff {
                 System.out.println("    Consultation Notes: " + record.getConsultationNotes());
                 System.out.println("    Prescription Status: " + record.getPrescriptionStatus());
                 System.out.println("    Diagnoses: ");
-                System.out.println("      - " + record.getDiagnoses());
+                System.out.println("      - " + record.getDiagnoses().toString());
                 System.out.println("    Treatment Plan: ");
-                System.out.println("      - " + record.getTreatmentPlan());
+                System.out.println("      - " + record.getTreatmentPlan().toString());
                 if (record.getPrescription() != null && !record.getPrescription().isEmpty()) {
                     System.out.println("    Prescriptions:");
                     for (Prescription prescription : record.getPrescription()) {

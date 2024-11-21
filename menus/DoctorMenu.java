@@ -123,10 +123,14 @@ public class DoctorMenu extends Menu {
         System.out.println("Select an appointment:");
         for (int i = 0; i < appointments.size(); i++) {
             Appointment appointment = appointments.get(i);
-            System.out.printf("%d. %s", i, appointment.getSlot().getDate());
+            System.out.printf("%d. %s\n", i, appointment.getSlot().getDate());
         }
         int appointmentChoice = sc.promptInt("", 0, appointments.size()-1);
         AppointmentOutcomeRecord record = appointments.get(appointmentChoice).getRecord();
+        if (record == null){
+            System.err.println("No records!");
+            return;
+        }
 
         String newDiagnosis = sc.promptLine("Enter new diagnosis: ");
         record.addDiagnoses(newDiagnosis);
@@ -157,6 +161,7 @@ public class DoctorMenu extends Menu {
         if (record.addPrescription(selectedMedicines)==0){
             System.out.println("Unable to update record, medicine is already dispensed!");
         }
+        this.doctor.recordOutcome(appointments.get(appointmentChoice).getId(), record);
     }
 
     private void viewSchedule() {
