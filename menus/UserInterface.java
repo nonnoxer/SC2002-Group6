@@ -5,10 +5,10 @@ import java.util.Scanner;
 import data.user.UserDatabase;
 
 /**
- * The UserInterface class handles the interaction between the user and the system.
- * It provides the main interface for logging in or registering as a new patient
- * in the Hospital Management System (HMS). The interface displays options and 
- * manages the flow between the login and registration menus.
+ * This UserInterface class handles interactions between the user and the system.
+ * The interface provides the main interface for logging in or to register as a new patient user
+ * in the Hospital Management System (HMS). The interface displays the options and
+ * manages the interaction and flow between the login and registration menus.
  * 
  * @author NATANAEL TAN TIONG OON
  * @version 1.0
@@ -21,8 +21,8 @@ public class UserInterface {
     static final SafeScanner scanner = new SafeScanner(new Scanner(System.in));
 
     /**
-     * Constructs a new UserInterface with the specified UserDatabase.
-     * It initializes the login and registration menus.
+     * Constructs a new UserInterface with specified UserDatabase.
+     * It initialises the login and registration menus.
      *
      * @param db the UserDatabase to be used by the login and registration menus
      */
@@ -32,10 +32,11 @@ public class UserInterface {
     }
 
     /**
-     * Starts the main user interface of the Hospital Management System.
-     * This method displays the options to the user and prompts them to either log in,
-     * register as a new patient, or quit the program. The appropriate menu (login or registration)
+     * This is the starting for the main user interface of the Hospital Management System.
+     * The method displays options to the user and prompts them to either log in or
+     * register as a new patient, or quit the program. The menu (login or registration)
      * is displayed based on the user's choice, and the flow continues until the user chooses to quit.
+     * Choosing 0 will terminate the program
      */
     public void start() {
         int choice = -1;
