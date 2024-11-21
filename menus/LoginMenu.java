@@ -1,9 +1,8 @@
 package menus;
 
+import data.user.UserDatabase;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import data.user.UserDatabase;
 import user.Administrator;
 import user.Doctor;
 import user.Patient;
@@ -25,7 +24,7 @@ public class LoginMenu {
     private UserDatabase db;
 
     /**
-     * Constructs a LoginMenu with the specified SafeScanner and UserDatabase.
+     * Construct a LoginMenu with the specified SafeScanner and UserDatabase.
      *
      * @param sc  The SafeScanner used for user input.
      * @param db  The UserDatabase that contains user information and credentials.
@@ -161,6 +160,3 @@ public class LoginMenu {
         return matcher.matches();
     }
 }
-
-    
-

@@ -8,7 +8,7 @@ import record.AppointmentOutcomeRecord;
 import user.Pharmacist;
 
 /**
- * Represents the menu interface for a pharmacist, allowing them to view appointment outcomes, 
+ * The PharmacistMenu represents the menu interface for a pharmacist, allowing them to view appointment outcomes, 
  * update prescription statuses, view medication inventory, and submit replenishment requests.
  * This menu is displayed repeatedly until the pharmacist decides to log out.
  * 
@@ -21,7 +21,7 @@ public class PharmacistMenu extends Menu {
     private Pharmacist pharmacist;
 
     /**
-     * Constructs a new PharmacistMenu object with a specified SafeScanner and Pharmacist.
+     * Construct a new PharmacistMenu object with a specified SafeScanner and Pharmacist.
      * 
      * @param sc the SafeScanner object to capture user input
      * @param pharmacist the Pharmacist object representing the current pharmacist
@@ -137,7 +137,7 @@ public class PharmacistMenu extends Menu {
     }
 
     /**
-     * Displays the current medication inventory and stock levels iin an array list.
+     * Displays the current medication inventory and stock levels in an array list.
      * If any medication stock is low, it will display a warning for those items.
      * If the inventory is empty, a corresponding message will be shown.
      */

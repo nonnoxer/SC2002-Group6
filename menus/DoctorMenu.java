@@ -1,20 +1,17 @@
 package menus;
 
-import user.Doctor;
-
 import appointment.Appointment;
 import appointment.AppointmentSlot;
 import appointment.Schedule;
-import record.AppointmentOutcomeRecord;
-import record.MedicalRecord;
-import medicine.Medicine;
-import medicine.Prescription;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-
+import medicine.Medicine;
+import medicine.Prescription;
+import record.AppointmentOutcomeRecord;
+import record.MedicalRecord;
+import user.Doctor;
 import user.Patient;
 
 /**
@@ -31,7 +28,7 @@ public class DoctorMenu extends Menu {
     private Doctor doctor;
 
     /**
-     * Constructs a DoctorMenu object.
+     * Construct a DoctorMenu object.
      * 
      * @param sc the SafeScanner object used to capture user input
      * @param doctor the Doctor object associated with the menu
