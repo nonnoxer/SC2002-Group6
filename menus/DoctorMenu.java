@@ -7,7 +7,6 @@ import appointment.AppointmentSlot;
 import appointment.Schedule;
 import record.AppointmentOutcomeRecord;
 import record.MedicalRecord;
-import medicine.Inventory;
 import medicine.Medicine;
 import medicine.Prescription;
 
@@ -136,8 +135,7 @@ public class DoctorMenu extends Menu {
         record.addTreatmentPlan(newTreatmentPlan);
     
         // Adding a prescription
-        Inventory inventory = this.doctor.getInventory();
-        ArrayList<Medicine> medicines = inventory.getInventory();
+        ArrayList<Medicine> medicines = this.doctor.getInventory();
         int choice = -1;
         while(choice != medicines.size()+1){
             System.out.println("Medicine List:");
@@ -302,8 +300,7 @@ public class DoctorMenu extends Menu {
         String diagnosis = sc.promptLine("Enter diagnosis: ");
         String treatmentPlan = sc.promptLine("Enter treatment plan, if any: ");
         // medicine for patient
-        Inventory inventory = this.doctor.getInventory();
-        ArrayList<Medicine> medicines = inventory.getInventory();
+        ArrayList<Medicine> medicines = this.doctor.getInventory();
         int choice = -1;
         while(choice != medicines.size()+1){
             System.out.println("Medicine List:");

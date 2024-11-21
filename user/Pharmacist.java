@@ -3,7 +3,7 @@ package user;
 import java.util.ArrayList;
 
 import data.appointment.AppointmentDatabaseApiPharmacist;
-import medicine.Inventory;
+import medicine.InventoryApiPharmacist;
 import medicine.Medicine;
 import medicine.PrescriptionStatus;
 import medicine.ReplenishmentRequest;
@@ -11,7 +11,7 @@ import record.AppointmentOutcomeRecord;
 
 public class Pharmacist extends Staff {
     private AppointmentDatabaseApiPharmacist appointmentDb;
-    private Inventory inventory;
+    private InventoryApiPharmacist inventory;
 
     // Constructor
     public Pharmacist(UserId id, String name, Role role, String gender, int age) {
@@ -21,7 +21,7 @@ public class Pharmacist extends Staff {
     }
 
     // Initialize the inventory object for the Pharmacist
-    public void init(AppointmentDatabaseApiPharmacist appointmentDb, Inventory inventory) {
+    public void init(AppointmentDatabaseApiPharmacist appointmentDb, InventoryApiPharmacist inventory) {
         this.appointmentDb = appointmentDb;
         this.inventory = inventory;
     }

@@ -10,14 +10,15 @@ import appointment.AppointmentStatus;
 import appointment.Schedule;
 import data.appointment.AppointmentDatabaseApiDoctor;
 import data.user.UserDatabaseApiDoctor;
-import medicine.Inventory;
+import medicine.InventoryApiDoctor;
+import medicine.Medicine;
 import record.AppointmentOutcomeRecord;
 
 public class Doctor extends Staff implements DoctorApiPatient {
     private UserDatabaseApiDoctor userDb;
     private AppointmentDatabaseApiDoctor appointmentDb;
     private Schedule schedule;
-    private Inventory inventory;
+    private InventoryApiDoctor inventory;
 
     public Doctor(UserId id, String name, Role role, String gender, int age) {
         super(id, name, role, gender, age);
@@ -27,7 +28,7 @@ public class Doctor extends Staff implements DoctorApiPatient {
         this.schedule = null;
     }
 
-    public void init(UserDatabaseApiDoctor userDb, Inventory inventory) {
+    public void init(UserDatabaseApiDoctor userDb, InventoryApiDoctor inventory) {
         this.userDb = userDb;
         this.inventory = inventory;
     }
@@ -99,7 +100,7 @@ public class Doctor extends Staff implements DoctorApiPatient {
         this.appointmentDb.setOutcome(this.id, appointmentId, record);
     }
     
-    public Inventory getInventory() {
-        return this.inventory;
+    public ArrayList<Medicine> getInventory() {
+        return this.inventory.getInventory();
     }
 }
