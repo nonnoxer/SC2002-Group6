@@ -18,7 +18,23 @@ import user.Staff;
 import user.UserAccount;
 import user.UserId;
 
+/**
+ * Utility class for reading data from CSV files and converting them into corresponding objects.
+ * This class handles the reading and parsing of CSV files to create lists of objects for users,
+ * staff, patients, appointments, medicines, and replenishment requests.
+ * @author NATANAEL TAN TIONG OON
+ * @version 1.0
+ * @since 2024-11-21
+ */
 public class ReadFile {
+    /**
+     * Reads a CSV file from the specified path and returns a 2D array where each row represents a line of the CSV,
+     * and each element in the row represents a field in that line.
+     *
+     * @param path the path to the CSV file
+     * @return a 2D array containing the CSV data
+     * @throws IOException if there is an error reading the file
+     */
     private static String[][] readCSV(String path) throws IOException {
         List<String> lines = Files.readAllLines(Paths.get(path));
         String[][] lines_separated = new String[lines.size()][];
@@ -28,6 +44,13 @@ public class ReadFile {
         return lines_separated;
     }
 
+    /**
+     * Reads a CSV file containing user account information and returns a list of UserAccount objects.
+     * 
+     * @param path the path to the CSV file
+     * @return a list of UserAccount objects
+     * @throws IOException if there is an error reading or parsing the file
+     */
     public static ArrayList<UserAccount> readAccountListFile(String path) throws IOException {
         String[][] values = ReadFile.readCSV(path);
 
@@ -59,6 +82,13 @@ public class ReadFile {
         return accounts;
     }
     
+    /**
+     * Reads a CSV file containing staff information and returns a list of Staff objects.
+     * 
+     * @param path the path to the CSV file
+     * @return a list of Staff objects
+     * @throws IOException if there is an error reading or parsing the file
+     */
     public static ArrayList<Staff> readStaffListFile(String path) throws IOException {
         String[][] values = ReadFile.readCSV(path);
 
@@ -108,6 +138,13 @@ public class ReadFile {
         return staffs;
     }
     
+    /**
+     * Reads a CSV file containing patient information and returns a list of Patient objects.
+     * 
+     * @param path the path to the CSV file
+     * @return a list of Patient objects
+     * @throws IOException if there is an error reading or parsing the file
+     */
     public static ArrayList<Patient> readPatientListFile(String path) throws IOException {
         String[][] values = ReadFile.readCSV(path);
 
@@ -132,6 +169,13 @@ public class ReadFile {
         return patients;
     }
 
+    /**
+     * Reads a CSV file containing medicine information and returns a list of Medicine objects.
+     * 
+     * @param path the path to the CSV file
+     * @return a list of Medicine objects
+     * @throws IOException if there is an error reading or parsing the file
+     */
     public static ArrayList<Medicine> readMedicineListFile(String path) throws IOException {
         String[][] values = ReadFile.readCSV(path);
 
@@ -161,6 +205,13 @@ public class ReadFile {
         return inventory;
     }
 
+    /**
+     * Reads a CSV file containing replenishment request information and returns a list of ReplenishmentRequest objects.
+     * 
+     * @param path the path to the CSV file
+     * @return a list of ReplenishmentRequest objects
+     * @throws IOException if there is an error reading or parsing the file
+     */
     public static ArrayList<ReplenishmentRequest> readRequestListFile(String path) throws IOException {
         String[][] values = ReadFile.readCSV(path);
 
@@ -172,6 +223,13 @@ public class ReadFile {
         return requests;
     }
 
+    /**
+     * Reads a CSV file containing appointment information and returns a list of Appointment objects.
+     * 
+     * @param path the path to the CSV file
+     * @return a list of Appointment objects
+     * @throws IOException if there is an error reading or parsing the file
+     */
     public static ArrayList<Appointment> readAppointmentListFile(String path) throws IOException {
         String[][] values = ReadFile.readCSV(path);
 
