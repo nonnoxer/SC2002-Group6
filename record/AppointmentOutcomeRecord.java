@@ -253,7 +253,11 @@ public class AppointmentOutcomeRecord {
             System.out.printf("Type of service: %s\n", this.serviceType);
         }
         System.out.printf("Prescription Status: %s\n", this.prescriptionStatus);
-        System.out.printf("Prescription: %s\n", this.prescription.stream().map(Prescription::getName).collect(Collectors.joining(", ")));
+        System.out.println("Prescription:");
+        for (Prescription pre : prescription) {
+            System.out.printf("- %s (%d)\n", pre.getName(), pre.getQuantity());
+        }
+        if (prescription.size() == 0) System.out.println("  No prescription.");
         if (this.consultationNotes.isEmpty()){
             System.out.printf("Consultation Note: None\n");
         }else{
