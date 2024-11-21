@@ -6,10 +6,24 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Represents a schedule of appointment slots for a specific date range.
+ * This class manages the availability of appointment slots on each day within the given start and end dates.
+ * @author NATANAEL TAN TIONG OON
+ * @version 1.0
+ * @since 2024-11-21
+ */
 public class Schedule {
     private LocalDate startDate, endDate;
     private HashMap<LocalDate, ArrayList<AppointmentSlot>> calendar;
 
+    /**
+     * Constructs a Schedule for the given date range (from startDate to endDate).
+     * It initializes the calendar with appointment slots for each day within the range.
+     *
+     * @param startDate the starting date of the schedule
+     * @param endDate the ending date of the schedule
+     */
     public Schedule(LocalDate startDate, LocalDate endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
@@ -33,6 +47,13 @@ public class Schedule {
         }
     }
 
+    /**
+     * Prints the appointment slots for the specified month.
+     * Optionally, only available slots can be displayed.
+     *
+     * @param month the month for which the schedule is printed
+     * @param showOnlyAvailable whether to show only available slots
+     */
     public void printMonth(LocalDate month, boolean showOnlyAvailable) {
         System.out.printf(
             "%s %d\n\n",
@@ -76,10 +97,23 @@ public class Schedule {
         System.out.print("\n");
     }
 
+    /**
+     * Returns the list of appointment slots for the given date.
+     *
+     * @param date the date for which the slots are requested
+     * @return a list of appointment slots for the specified date
+     */
     public ArrayList<AppointmentSlot> getSlots(LocalDate date) {
         return this.calendar.get(date);
     }
 
+    /**
+     * Returns the list of available appointment slots for the given date.
+     * Only the slots that are marked as available are returned.
+     *
+     * @param date the date for which the available slots are requested
+     * @return a list of available appointment slots for the specified date, or null if no slots exist
+     */
     public ArrayList<AppointmentSlot> getAvailableSlots(LocalDate date) {
         ArrayList<AppointmentSlot> allSlots = this.calendar.get(date);
         if (allSlots == null) return null;
@@ -90,6 +124,17 @@ public class Schedule {
         return slots;
     }
 
+    /**
+     * Initializes the appointment slots for a specific day.
+     * The slots are created based on the day of the week and predefined working hours.
+     * 
+     * Weekdays have slots from 08:00-13:00 and 14:00-16:30.
+     * Saturdays have slots from 08:00-12:30.
+     * Sundays have no available slots.
+     *
+     * @param day the date for which the appointment slots are to be initialized
+     * @return a list of appointment slots for the specified day
+     */
     private ArrayList<AppointmentSlot> initSlots(LocalDate day) {
         ArrayList<AppointmentSlot> slots = new ArrayList<AppointmentSlot>();
 
@@ -121,10 +166,21 @@ public class Schedule {
         return slots;
     }
 
+
+    /**
+     * Returns the start date of the schedule.
+     *
+     * @return the start date of the schedule
+     */
     public LocalDate getStartDate() {
         return this.startDate;
     }
 
+    /**
+     * Returns the end date of the schedule.
+     *
+     * @return the end date of the schedule
+     */
     public LocalDate getEndDate() {
         return this.endDate;
     }
