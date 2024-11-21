@@ -244,6 +244,7 @@ public class PatientMenu extends Menu{
 
     /**
      * Displays available slots for the patient to view, based on the selected doctor.
+     * if no doctor is selected, method returns.
      */
     private void viewAvailableSlots() {
         DoctorApiPatient doctor = getDoctor();
@@ -252,8 +253,6 @@ public class PatientMenu extends Menu{
 
         ArrayList<AppointmentSlot> slots = getSlots(schedule);
         printSlots(slots);
-
-
     }
 
     /**
@@ -314,7 +313,10 @@ public class PatientMenu extends Menu{
 
     /**
      * Allows a patient to cancel an appointment
-     * @throws IOException
+     * Displays a list of scheduled  appointments for the patient to choose from
+     * If no appointment are schedule, an appropriate message is displayed
+     *
+     * @throws IOException if an input or output error occurs during user interaction
      */
     private void cancelAppointment() throws IOException {
         ArrayList<Appointment> appointments = this.patient.getScheduledAppointments();
@@ -366,7 +368,12 @@ public class PatientMenu extends Menu{
     }
 
     /**
-     * Allows patient to see all past appointments
+     * Allows patient to see all past completed appointments
+     *
+     * The information for each appointment includes:
+     *  - Appointment date and doctor ID
+     *  - service type, consultation notes, and prescriptions
+     *  - Prescription status
      */
     private void viewPastAppointments() {
         ArrayList<Appointment> appointments = this.patient.getCompletedAppointments();
@@ -393,8 +400,8 @@ public class PatientMenu extends Menu{
 
     /**
      * validates the email address the patient want to change to
-     * @param email
-     * @return
+     * @param email the email address to validate
+     * @return true if the email address is valid, false otherwise
      */
     private static boolean isValidEmail(String email) {
         String regex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
