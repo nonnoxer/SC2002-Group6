@@ -8,6 +8,16 @@ import appointment.AppointmentSlot;
 import medicine.Prescription;
 import medicine.PrescriptionStatus;
 
+/**
+ * The AppointmentOutcomeRecord class represents the outcome of a medical appointment.
+ * It includes details about the appointment slot, service type, prescription status,
+ * consultation notes, diagnoses, treatment plan, and prescription. It provides methods 
+ * to manage and print appointment outcome information.
+ * 
+ * @author NATANAEL TAN TIONG OON
+ * @version 1.0
+ * @since 2024-11-21
+ */
 public class AppointmentOutcomeRecord {
     private int appointmentId;
     private String serviceType, consultationNotes;
@@ -17,6 +27,18 @@ public class AppointmentOutcomeRecord {
     private AppointmentSlot slot;
     private ArrayList<Prescription> prescription;
 
+    /**
+     * Constructs a new AppointmentOutcomeRecord with the given appointment slot,
+     * service type, consultation notes, prescription, diagnosis, and treatment plan.
+     * The prescription status is set to "Pending" by default.
+     *
+     * @param slot the AppointmentSlot representing the appointment time and details
+     * @param serviceType the type of service provided during the appointment
+     * @param consultationNotes the notes from the consultation
+     * @param prescription an ArrayList of Prescription objects prescribed during the appointment
+     * @param diagnosis the diagnosis made during the appointment
+     * @param treatmentPlan the treatment plan recommended during the appointment
+     */
     public AppointmentOutcomeRecord(AppointmentSlot slot, String serviceType, String consultationNotes, ArrayList<Prescription> prescription, String diagnosis, String treatmentPlan) {
         this.slot = slot;
         this.serviceType = serviceType;
@@ -27,6 +49,12 @@ public class AppointmentOutcomeRecord {
         this.treatmentPlan.add(treatmentPlan);
     }
 
+    /**
+     * Constructs an AppointmentOutcomeRecord from a CSV line.
+     * 
+     * @param line an array of strings representing a line of appointment data
+     * @throws IOException if the data is malformed or invalid
+     */
     public AppointmentOutcomeRecord(String[] line) throws IOException {
         this.serviceType = line[0];
         this.consultationNotes = line[1];
@@ -67,46 +95,105 @@ public class AppointmentOutcomeRecord {
         }
     }
 
+    /**
+     * Gets the appointment ID.
+     *
+     * @return the appointment ID
+     */
     public int getAppointmentId() {
         return this.appointmentId;
     }
 
+    /**
+     * Gets the appointment slot.
+     *
+     * @return the AppointmentSlot for the appointment
+     */
     public AppointmentSlot getSlot() {
         return this.slot;
     }
 
+    /**
+     * Gets the service type provided during the appointment.
+     *
+     * @return the service type
+     */
     public String getServiceType() {
         return this.serviceType;
     }
 
+    /**
+     * Gets the consultation notes from the appointment.
+     *
+     * @return the consultation notes
+     */
     public String getConsultationNotes() {
         return this.consultationNotes;
     }
 
+    /**
+     * Gets the prescription status.
+     *
+     * @return the PrescriptionStatus of the appointment
+     */
     public PrescriptionStatus getPrescriptionStatus() {
         return this.prescriptionStatus;
     }
     
+    /**
+     * Gets the list of prescriptions prescribed during the appointment.
+     *
+     * @return an ArrayList of Prescription objects
+     */
     public ArrayList<Prescription> getPrescription() {
         return this.prescription;
     }
 
+    /**
+     * Gets the list of diagnoses made during the appointment.
+     *
+     * @return an ArrayList of diagnosis strings
+     */
     public ArrayList<String> getDiagnoses(){
         return this.diagnoses;
     }
 
+
+    /**
+     * Gets the treatment plan recommended during the appointment.
+     *
+     * @return an ArrayList of treatment plan strings
+     */
     public ArrayList<String> getTreatmentPlan(){
         return this.treatmentPlan;
     }
     
+    /**
+     * Adds a new diagnosis to the list of diagnoses.
+     *
+     * @param diagnosis the diagnosis to add
+     */
     public void addDiagnoses(String diagnoses){
         this.diagnoses.add(diagnoses);
     }
     
+    /**
+     * Adds a new treatment plan to the list of treatment plans.
+     *
+     * @param treatmentPlan the treatment plan to add
+     */
     public void addTreatmentPlan(String treatmentPlan){
         this.treatmentPlan.add(treatmentPlan);
     }
 
+
+    /**
+     * Adds new prescriptions to the list of prescriptions. If the prescription already
+     * exists, the quantity is updated.
+     * 
+     * @param prescriptions a list of prescriptions to add
+     * @return 1 if the prescription was successfully added, 0 if the prescription status is "Dispensed"
+     */
     public int addPrescription(ArrayList<Prescription> prescriptions) {
         if (this.prescriptionStatus == PrescriptionStatus.Dispensed) {
             return 0;
@@ -128,19 +215,36 @@ public class AppointmentOutcomeRecord {
         }
     }
 
+    /**
+     * Sets the appointment ID.
+     *
+     * @param appointmentId the ID to set for the appointment
+     */
     public void setAppointmentId(int appointmentId) {
         this.appointmentId = appointmentId;
     }
 
+    /**
+     * Sets the appointment slot.
+     *
+     * @param slot the AppointmentSlot to set
+     */
     public void setSlot(AppointmentSlot slot) {
         this.slot = slot;
     }
 
+    /**
+     * Marks the prescription as dispensed, changing the prescription status to "Dispensed".
+     */
     public void dispensePrescription() {
         this.prescriptionStatus = PrescriptionStatus.Dispensed;
     }
 
-
+    /**
+     * Prints the appointment outcome record to the console, including the slot details,
+     * service type, prescription status, prescriptions, consultation notes, diagnoses, 
+     * and treatment plan.
+     */
     public void printAppointmentOutcomeRecord() {
         System.out.printf("Slot: %s\n", this.slot.getDate().toString());
         if (this.serviceType.isEmpty()){
