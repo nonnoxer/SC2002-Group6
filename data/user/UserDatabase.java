@@ -134,12 +134,16 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
         }
     }
 
-    private void udpatePatientFile(){
+    private void updatePatientFile(){
         try {
             WriteFile.writeFile(patients.values(), patientListPath);
         } catch (Exception e) {
             System.out.println("Error updating file: " + e.getMessage());
         }
+    }
+
+    public void updatePatient(){
+        updatePatientFile();
     }
 
     public UserAccount getAccount(String username) {
@@ -163,7 +167,7 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
         UserAccount account = new UserAccount(newId, username, contactInfo, Role.Patient);
         accounts.put(newId, account);
 
-        udpatePatientFile();
+        updatePatientFile();
         updateAccountFile();
 
         patient.init(this, appointmentDb);

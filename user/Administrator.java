@@ -1,8 +1,12 @@
 package user;
 
-import data.appointment.AppointmentDatabase;
+import data.appointment.AppointmentDatabaseApiAdministrator;
 import data.user.UserDatabaseApiAdministrator;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import appointment.Appointment;
 import medicine.InventoryApiAdministrator;
 import medicine.Medicine;
 import medicine.ReplenishmentRequest;
@@ -10,7 +14,7 @@ import medicine.ReplenishmentStatus;
 
 public class Administrator extends Staff {
     private UserDatabaseApiAdministrator userDb;
-    private AppointmentDatabase appointmentDb;
+    private AppointmentDatabaseApiAdministrator appointmentDb;
 
     //Inventory object for managing medication
     private InventoryApiAdministrator inventory;
@@ -23,7 +27,7 @@ public class Administrator extends Staff {
     }
 
     //Initialize the staff list from a CSV file
-    public void init(UserDatabaseApiAdministrator userDb, AppointmentDatabase appointmentDb, InventoryApiAdministrator inventory) {
+    public void init(UserDatabaseApiAdministrator userDb, AppointmentDatabaseApiAdministrator appointmentDb, InventoryApiAdministrator inventory) {
         this.userDb = userDb;
         this.appointmentDb = appointmentDb;
         this.inventory = inventory;
@@ -74,6 +78,19 @@ public class Administrator extends Staff {
     public void viewAppointments() {
         ///Work in progress
         // do stuff with this.appointmentDb
+        HashMap<Integer, Appointment>appointments = appointmentDb.getAppointments();
+        System.out.println(String.format("%-5s %-15s %-10s %-15s %-10s %-10s", "id", "doctor", "patient", "status", "slot", "record"));
+        for (Map.Entry<Integer, Appointment> entry : appointments.entrySet()) {
+            Appointment appointment = entry.getValue();
+            System.out.println(String.format("%-5d %-15d %-10d %-15s %-10s %-10s", 
+                appointment.getId(), 
+                appointment.getDoctorId(), 
+                appointment.getPatientId(), 
+                appointment.getAppointmentStatus(), 
+                appointment.getSlot(), 
+                appointment.getRecord())
+            );
+        }
     }
 
     //View the entire inventory
