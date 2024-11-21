@@ -6,15 +6,34 @@ import medicine.ReplenishmentRequest;
 import record.AppointmentOutcomeRecord;
 import user.Pharmacist;
 
+/**
+ * Represents the menu interface for a pharmacist, allowing them to view appointment outcomes, 
+ * update prescription statuses, view medication inventory, and submit replenishment requests.
+ * This menu is displayed repeatedly until the pharmacist decides to log out.
+ * 
+ * @author FONG JIAN YUAN
+ * @version 1.0
+ * @since 2024-11-21
+ */
 public class PharmacistMenu extends Menu {
     private SafeScanner sc;
     private Pharmacist pharmacist;
 
+    /**
+     * Constructs a new PharmacistMenu object with a specified SafeScanner and Pharmacist.
+     * 
+     * @param sc the SafeScanner object to capture user input
+     * @param pharmacist the Pharmacist object representing the current pharmacist
+     */
     public PharmacistMenu(SafeScanner sc, Pharmacist pharmacist) {
         this.sc = sc;
         this.pharmacist = pharmacist;
     }
 
+    /**
+     * Displays the pharmacist's menu options and allows them to make choices.
+     * The menu will repeatedly show until the pharmacist chooses to log out.
+     */
     @Override
     public void showMenu() {
         boolean exit = false;
@@ -58,7 +77,10 @@ public class PharmacistMenu extends Menu {
         }
     }
 
-    // View all Appointment Outcome Records
+    /**
+     * Displays and allows the pharmacist to view appointment outcome records.
+     * If there are no available records, a message is displayed indicating the absence.
+     */
     private void viewAppointmentOutcome() {
         ArrayList<AppointmentOutcomeRecord> records = pharmacist.getPendingRecords();
         if (records.isEmpty()) {
@@ -72,7 +94,12 @@ public class PharmacistMenu extends Menu {
         }
     }
 
-    // Update the prescription status of a specific Appointment Outcome Record
+    /**
+     * Allows the pharmacist to update the prescription status for a selected appointment outcome record.
+     * If no records are available, a message is displayed.
+     * If the pharmacist chooses a record, they can dispense the prescription, 
+     * and the prescription status will be updated accordingly.
+     */
     private void updatePrescriptionStatus() {
         ArrayList<AppointmentOutcomeRecord> records = pharmacist.getPendingRecords();
         if (records.isEmpty()) {
@@ -104,7 +131,11 @@ public class PharmacistMenu extends Menu {
         }
     }
 
-    // View the inventory details
+    /**
+     * Displays the current medication inventory and stock levels.
+     * If any medication stock is low, it will display a warning for those items.
+     * If the inventory is empty, a corresponding message will be shown.
+     */
     private void viewInventory() {
         ArrayList<Medicine> medicines = pharmacist.getInventory();
         if (medicines.isEmpty()) {
@@ -124,7 +155,11 @@ public class PharmacistMenu extends Menu {
         }
     }
 
-    // Submit a replenishment request for medicine
+    /**
+     * Prompts the pharmacist to submit a replenishment request for a specific medicine.
+     * The pharmacist is asked to provide the name of the medicine and the desired quantity.
+     * The request is then submitted to the pharmacist's system.
+     */
     private void submitRequest() {
         String name = sc.promptLine("Enter medicine name: ");
         int stock = sc.promptInt("Enter stock request amount: ", 1, Integer.MAX_VALUE);

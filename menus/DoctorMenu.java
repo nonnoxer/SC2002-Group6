@@ -16,15 +16,34 @@ import java.util.List;
 
 import user.Patient;
 
+/**
+ * The DoctorMenu class provides a menu interface for the doctor to interact with the system.
+ * It allows the doctor to perform various actions such as viewing and updating patient medical records, 
+ * managing appointments, and recording outcomes of consultations.
+ * 
+ * @author LOW KAN YUI (LIU GENGRUI)
+ * @version 1.0
+ * @since 2024-11-21
+ */
 public class DoctorMenu extends Menu {
     private SafeScanner sc;
     private Doctor doctor;
 
+    /**
+     * Constructs a DoctorMenu object.
+     * 
+     * @param sc the SafeScanner object used to capture user input
+     * @param doctor the Doctor object associated with the menu
+     */
     public DoctorMenu(SafeScanner sc, Doctor doctor) {
         this.sc = sc;
         this.doctor = doctor;
     }
 
+    /**
+     * Displays the doctor menu and prompts the doctor for an action.
+     * This method keeps looping until the doctor chooses to log out.
+     */
     public void showMenu(){
         int choice = -1;
         
@@ -44,6 +63,11 @@ public class DoctorMenu extends Menu {
         }
     }
 
+    /**
+     * Handles the user's selection based on the menu choice.
+     * 
+     * @param choice the user's menu choice
+     */
     private void handleSelection(int choice){
         switch (choice) {
             case 1:
@@ -74,6 +98,11 @@ public class DoctorMenu extends Menu {
         }
     }
 
+    /**
+     * Allows the doctor to select a patient from the list of patients they are treating.
+     * 
+     * @return the selected Patient object, or null if the user cancels or there are no patients
+     */
     private Patient selectPatient() {
         ArrayList<Patient> patients = doctor.getPatients();
         if (patients.size() == 0){
@@ -94,6 +123,9 @@ public class DoctorMenu extends Menu {
         }
     }
 
+    /**
+     * Displays the medical records of a selected patient.
+     */
     private void viewPatientRecords() {
         Patient selectedPatient = selectPatient();
         if (selectedPatient == null) return;
@@ -114,6 +146,9 @@ public class DoctorMenu extends Menu {
         });
     }
 
+    /**
+     * Allows the doctor to update the medical records of a selected patient.
+     */
     private void updatePatientRecords() {
         ArrayList<Prescription> selectedMedicines = new ArrayList<>();
         Patient selectedPatient = selectPatient();
@@ -167,6 +202,9 @@ public class DoctorMenu extends Menu {
         this.doctor.recordOutcome(appointments.get(appointmentChoice).getId(), record);
     }
 
+    /**
+     * Displays the doctor's personal schedule for a given month and year, and allows the doctor to view available slots.
+     */
     private void viewSchedule() {
         Schedule schedule = this.doctor.getPersonalSchedule();
 
@@ -190,6 +228,9 @@ public class DoctorMenu extends Menu {
         }
     }
 
+    /**
+     * Allows the doctor to set availability for appointments on specific days and slots.
+     */
     private void setAvailability() {
         AppointmentSlot tmp;
         Schedule schedule = this.doctor.getPersonalSchedule();
@@ -255,6 +296,9 @@ public class DoctorMenu extends Menu {
         }
     }
 
+    /**
+     * Allows the doctor to accept or decline pending appointment requests.
+     */
     private void acceptAppointmentRequest() {
         ArrayList<Appointment> appointments = this.doctor.getPendingAppointments();
         if (appointments.size() == 0) {

@@ -7,15 +7,36 @@ import user.Administrator;
 import user.Role;
 import user.UserId;
 
+/**
+ * Represents the menu for the Administrator role in the application.
+ * The AdministratorMenu class allows the administrator to manage various aspects of the hospital system,
+ * including staff management, appointment details, medication inventory, and replenishment requests.
+ * It provides an interactive menu interface for the administrator to navigate through these functionalities.
+ * 
+ * @author LOH HAN MENG
+ * @version 1.0
+ * @since 2024-11-21
+ */
 public class AdministratorMenu extends Menu{
     private SafeScanner sc;
     private Administrator administrator;
 
+    /**
+     * Constructs an AdministratorMenu with the specified SafeScanner and Administrator.
+     *
+     * @param sc the SafeScanner used for user input
+     * @param administrator the Administrator instance managing the system
+     */
     public AdministratorMenu(SafeScanner sc, Administrator administrator) {
         this.sc = sc;
         this.administrator = administrator;
     }
 
+    /**
+     * Displays the main menu for the administrator and processes their input.
+     * The menu offers options to view and manage staff, appointments, inventory, and replenishment requests,
+     * with the option to log out.
+     */
     public void showMenu(){
 
         int choice = -1;
@@ -33,6 +54,12 @@ public class AdministratorMenu extends Menu{
         }
     }
 
+    /**
+     * Handles the user's selection from the main menu.
+     * Based on the user's choice, it redirects to the appropriate functionality.
+     *
+     * @param choice the option selected by the user
+     */
     private void handleSelection(int choice){
         switch (choice) {
             case 1:
@@ -54,6 +81,10 @@ public class AdministratorMenu extends Menu{
         }
     }
 
+    /**
+     * Displays the menu for managing hospital staff and processes the user's selection.
+     * The options include viewing, adding, updating, and removing staff.
+     */
     private void viewStaff() {
         //Keep looping until user decide to go back to administrator menu
         while(true) {
@@ -103,10 +134,19 @@ public class AdministratorMenu extends Menu{
         }
     }
 
+    /**
+     * Displays and processes the view for appointment details managed by the administrator.
+     * This method fetches and shows the current appointment details.
+     */
     private void viewAppointments() {
         this.administrator.viewAppointments();
     }
 
+    /**
+     * Displays the menu for managing the medication inventory and processes the user's selection.
+     * The options include viewing the inventory, updating stock levels, adding new medicines,
+     * removing medicines, and adjusting low stock alert levels.
+     */
     private void viewInventory() {
         while (true) { 
             System.out.println("===== Manage Medication Inventory =====");
@@ -168,6 +208,11 @@ public class AdministratorMenu extends Menu{
         }
     }
 
+
+    /**
+     * Displays and processes the replenishment request approval process.
+     * The administrator can approve or reject pending replenishment requests for the medication inventory.
+     */
     private void approveRequests() {
         ArrayList<ReplenishmentRequest> requests = administrator.getPendingRequests();
         if (requests.isEmpty()) {

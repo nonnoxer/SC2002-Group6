@@ -17,18 +17,34 @@ import medicine.Prescription;
 import user.DoctorApiPatient;
 import user.Patient;
 
-
+/**
+ * This class provides a user interface for patients to interact with their medical information and appointments.
+ * It extends the Menu class and allows the patient to perform various operations such as viewing medical records, 
+ * updating personal information, scheduling or rescheduling appointments, and viewing past appointment outcomes.
+ * 
+ * @author AMUDHAN ANANDHARAMAN
+ * @version 1.0
+ * @since 2024-11-21
+ */
 public class PatientMenu extends Menu{
     private SafeScanner sc;
     private Patient patient;
 
+    /**
+     * Constructs a new PatientMenu object
+     *
+     * @param sc The SafeScanner object used for user input.
+     * @param patient The Patient object representing the patient whose data is to be managed.
+     */
     public PatientMenu(SafeScanner sc, Patient patient) {
         this.sc = sc;
         this.patient = patient;
     }
 
-    //overiding, implemented from menu class
-    @Override
+    /**
+     * Displays the main menu for the patient, offering options to view medical records, manage appointments, 
+     * update personal information, and log out.
+     */
     public void showMenu(){
         int choice = -1;
 
@@ -49,43 +65,51 @@ public class PatientMenu extends Menu{
         }
     }
 
-        private void handleSelection(int choice){
-            switch (choice) {
-                case 1:
-                    viewMedicalRecord();
-                    break;
-                case 2:
-                    updatePersonalInfo();
-                    break;
-                case 3:
-                    viewAvailableSlots();
-                    break;
-                case 4:
-                    scheduleAppointment();
-                    break;
-                case 5:
-                    rescheduleAppointment();
-                    break;
-                case 6:
-                    try {
-                        cancelAppointment();
-                    } catch (IOException e) {
-                        System.out.println("An error occurred: " + e.getMessage());
-                    }
-                    break;
-                case 7:
-                    viewScheduledAppointments();
-                    break;
-                case 8:
-                    viewPastAppointments();
-                    break;
-                case 0:
-                    break;
-                default:
-                    System.out.println("The option is chosen incorrectly, please try again!");
-            }
+    /**
+     * Handles the user's selection from the main menu by invoking the appropriate method.
+     *
+     * @param choice The user's menu choice, represented by an integer.
+     */
+    private void handleSelection(int choice){
+        switch (choice) {
+            case 1:
+                viewMedicalRecord();
+                break;
+            case 2:
+                updatePersonalInfo();
+                break;
+            case 3:
+                viewAvailableSlots();
+                break;
+            case 4:
+                scheduleAppointment();
+                break;
+            case 5:
+                rescheduleAppointment();
+                break;
+            case 6:
+                try {
+                    cancelAppointment();
+                } catch (IOException e) {
+                    System.out.println("An error occurred: " + e.getMessage());
+                }
+                break;
+            case 7:
+                viewScheduledAppointments();
+                break;
+            case 8:
+                viewPastAppointments();
+                break;
+            case 0:
+                break;
+            default:
+                System.out.println("The option is chosen incorrectly, please try again!");
         }
+    }
 
+    /**
+     * Displays the patient's medical record, including personal information, medical history, and past appointment outcomes.
+     */
     private void viewMedicalRecord() {
         MedicalRecord record = this.patient.getMedicalRecord();
 
@@ -117,6 +141,10 @@ public class PatientMenu extends Menu{
         sc.nextLine();
     }
 
+    /**
+     * Allows the patient to update their personal information, such as their email address.
+     * If the patient selects the option to update the email, the program ensures that the email entered is valid.
+     */
     private void updatePersonalInfo() {
         int choice = -1;
 
@@ -148,6 +176,12 @@ public class PatientMenu extends Menu{
         }
     }
 
+    /**
+     * Retrieves a doctor for the patient to interact with, based on the available doctors.
+     * The user is prompted to choose a doctor from the list.
+     *
+     * @return The selected {@link DoctorApiPatient} instance or null if no doctor is selected.
+     */
     private DoctorApiPatient getDoctor() {
         ArrayList<DoctorApiPatient> doctorApis = this.patient.getDoctors();
         System.out.println("Doctors:");
@@ -170,6 +204,12 @@ public class PatientMenu extends Menu{
         return doctorApis.get(choice-1);
     }
 
+    /**
+     * Prompts the user to select a date and returns available appointment slots for that date from the provided schedule.
+     *
+     * @param schedule The schedule from which to retrieve available slots.
+     * @return A list of available AppointmentSlot objects for the selected date.
+     */
     private ArrayList<AppointmentSlot> getSlots(Schedule schedule) {
         int year = sc.promptInt("Enter year: ", 1900, 2037);
         int month = sc.promptInt("Enter month (1-12): ", 1, 12);
@@ -182,6 +222,11 @@ public class PatientMenu extends Menu{
         return slots;
     }
     
+    /**
+     * Displays the available appointment slots to the user.
+     *
+     * @param slots The list of available AppointmentSlot objects to display.
+     */
     private void printSlots(ArrayList<AppointmentSlot> slots) {
         if (slots == null || slots.size() == 0) {
             System.out.println("No available slots.");
@@ -197,6 +242,9 @@ public class PatientMenu extends Menu{
         }
     }
 
+    /**
+     * Displays available slots for the patient to view, based on the selected doctor.
+     */
     private void viewAvailableSlots() {
         DoctorApiPatient doctor = getDoctor();
         if (doctor == null) return;
@@ -208,6 +256,9 @@ public class PatientMenu extends Menu{
 
     }
 
+    /**
+     * Allows the patient to schedule an appointment with a selected doctor at an available time slot.
+     */
     private void scheduleAppointment() {
         DoctorApiPatient doctor = getDoctor();
         if (doctor == null) return;
@@ -225,6 +276,9 @@ public class PatientMenu extends Menu{
         System.out.println("Appointment scheduled successfully!");
     }
 
+    /**
+     * Allows the patient to rescheudule an exisiting appointment
+     */
     private void rescheduleAppointment() {
         ArrayList<Appointment> appointments = this.patient.getScheduledAppointments();
 
@@ -258,6 +312,10 @@ public class PatientMenu extends Menu{
         System.out.println("Appointment rescheduled successfully.");
     }
 
+    /**
+     * Allows a patient to cancel an appointment
+     * @throws IOException
+     */
     private void cancelAppointment() throws IOException {
         ArrayList<Appointment> appointments = this.patient.getScheduledAppointments();
 
@@ -288,6 +346,9 @@ public class PatientMenu extends Menu{
         System.out.println("Appointment canceled successfully.");
     }
 
+    /**
+     * Allows patients to see their scheduled apointments
+     */
     private void viewScheduledAppointments() {
         ArrayList<Appointment> appointments = this.patient.getAllAppointments();
 
@@ -304,6 +365,9 @@ public class PatientMenu extends Menu{
         }
     }
 
+    /**
+     * Allows patient to see all past appointments
+     */
     private void viewPastAppointments() {
         ArrayList<Appointment> appointments = this.patient.getCompletedAppointments();
 
@@ -327,6 +391,11 @@ public class PatientMenu extends Menu{
         }
     }
 
+    /**
+     * validates the email address the patient want to change to
+     * @param email
+     * @return
+     */
     private static boolean isValidEmail(String email) {
         String regex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         Pattern pattern = Pattern.compile(regex);

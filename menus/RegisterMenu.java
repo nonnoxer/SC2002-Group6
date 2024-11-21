@@ -7,15 +7,36 @@ import data.user.UserDatabase;
 import user.Patient;
 import user.UserAccount;
 
+/**
+ * The RegisterMenu class handles the user registration process for the Hospital Management System (HMS).
+ * It allows a new user to register by providing required details such as username, password, name, birth date,
+ * gender, blood type, and contact information (email). It also includes validation for the input data.
+ * 
+ * @author NATANAEL TAN TIONG OON
+ * @version 1.0
+ * @since 2024-11-21
+ */
 public class RegisterMenu {
     private SafeScanner sc;
     private UserDatabase db;
 
+    /**
+     * Constructs a new RegisterMenu with the specified SafeScanner and UserDatabase.
+     *
+     * @param sc the SafeScanner used for reading user input
+     * @param db the UserDatabase used for storing and retrieving user accounts
+     */
     public RegisterMenu(SafeScanner sc, UserDatabase db) {
         this.sc = sc;
         this.db = db;
     }
 
+    /**
+     * Registers a new user by prompting for user details, performing necessary validation,
+     * and storing the user information in the database.
+     * 
+     * @return a new PatientMenu after successful registration
+     */
     public Menu register() {
         UserAccount account = null;
         System.out.println("Welcome to the Hospital Management System (HMS)");
@@ -68,6 +89,16 @@ public class RegisterMenu {
         return new PatientMenu(sc, patient);
     }
 
+    /**
+     * Prompts the user for a password and validates that it meets the complexity requirements:
+     * - At least 8 characters long
+     * - Contains at least one uppercase letter
+     * - Contains at least one lowercase letter
+     * - Contains at least one digit
+     * - Contains at least one special character (e.g., @, #, $, %)
+     * 
+     * @return a valid password entered by the user
+     */
     private String getPassword() {
         String password = sc.promptLine("Enter a new password: ");
         
@@ -88,6 +119,12 @@ public class RegisterMenu {
         return password;
     }
     
+    /**
+     * Validates the format of a birth date in the format YYYY-MM-DD.
+     *
+     * @param date the birth date to validate
+     * @return true if the date format is valid and the date is real, false otherwise
+     */
     private static boolean isValidDate(String date) {
         String regex = "^(\\d{4})-(\\d{2})-(\\d{2})$";
         Pattern pattern = Pattern.compile(regex);
@@ -106,6 +143,14 @@ public class RegisterMenu {
         }
         return false;
     }
+
+    /**
+     * Returns the number of days in a given month of a specific year.
+     * 
+     * @param month the month (1-12)
+     * @param year the year
+     * @return the number of days in the month
+     */
     public static int getDaysInMonth(int month, int year) {
         switch (month) {
             case 1: case 3: case 5: case 7: case 8: case 10: case 12:
@@ -119,10 +164,22 @@ public class RegisterMenu {
         }
     }
 
+    /**
+     * Validates the gender input, ensuring that it is either "Male" or "Female".
+     *
+     * @param gender the gender to validate
+     * @return true if the gender is either "Male" or "Female", false otherwise
+     */
     public static boolean isValidGender(String gender) {
         return gender.equalsIgnoreCase("Male") || gender.equalsIgnoreCase("Female");
     }
 
+    /**
+     * Validates the blood type input, ensuring it matches the format of a valid blood type (e.g., A+, O-, B+).
+     *
+     * @param bloodType the blood type to validate
+     * @return true if the blood type matches the valid format, false otherwise
+     */
     private static boolean isValidBloodType(String bloodType) {
         String regex = "^(A|B|AB|O)[+-]$";
         Pattern pattern = Pattern.compile(regex);
@@ -130,6 +187,12 @@ public class RegisterMenu {
         return matcher.matches();
     }
 
+    /**
+     * Validates the email input, ensuring it matches a valid email format.
+     *
+     * @param email the email to validate
+     * @return true if the email matches a valid format, false otherwise
+     */
     private static boolean isValidEmail(String email) {
         String regex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         Pattern pattern = Pattern.compile(regex);
@@ -137,6 +200,12 @@ public class RegisterMenu {
         return matcher.matches();
     }
     
+    /**
+     * Validates the password input, ensuring it meets specific complexity requirements.
+     * 
+     * @param password the password to validate
+     * @return true if the password meets the complexity criteria, false otherwise
+     */
     private boolean isValidPassword(String password) {
         // Regular expression to check password complexity:
         // - At least 8 characters long
