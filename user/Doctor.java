@@ -57,9 +57,9 @@ public class Doctor extends Staff implements DoctorApiPatient {
         for (Appointment appointment : appointments) {
             LocalDateTime dateTime = appointment.getSlot().getDate();
             ArrayList<AppointmentSlot> slots = this.schedule.getSlots(dateTime.toLocalDate());
-            for (AppointmentSlot slot : slots) {
-                if (slot.getDate().equals(dateTime)) {
-                    appointment.setSlot(slot);
+            for (int i = 0; i < slots.size(); i++) {
+                if (slots.get(i).getDate().equals(dateTime)) {
+                    slots.set(i, appointment.getSlot());
                     break;
                 }
             }

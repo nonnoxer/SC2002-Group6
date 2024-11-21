@@ -84,12 +84,6 @@ public class Appointment implements CsvCompatible {
         this.appointmentStatus = AppointmentStatus.Canceled;
     }
 
-    public void setSlot(AppointmentSlot slot) {
-        this.slot.cancel();
-        this.slot = slot;
-        slot.schedule();
-    }
-
     public int getId() {
         return this.id;
     }
