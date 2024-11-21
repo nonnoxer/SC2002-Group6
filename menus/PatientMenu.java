@@ -97,14 +97,17 @@ public class PatientMenu extends Menu{
 
         System.out.println("\tPast Diagnoses and Treatments:");
         ArrayList<AppointmentOutcomeRecord> outcomes = record.getPastAppointments();
-        for (AppointmentOutcomeRecord outcome : outcomes) {
-            System.out.printf("\t- %s\n", outcome.getSlot().getDate());
-            System.out.printf("\t  Notes: %s\n", outcome.getConsultationNotes());
-            // TODO: update
-            System.out.printf("\t  Prescription: %s\n", outcome.getPrescriptionStatus());
-        }
-        if (outcomes.size() == 0) System.out.println("No past appointment records.");
 
+                for (AppointmentOutcomeRecord outcome : outcomes) {
+                    if(outcome == null){
+                        System.out.println("No other appointment records."); // it should not reach here
+                        break;
+                    }
+                    System.out.println("\nAppointment Outcome:");
+                    outcome.printAppointmentOutcomeRecord();
+                }
+
+        if (outcomes.isEmpty()) System.out.println("No past appointment records.");
         System.out.println("\nContinue... [enter]");
         sc.nextLine();
     }
@@ -249,15 +252,13 @@ public class PatientMenu extends Menu{
 
         System.out.println("\n===== Cancel Appointment =====");
         for (int i = 0; i < appointments.size(); i++) {
-            System.out.printf("%d. %s with Dr. %s\n",
+            System.out.printf("%d. %s \n",
                     i + 1,
-                    appointments.get(i).getSlot().getDate(),
-                    //findDoctorNameById(appointments.get(i).getDoctorId(),"Staff_List.csv")
-                    appointments.get(i).getDoctorId()
+                    appointments.get(i).getSlot().getDate()
             );
         }
-
-        int choice = sc.promptInt("Enter the number of the appointment you want to cancel (or 0 to return to the menu): ", 0, appointments.size());
+        System.out.print("0. Back to main menu\n");
+        int choice = sc.promptInt("Enter the number of the appointment you want to cancel", 0, appointments.size());
 
         // Handle user input
         if (choice == 0) {
