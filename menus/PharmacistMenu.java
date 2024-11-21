@@ -96,9 +96,10 @@ public class PharmacistMenu extends Menu {
 
     /**
      * Allows the pharmacist to update the prescription status for a selected appointment outcome record.
-     * If no records are available, a message is displayed.
+     * If no records are available, a message is displayed indicating the absence of available outcome records.
      * If the pharmacist chooses a record, they can dispense the prescription, 
      * and the prescription status will be updated accordingly.
+     * else the system will print out insufficient stock for the prescription.
      */
     private void updatePrescriptionStatus() {
         ArrayList<AppointmentOutcomeRecord> records = pharmacist.getPendingRecords();
@@ -132,7 +133,7 @@ public class PharmacistMenu extends Menu {
     }
 
     /**
-     * Displays the current medication inventory and stock levels.
+     * Displays the current medication inventory and stock levels iin an array list.
      * If any medication stock is low, it will display a warning for those items.
      * If the inventory is empty, a corresponding message will be shown.
      */
