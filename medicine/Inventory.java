@@ -9,7 +9,7 @@ import java.util.HashMap;
 import data.ReadFile;
 import data.WriteFile;
 
-public class Inventory{
+public class Inventory implements InventoryApiDoctor, InventoryApiPharmacist, InventoryApiAdministrator {
     private HashMap<String, Medicine> medicines;
     private ArrayList<ReplenishmentRequest> requests;
     private String medicineListPath, requestListPath;
@@ -31,7 +31,7 @@ public class Inventory{
         }
     }
 
-    public ArrayList<Medicine> getInventory(){
+    public ArrayList<Medicine> getInventory() {
         return new ArrayList<>(medicines.values());
     }
 
@@ -47,7 +47,7 @@ public class Inventory{
         WriteFile.writeFile(this.requests, this.requestListPath);
     }
 
-    public int setInventory(String name, int stock){
+    public int setInventory(String name, int stock) {
         Medicine medicine = this.medicines.get(name);
         if (medicine == null) return 0;
 
@@ -66,7 +66,7 @@ public class Inventory{
         return 1;
     }
 
-    public void addInventory(String name, int initialStock, int lowStockLevelAlert){
+    public void addInventory(String name, int initialStock, int lowStockLevelAlert) {
         medicines.put(name, new Medicine(name, initialStock, lowStockLevelAlert));
         updateMedicineFile();
     }

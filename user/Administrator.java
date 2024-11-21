@@ -2,9 +2,8 @@ package user;
 
 import data.appointment.AppointmentDatabase;
 import data.user.UserDatabaseApiAdministrator;
-import java.io.IOException;
 import java.util.ArrayList;
-import medicine.Inventory;
+import medicine.InventoryApiAdministrator;
 import medicine.Medicine;
 import medicine.ReplenishmentRequest;
 import medicine.ReplenishmentStatus;
@@ -14,7 +13,7 @@ public class Administrator extends Staff {
     private AppointmentDatabase appointmentDb;
 
     //Inventory object for managing medication
-    private Inventory inventory;
+    private InventoryApiAdministrator inventory;
     
     //Constructor to initialize Administrator with an empty staff list and inventory
     public Administrator(UserId id, String name, Role role, String gender, int age) {
@@ -24,7 +23,7 @@ public class Administrator extends Staff {
     }
 
     //Initialize the staff list from a CSV file
-    public void init(UserDatabaseApiAdministrator userDb, AppointmentDatabase appointmentDb, Inventory inventory) {
+    public void init(UserDatabaseApiAdministrator userDb, AppointmentDatabase appointmentDb, InventoryApiAdministrator inventory) {
         this.userDb = userDb;
         this.appointmentDb = appointmentDb;
         this.inventory = inventory;
