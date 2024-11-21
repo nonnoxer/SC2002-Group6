@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import appointment.Appointment;
 import user.UserId;
-import data.CsvCompatible;
 
 public class MedicalRecord{
     private UserId id;

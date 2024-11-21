@@ -3,7 +3,6 @@ package record;
 import java.util.stream.Collectors;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import appointment.AppointmentSlot;
 import medicine.Prescription;
@@ -13,8 +12,8 @@ public class AppointmentOutcomeRecord {
     private int appointmentId;
     private String serviceType, consultationNotes;
     private PrescriptionStatus prescriptionStatus;
-    private List<String> diagnoses = new  ArrayList<>();
-    private List<String> treatmentPlan = new ArrayList<>();
+    private ArrayList<String> diagnoses = new  ArrayList<>();
+    private ArrayList<String> treatmentPlan = new ArrayList<>();
     private AppointmentSlot slot;
     private ArrayList<Prescription> prescription;
 
@@ -39,20 +38,32 @@ public class AppointmentOutcomeRecord {
 
         String medicines = line[3];
         String quantities = line[4];
-        String[] medicineNames = medicines.split("::");
-        String[] quantityValues = quantities.split("::");
+        String diagnoses = line[5];
+        String treatmentPlan = line[6];
+        String[] medicineNames = medicines.isEmpty() ? new String[]{} : medicines.split("::");
+        String[] quantityValues = quantities.isEmpty() ? new String[]{} : quantities.split("::");
+        String[] diagnosesList = diagnoses.isEmpty() ? new String[]{} : diagnoses.split("::");
+        String[] treatmentPlanList = treatmentPlan.isEmpty() ? new String[]{} : treatmentPlan.split("::");
         if (medicineNames.length != quantityValues.length) {
             throw new IOException("Medicines and quantities do not match");
         }
         this.prescription = new ArrayList<>();
-        for (int i = 0; i < medicineNames.length; i++) {
-            int quantity;
-            try {
-                quantity = Integer.parseInt(quantityValues[i]);
-            } catch (NumberFormatException e) {
-                throw new IOException("Invalid line: expected " + quantityValues[i] + " to be an integer.");
+        if (medicineNames.length>0){
+            for (int i = 0; i < medicineNames.length; i++) {
+                int quantity;
+                try {
+                    quantity = Integer.parseInt(quantityValues[i]);
+                } catch (NumberFormatException e) {
+                    throw new IOException("Invalid line: expected " + quantityValues[i] + " to be an integer.");
+                }
+                prescription.add(new Prescription(medicineNames[i], quantity));
             }
-            prescription.add(new Prescription(medicineNames[i], quantity));
+        }
+        for (int i = 0; i < diagnosesList.length; i++) {
+            this.diagnoses.add(diagnosesList[i]);
+        }
+        for (int i = 0; i < treatmentPlanList.length; i++) {
+            this.diagnoses.add(treatmentPlanList[i]);
         }
     }
 
@@ -80,12 +91,12 @@ public class AppointmentOutcomeRecord {
         return this.prescription;
     }
 
-    public String getDiagnoses(){
-        return this.diagnoses.toString();
+    public ArrayList<String> getDiagnoses(){
+        return this.diagnoses;
     }
 
-    public String getTreatmentPlan(){
-        return this.treatmentPlan.toString();
+    public ArrayList<String> getTreatmentPlan(){
+        return this.treatmentPlan;
     }
     
     public void addDiagnoses(String diagnoses){

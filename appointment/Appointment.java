@@ -28,7 +28,7 @@ public class Appointment implements CsvCompatible {
     }
 
     public Appointment(String[] line) throws IOException {
-        if (line.length != 11) {
+        if (line.length != 13) {
             String line_full = String.join(",", line);
             throw new IOException("Invalid line " + line_full + ": expected 11 elements.");
         }
@@ -54,7 +54,7 @@ public class Appointment implements CsvCompatible {
         if (line[6].equals("")) {
             this.record = null;
         } else {
-            this.record = new AppointmentOutcomeRecord(Arrays.copyOfRange(line, 6, 11));
+            this.record = new AppointmentOutcomeRecord(Arrays.copyOfRange(line, 6, 13));
             this.record.setAppointmentId(this.id);
             this.record.setSlot(this.slot);
         }
@@ -110,15 +110,17 @@ public class Appointment implements CsvCompatible {
 
     public String toCsv() {
         if (this.record != null) return String.format(
-            "%d,%s,%s,%s,%b,%s,%s,%s,%s,%s,%s",
+            "%d,%s,%s,%s,%b,%s,%s,%s,%s,%s,%s,%s,%s",
             id, patientId, doctorId, appointmentStatus.toString(),
             slot.getAvailability(), slot.getDate(),
             record.getServiceType(), record.getConsultationNotes(), record.getPrescriptionStatus().toString(),
             record.getPrescription().stream().map(Prescription::getName).collect(Collectors.joining("::")),
-            record.getPrescription().stream().map((prescription) -> String.valueOf(prescription.getQuantity())).collect(Collectors.joining("::"))
+            record.getPrescription().stream().map((prescription) -> String.valueOf(prescription.getQuantity())).collect(Collectors.joining("::")),
+            record.getDiagnoses().stream().collect(Collectors.joining("::")),
+            record.getTreatmentPlan().stream().collect(Collectors.joining("::"))
         );
         else return String.format(
-            "%d,%s,%s,%s,%b,%s,,,,,",
+            "%d,%s,%s,%s,%b,%s,,,,,,,",
             id, patientId, doctorId, appointmentStatus.toString(),
             slot.getAvailability(), slot.getDate()
         );
