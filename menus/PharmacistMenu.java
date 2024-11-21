@@ -2,6 +2,7 @@ package menus;
 
 import java.util.ArrayList;
 import medicine.Medicine;
+import medicine.Prescription;
 import medicine.ReplenishmentRequest;
 import record.AppointmentOutcomeRecord;
 import user.Pharmacist;
@@ -39,15 +40,15 @@ public class PharmacistMenu extends Menu {
         boolean exit = false;
 
         while (!exit) {
-            System.out.println("========== Pharmacist Menu ==========");
+            System.out.println("\n========== Pharmacist Menu ==========");
             System.out.println("1. View Appointment Outcome Record");
             System.out.println("2. Update Prescription Status");
             System.out.println("3. View Medication Inventory");
             System.out.println("4. Submit Replenishment Request");
-            System.out.println("5. Logout");
+            System.out.println("0. Logout");
             System.out.println("=====================================");
 
-            int choice = sc.promptInt("Please choose an option: ", 1, 5);
+            int choice = sc.promptInt("Please choose an option: ", 0, 4);
 
             switch (choice) {
                 case 1:
@@ -66,8 +67,7 @@ public class PharmacistMenu extends Menu {
                     submitRequest();
                     break;
 
-                case 5:
-                    System.out.println("Logging out...");
+                case 0:
                     exit = true;
                     break;
 
@@ -118,6 +118,10 @@ public class PharmacistMenu extends Menu {
         int choice = sc.promptInt("Enter record number: ", 0, records.size());
         if (choice == 0) return;
         AppointmentOutcomeRecord selectedRecord = records.get(choice-1);
+
+        for (Prescription prescription : selectedRecord.getPrescription()) {
+            System.out.printf("- %s (%d)\n", prescription.getName(), prescription.getQuantity());
+        }
 
         System.out.println("1. Dispense prescription");
         System.out.println("0. Cancel");

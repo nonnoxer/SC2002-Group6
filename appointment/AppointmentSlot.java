@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 
 /**
- * Represents a time slot for an appointment, including the scheduled date and availability status.
- * The availability status indicates whether the slot is available for scheduling or not.
+ * Represents a specific time slot for an appointment, the scheduled date and availability status.
+ * The availability status show whether the slot is available for scheduling or not.
  * @author NATANAEL TAN TIONG OON
  * @version 1.0
  * @since 2024-11-21
@@ -16,7 +16,7 @@ public class AppointmentSlot {
     private boolean availability;
 
     /**
-     * Constructs an AppointmentSlot with the specified date and sets its availability to true (available).
+     * Constructs an AppointmentSlot with the specified date and sets the availability to true.
      *
      * @param date the scheduled date and time of the appointment
      */
@@ -54,30 +54,30 @@ public class AppointmentSlot {
     /**
      * Returns whether the appointment slot is available.
      *
-     * @return true if the slot is available, false otherwise
+     * @return true if the slot is available, if not false
      */
     public boolean getAvailability() {
         return this.availability;
     }
 
     /**
-     * Marks the appointment slot as scheduled by setting its availability to false.
+     * Marks the appointment slot as scheduled by setting the availability to false.
      */
     public void schedule() {
         this.availability = false;
     }
 
     /**
-     * Marks the appointment slot as available by setting its availability to true.
+     * Marks the appointment slot as available by setting the availability to true.
      */
     public void cancel() {
         this.availability = true;
     }
 
     /**
-     * Sets the availability status of the appointment slot.
+     * Set the availability of the status of the appointment slot.
      *
-     * @param availability the new availability status of the slot
+     * @param availability is the new availability status of the slot
      */
     public void setAvailability(boolean availability){
         this.availability = availability;

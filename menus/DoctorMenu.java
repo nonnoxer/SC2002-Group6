@@ -12,6 +12,7 @@ import medicine.Prescription;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import user.Patient;
@@ -104,8 +105,11 @@ public class DoctorMenu extends Menu {
      * @return the selected Patient object, or null if the user cancels or there are no patients
      */
     private Patient selectPatient() {
-        ArrayList<Patient> patients = doctor.getPatients();
-        if (patients.size() == 0){
+        ArrayList<Patient> patientsList = doctor.getPatients();
+        HashSet<Patient> uniquePatients = new HashSet<>(patientsList);
+        ArrayList<Patient> patients = new ArrayList<>(uniquePatients);
+
+        if (uniquePatients.size() == 0){
             System.out.println("No patients!");
             return null;
         }
@@ -139,11 +143,13 @@ public class DoctorMenu extends Menu {
         System.out.printf("Gender: %s\n", record.getGender());
         System.out.printf("Contact Information: %s\n", record.getContactInfo());
         System.out.printf("Blood Type: %s\n", record.getBloodType());
-        System.out.printf("Appointment Record: ");
-        record.getPastAppointments().forEach(appointment -> {
-            appointment.printAppointmentOutcomeRecord(); 
+        System.out.printf("Appointment Record: \n");
+
+        ArrayList<Appointment> appointments = selectedPatient.getCompletedAppointments();
+        for (Appointment appointment: appointments) {
+            appointment.getRecord().printAppointmentOutcomeRecord(); 
             System.out.println();
-        });
+        }
     }
 
     /**
