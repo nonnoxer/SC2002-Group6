@@ -24,8 +24,8 @@ public class AdministratorMenu extends Menu{
     /**
      * Constructs an AdministratorMenu with the specified SafeScanner and Administrator.
      *
-     * @param sc the SafeScanner used for user input
-     * @param administrator the Administrator instance managing the system
+     * @param sc SafeScanner used for user input
+     * @param administrator Administrator instance managing the system
      */
     public AdministratorMenu(SafeScanner sc, Administrator administrator) {
         this.sc = sc;
@@ -34,13 +34,11 @@ public class AdministratorMenu extends Menu{
 
     /**
      * Displays the main menu for the administrator and processes their input.
-     * The menu offers options to view and manage staff, appointments, inventory, and replenishment requests,
+     * The menu offers options to view and manage staff, view appointments, view and manage inventory, and approve replenishment requests,
      * with the option to log out.
      */
     public void showMenu(){
-
         int choice = -1;
-        
         while (choice != 5) {
             System.out.println("===== Administrator Menu =====");
             System.out.println("1. View and Manage Hospital Staff");
@@ -55,8 +53,8 @@ public class AdministratorMenu extends Menu{
     }
 
     /**
-     * Handles the user's selection from the main menu.
-     * Based on the user's choice, it redirects to the appropriate functionality.
+     * Handles the Administrator's selection from the main menu.
+     * Based on the Administrator's choice, it redirects to the appropriate functionality.
      *
      * @param choice the option selected by the user
      */
@@ -82,7 +80,7 @@ public class AdministratorMenu extends Menu{
     }
 
     /**
-     * Displays the menu for managing hospital staff and processes the user's selection.
+     * Displays the menu for managing hospital staff and processes the Administrator's selection.
      * The options include viewing, adding, updating, and removing staff.
      */
     private void viewStaff() {
@@ -114,19 +112,19 @@ public class AdministratorMenu extends Menu{
                 //Update a staff member
                 case 3:
                     String oldId = sc.promptLine("Enter Staff ID to update: ");
-                    // Staff oldStaff = findStaffById(oldId);
                     String newName = sc.promptLine("Enter Staff Name: ");
                     String newRole = sc.promptLine("Enter Staff Role: ");
                     String newGender = sc.promptLine("Enter Staff Gender:");
                     int newAge = sc.promptInt("Enter staff age: ", 0, 200);
-                    // Staff newStaff = new Staff(oldId, newName, newRole, newGender, newAge);
                     administrator.updateStaff(new UserId(oldId), newName, Role.valueOf(newRole), newGender, newAge);
                     break;
-                case 4: // Remove a staff member
+                //Remove a staff member
+                case 4: 
                     String removeId = sc.promptLine("Enter Staff ID to remove: ");
                     administrator.removeStaff(new UserId(removeId));
                     break;
-                case 5: // Exit menu
+                //Exit menu
+                case 5: 
                     return;
                 default:
                     System.out.println("Invalid choice, please try again.");
@@ -135,15 +133,15 @@ public class AdministratorMenu extends Menu{
     }
 
     /**
-     * Displays and processes the view for appointment details managed by the administrator.
-     * This method fetches and shows the current appointment details.
+     * Displays and processes the view for appointment details to the Administrator.
+     * This method fetches and shows the all appointment details.
      */
     private void viewAppointments() {
         this.administrator.viewAppointments();
     }
 
     /**
-     * Displays the menu for managing the medication inventory and processes the user's selection.
+     * Displays the menu for managing the medication inventory and processes the Administrator's selection.
      * The options include viewing the inventory, updating stock levels, adding new medicines,
      * removing medicines, and adjusting low stock alert levels.
      */
@@ -210,7 +208,7 @@ public class AdministratorMenu extends Menu{
 
 
     /**
-     * Displays and processes the replenishment request approval process.
+     * Displays and processes the replenishment request approval.
      * The administrator can approve or reject pending replenishment requests for the medication inventory.
      */
     private void approveRequests() {

@@ -1,12 +1,11 @@
 package user;
 
+import appointment.Appointment;
 import data.appointment.AppointmentDatabaseApiAdministrator;
 import data.user.UserDatabaseApiAdministrator;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import appointment.Appointment;
 import medicine.InventoryApiAdministrator;
 import medicine.Medicine;
 import medicine.Prescription;
@@ -15,8 +14,7 @@ import medicine.ReplenishmentStatus;
 import record.AppointmentOutcomeRecord;
 
 /**
- * Represents an Administrator in the system who has additional responsibilities
- * over a basic staff member, including managing staff, appointments, and inventory.
+ * Represents an Administrator in the system who has responsibilities such as managing staff, appointments, and inventory.
  * The Administrator can interact with databases for users, appointments, and inventory.
  * 
  * @author LOH HAN MENG
@@ -33,7 +31,7 @@ public class Administrator extends Staff {
     /**
      * Constructs an Administrator object with the given parameters and initializes the databases to null.
      *
-     * @param id      The user ID of the administrator.
+     * @param id      The userID of the administrator.
      * @param name    The name of the administrator.
      * @param role    The role of the administrator.
      * @param gender  The gender of the administrator.
@@ -51,7 +49,8 @@ public class Administrator extends Staff {
      * @param userDb   The User Database API Administrator.
      * @param appointmentDb The Appointment Database API Administrator.
      * @param inventory   The Inventory API Administrator.
-     */    public void init(UserDatabaseApiAdministrator userDb, AppointmentDatabaseApiAdministrator appointmentDb, InventoryApiAdministrator inventory) {
+     */   
+    public void init(UserDatabaseApiAdministrator userDb, AppointmentDatabaseApiAdministrator appointmentDb, InventoryApiAdministrator inventory) {
         this.userDb = userDb;
         this.appointmentDb = appointmentDb;
         this.inventory = inventory;
