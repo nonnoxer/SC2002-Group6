@@ -1,0 +1,3 @@
+1. javac @files.txt
+
+2. java Main
