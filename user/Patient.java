@@ -7,7 +7,6 @@ import appointment.AppointmentSlot;
 import appointment.AppointmentStatus;
 import data.CsvCompatible;
 import data.appointment.AppointmentDatabaseApiPatient;
-import data.user.UserDatabase;
 import data.user.UserDatabaseApiPatient;
 import record.MedicalRecord;
 
@@ -88,41 +87,9 @@ public class Patient extends User implements CsvCompatible {
         this.appointmentDb.cancelAppointment(this.id, appointmentId);
     }
 
-    // Move getters and setters to MedicalRecord
-
-    // // Getters
-    // public String getGender() {
-    //     return gender;
-    // }
-
-    // public String getBirthDate() {
-    //     return birthDate;
-    // }
-
-    // public String getBloodType() {
-    //     return bloodType;
-    // }
-
-    // public String getContactInfo() {
-    //     return contactInfo;
-    // }
-
-    // // Setters
-    // public void setGender(String gender) {
-    //     this.gender = gender;
-    // }
-
-    // public void setBirthDate(String birthDate) {
-    //     this.birthDate = birthDate;
-    // }
-
-    // public void setBloodType(String bloodType) {
-    //     this.bloodType = bloodType;
-    // }
-
-     public void setContactInfo(String contactInfo) {
-         this.contactInfo = contactInfo;
-         this.record.setContactInfo(contactInfo);
-         this.userDb.updatePatient();
-     }
+    public void setContactInfo(String contactInfo) {
+        this.contactInfo = contactInfo;
+        this.record.setContactInfo(contactInfo);
+        this.userDb.updatePatient();
+    }
 }

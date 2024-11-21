@@ -3,6 +3,8 @@ package menus;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.time.LocalDate;
 
@@ -30,7 +32,7 @@ public class PatientMenu extends Menu{
     public void showMenu(){
         int choice = -1;
 
-        while (choice != 9) {
+        while (choice != 0) {
             System.out.println("\n===== Patient Menu =====");
             System.out.println("1. View Medical Record");
             System.out.println("2. Update Personal Information");
@@ -40,9 +42,9 @@ public class PatientMenu extends Menu{
             System.out.println("6. Cancel an Appointment");
             System.out.println("7. View Scheduled Appointments");
             System.out.println("8. View Past Appointment Outcome Records");
-            System.out.println("9. Logout");
+            System.out.println("0. Logout");
 
-            choice = sc.promptInt("Enter your choice: ", 1, 9);
+            choice = sc.promptInt("Enter your choice: ", 0, 8);
             handleSelection(choice);
         }
     }
@@ -77,7 +79,7 @@ public class PatientMenu extends Menu{
                 case 8:
                     viewPastAppointments();
                     break;
-                case 9:
+                case 0:
                     break;
                 default:
                     System.out.println("The option is chosen incorrectly, please try again!");
@@ -96,18 +98,21 @@ public class PatientMenu extends Menu{
         System.out.printf("\tBlood Type: %s\n", record.getBloodType());
 
         System.out.println("\tPast Diagnoses and Treatments:");
-        ArrayList<AppointmentOutcomeRecord> outcomes = record.getPastAppointments();
+        ArrayList<Appointment> appointments = patient.getCompletedAppointments();
+        boolean outcomesEmpty = true;
 
-                for (AppointmentOutcomeRecord outcome : outcomes) {
-                    if(outcome == null){
-                        System.out.println("No other appointment records."); // it should not reach here
-                        break;
-                    }
-                    System.out.println("\nAppointment Outcome:");
-                    outcome.printAppointmentOutcomeRecord();
-                }
+        for (Appointment appointment : appointments) {
+            AppointmentOutcomeRecord outcome = appointment.getRecord();
+            if(outcome == null){
+                System.out.println("No other appointment records."); // it should not reach here
+                break;
+            }
+            outcomesEmpty = false;
+            System.out.println("\nAppointment Outcome:");
+            outcome.printAppointmentOutcomeRecord();
+        }
 
-        if (outcomes.isEmpty()) System.out.println("No past appointment records.");
+        if (outcomesEmpty) System.out.println("No past appointment records.");
         System.out.println("\nContinue... [enter]");
         sc.nextLine();
     }
@@ -125,16 +130,13 @@ public class PatientMenu extends Menu{
 
             switch (choice) {
                 case 1:
-                    System.out.print("Enter your new email address: ");
-                    String newEmail = sc.nextLine();
-                    if (newEmail.matches("^[A-Za-z0-9+_.-]+@(.+)$")) { //gpt
-                        patient.setContactInfo(newEmail);
-                        //update patient file
-
-                        System.out.println("Email address updated successfully.");
-                    } else {
-                        System.out.println("Invalid email format. Please try again.");
+                    String newEmail = sc.promptLine("Enter your new email address: ");
+                    while (!isValidEmail(newEmail)) {
+                        System.out.println("Invalid email. Please enter a valid email address.");
+                        newEmail = sc.promptLine("Enter email: ");
                     }
+                    System.out.println("Successfully updated email address!");
+                    patient.setContactInfo(newEmail);
                     break;
                 case 0:
                     System.out.println("Returning to main menu...");
@@ -150,20 +152,22 @@ public class PatientMenu extends Menu{
         ArrayList<DoctorApiPatient> doctorApis = this.patient.getDoctors();
         System.out.println("Doctors:");
         for (int i = 0; i < doctorApis.size(); i++) {
-            System.out.printf("%d. %s\n", i, doctorApis.get(i).getName());
+            System.out.printf("%d. %s\n", i+1, doctorApis.get(i).getName());
         }
         if (doctorApis.size() == 0) {
             System.out.println("No available doctors.");
             return null;
         }
+        System.out.println("0. Cancel");
 
-        int choice = sc.promptInt("Choose a doctor: ", 0, doctorApis.size()-1);
-        if (choice < 0 || choice >= doctorApis.size()) {
+        int choice = sc.promptInt("Choose a doctor: ", 0, doctorApis.size());
+        if (choice == 0) return null;
+        if (choice < 0 || choice > doctorApis.size()) {
             System.out.println("Invalid choice.");
             return null;
         }
 
-        return doctorApis.get(choice);
+        return doctorApis.get(choice-1);
     }
 
     private ArrayList<AppointmentSlot> getSlots(Schedule schedule) {
@@ -188,13 +192,14 @@ public class PatientMenu extends Menu{
         for (int i = 0; i < slots.size(); i++) {
             AppointmentSlot slot = slots.get(i);
             if (slot.getAvailability()) {
-                System.out.printf("Slot %-2d: %s\n", i, slot.getDate().toLocalTime().toString());
+                System.out.printf("Slot %-2d: %s\n", i+1, slot.getDate().toLocalTime().toString());
             }
         }
     }
 
     private void viewAvailableSlots() {
         DoctorApiPatient doctor = getDoctor();
+        if (doctor == null) return;
         Schedule schedule = doctor.getPersonalSchedule();
 
         ArrayList<AppointmentSlot> slots = getSlots(schedule);
@@ -205,14 +210,19 @@ public class PatientMenu extends Menu{
 
     private void scheduleAppointment() {
         DoctorApiPatient doctor = getDoctor();
+        if (doctor == null) return;
         Schedule schedule = doctor.getPersonalSchedule();
 
         ArrayList<AppointmentSlot> slots = getSlots(schedule);
         printSlots(slots);
         if (slots.size() == 0) return;
+        System.out.println("0. Cancel");
 
-        int index = sc.promptInt("Enter slot number: ", 0, slots.size()-1);
-        this.patient.scheduleAppointment(doctor.getId(), slots.get(index));
+        int index = sc.promptInt("Enter slot number: ", 0, slots.size());
+        if (index == 0) return;
+        this.patient.scheduleAppointment(doctor.getId(), slots.get(index-1));
+
+        System.out.println("Appointment scheduled successfully!");
     }
 
     private void rescheduleAppointment() {
@@ -225,11 +235,13 @@ public class PatientMenu extends Menu{
 
         System.out.println("Choose an appointment to reschedule:");
         for (int i = 0; i < appointments.size(); i++) {
-            System.out.printf("%d. %s\n", i, appointments.get(i).getSlot().getDate());
+            System.out.printf("%d. %s\n", i+1, appointments.get(i).getSlot().getDate());
         }
-        int appointmentIndex = sc.promptInt("Enter appointment number: ", 0, appointments.size()-1);
+        System.out.println("0. Cancel");
+        int appointmentIndex = sc.promptInt("Enter appointment number: ", 0, appointments.size());
+        if (appointmentIndex == 0) return;
 
-        Appointment appointment = appointments.get(appointmentIndex);
+        Appointment appointment = appointments.get(appointmentIndex-1);
 
         DoctorApiPatient doctor = this.patient.getDoctorById(appointment.getDoctorId());
         Schedule schedule = doctor.getPersonalSchedule();
@@ -237,9 +249,13 @@ public class PatientMenu extends Menu{
         ArrayList<AppointmentSlot> slots = getSlots(schedule);
         printSlots(slots);
         if (slots.size() == 0) return;
+        System.out.println("0. Cancel");
 
-        int slotIndex = sc.promptInt("Enter slot number: ", 0, slots.size()-1);
-        this.patient.rescheduleAppointment(appointment.getId(), slots.get(slotIndex));
+        int slotIndex = sc.promptInt("Enter slot number: ", 0, slots.size());
+        if (slotIndex == 0) return;
+        this.patient.rescheduleAppointment(appointment.getId(), slots.get(slotIndex-1));
+
+        System.out.println("Appointment rescheduled successfully.");
     }
 
     private void cancelAppointment() throws IOException {
@@ -262,7 +278,6 @@ public class PatientMenu extends Menu{
 
         // Handle user input
         if (choice == 0) {
-            System.out.println("Returning to main menu...");
             return;
         } else if (choice < 1 || choice > appointments.size()) {
             System.out.println("Invalid choice. Please try again.");
@@ -274,7 +289,7 @@ public class PatientMenu extends Menu{
     }
 
     private void viewScheduledAppointments() {
-        ArrayList<Appointment> appointments = this.patient.getScheduledAppointments();
+        ArrayList<Appointment> appointments = this.patient.getAllAppointments();
 
         if (appointments.isEmpty()) {
             System.out.println("You have no scheduled appointments.");
@@ -282,8 +297,9 @@ public class PatientMenu extends Menu{
         }
 
         for (Appointment appointment : appointments) {
-            System.out.printf("%s - %s\n", 
+            System.out.printf("%s - Dr. %s - %s\n", 
             appointment.getSlot().getDate(),
+            this.patient.getDoctorById(appointment.getDoctorId()).getName(),
             appointment.getAppointmentStatus().toString());
         }
     }
@@ -297,14 +313,25 @@ public class PatientMenu extends Menu{
         }
 
         for (Appointment appointment : appointments) {
-            System.out.println(appointment.getSlot().getDate());
             AppointmentOutcomeRecord record = appointment.getRecord();
+            System.out.printf(
+                "%s - Dr. %s\n",
+                appointment.getSlot().getDate().toString(),
+                this.patient.getDoctorById(appointment.getDoctorId()).getName()
+            );
             System.out.println("Service type: " + record.getServiceType());
             System.out.println("Consultation notes: " + record.getConsultationNotes());
             System.out.println("Prescription: " + record.getPrescription().stream().map(Prescription::toString).collect(Collectors.joining(", ")));
             System.out.println("Prescription status: " + record.getPrescriptionStatus());
             System.out.println();
         }
+    }
+
+    private static boolean isValidEmail(String email) {
+        String regex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 }
 
