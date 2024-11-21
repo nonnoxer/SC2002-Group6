@@ -104,7 +104,7 @@ public class AdministratorMenu extends Menu{
     }
 
     private void viewAppointments() {
-
+        this.administrator.viewAppointments();
     }
 
     private void viewInventory() {

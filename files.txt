@@ -11,16 +11,18 @@
 ./user/Doctor.java
 ./user/Administrator.java
 ./user/Staff.java
-./user/PatientApi.java
 ./user/Role.java
 ./user/Pharmacist.java
 ./user/UserAccount.java
 ./user/Patient.java
 ./medicine/PrescriptionStatus.java
 ./medicine/Inventory.java
+./medicine/InventoryApiAdministrator.java
 ./medicine/Prescription.java
+./medicine/InventoryApiPharmacist.java
 ./medicine/ReplenishmentStatus.java
 ./medicine/ReplenishmentRequest.java
+./medicine/InventoryApiDoctor.java
 ./medicine/Medicine.java
 ./Main.java
 ./menus/UserInterface.java
@@ -35,6 +37,7 @@
 ./data/appointment/AppointmentDatabaseApiDoctor.java
 ./data/appointment/AppointmentDatabaseApiPharmacist.java
 ./data/appointment/AppointmentDatabaseApiPatient.java
+./data/appointment/AppointmentDatabaseApiAdministrator.java
 ./data/appointment/AppointmentDatabase.java
 ./data/user/UserDatabase.java
 ./data/user/UserDatabaseApiAdministrator.java

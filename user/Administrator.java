@@ -9,8 +9,10 @@ import java.util.Map;
 import appointment.Appointment;
 import medicine.InventoryApiAdministrator;
 import medicine.Medicine;
+import medicine.Prescription;
 import medicine.ReplenishmentRequest;
 import medicine.ReplenishmentStatus;
+import record.AppointmentOutcomeRecord;
 
 public class Administrator extends Staff {
     private UserDatabaseApiAdministrator userDb;
@@ -76,20 +78,37 @@ public class Administrator extends Staff {
 
     //Appointment management method
     public void viewAppointments() {
-        ///Work in progress
-        // do stuff with this.appointmentDb
-        HashMap<Integer, Appointment>appointments = appointmentDb.getAppointments();
-        System.out.println(String.format("%-5s %-15s %-10s %-15s %-10s %-10s", "id", "doctor", "patient", "status", "slot", "record"));
+        HashMap<Integer, Appointment> appointments = appointmentDb.getAppointments();
         for (Map.Entry<Integer, Appointment> entry : appointments.entrySet()) {
             Appointment appointment = entry.getValue();
-            System.out.println(String.format("%-5d %-15d %-10d %-15s %-10s %-10s", 
-                appointment.getId(), 
-                appointment.getDoctorId(), 
-                appointment.getPatientId(), 
-                appointment.getAppointmentStatus(), 
-                appointment.getSlot(), 
-                appointment.getRecord())
-            );
+            AppointmentOutcomeRecord record = appointment.getRecord();     
+
+            System.out.println("Appointment ID: " + appointment.getId());
+            System.out.println("  Doctor ID: " + appointment.getDoctorId());
+            System.out.println("  Patient ID: " + appointment.getPatientId());
+            System.out.println("  Status: " + appointment.getAppointmentStatus());
+            System.out.println("  Slot: " + appointment.getSlot().getDate());
+            
+
+            if (record != null) {
+                System.out.println("  Record:");
+                System.out.println("    Appointment ID: " + record.getAppointmentId());
+                System.out.println("    Service Type: " + record.getServiceType());
+                System.out.println("    Consultation Notes: " + record.getConsultationNotes());
+                System.out.println("    Prescription Status: " + record.getPrescriptionStatus());
+                System.out.println("    Diagnoses: ");
+                System.out.println("      - " + record.getDiagnoses());
+                System.out.println("    Treatment Plan: ");
+                System.out.println("      - " + record.getTreatmentPlan());
+                if (record.getPrescription() != null && !record.getPrescription().isEmpty()) {
+                    System.out.println("    Prescriptions:");
+                    for (Prescription prescription : record.getPrescription()) {
+                        System.out.println("      - " + prescription);
+                    }
+                }
+            }
+            
+            System.out.println();
         }
     }
 

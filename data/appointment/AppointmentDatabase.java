@@ -13,7 +13,7 @@ import data.WriteFile;
 import record.AppointmentOutcomeRecord;
 import user.UserId;
 
-public class AppointmentDatabase implements AppointmentDatabaseApiPatient, AppointmentDatabaseApiDoctor, AppointmentDatabaseApiPharmacist {
+public class AppointmentDatabase implements AppointmentDatabaseApiPatient, AppointmentDatabaseApiDoctor, AppointmentDatabaseApiPharmacist, AppointmentDatabaseApiAdministrator{
     private HashMap<Integer, Appointment> appointments;
     private int id;
     private String path;
