@@ -9,7 +9,7 @@ package data;
  */
 public interface CsvCompatible {
     /**
-     * Converts the implementing object into a CSV string format.
+     * The implemented object is transformed into a CSV string format
      * The string should contain the data of the object, with fields separated by commas.
      *
      * @return a CSV string representation of the object
