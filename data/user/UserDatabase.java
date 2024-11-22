@@ -337,6 +337,7 @@ public class UserDatabase implements UserDatabaseApiPatient, UserDatabaseApiAdmi
                 temp.init(this, inventory);
                 temp.setSchedule(LocalDate.parse("2024-01-01"), LocalDate.parse("2025-12-31"));
                 temp.setAppointmentDb(appointmentDb);
+                this.doctors.put(newId, temp);
                 staff = temp;
                 break;
             }
